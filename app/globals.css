@@ -66,3 +66,9 @@
   .sidebar::after{display:none}
 }
 @media(max-width:700px){.personal-intro{grid-template-columns:1fr;gap:25px;padding-top:10px}.personal-intro>img{width:130px}.personal-map{margin-top:70px;padding-top:35px}}
+
+/* Navigation interaction colors. */
+.topnav>a:not(.hire-link){transition:color .18s ease}
+.topnav>a:not(.hire-link):hover,.topnav>a:not(.hire-link):focus-visible{color:var(--accent)}
+.topnav .hire-link{transition:background-color .18s ease,color .18s ease,border-color .18s ease}
+.topnav .hire-link:hover,.topnav .hire-link:focus-visible{background:var(--lime);color:var(--ink);text-decoration:none}
