@@ -14,7 +14,8 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /<title>Marvin — AI Engineer<\/title>/i);
-  assert.match(html, /I build reliable AI systems\./);
+  assert.match(html, /Hey, I(?:&#x27;|')m Marvin\./);
+  assert.match(html, /AI Engineer with a background in SQL Server database systems and production infrastructure\./);
   assert.match(html, /Microsoft SQL Server in production environments/);
   assert.match(html, /What would you like to know about me\?/);
   assert.match(html, /Who am I\?/);
