@@ -1,3 +1,5 @@
+import { MobileNav } from "./MobileNav";
+
 const projects = [
   {
     number: "01",
@@ -5,7 +7,7 @@ const projects = [
     title: "Knowledge Retrieval Engine",
     description: "A grounded answer system built around hybrid search, source-aware synthesis, and evaluations that expose where retrieval breaks.",
     tags: ["RAG", "Python", "Evals"],
-    result: "Target result: +32% answer precision",
+    result: "Outcome metrics coming with the case study",
     tone: "lime",
   },
   {
@@ -14,7 +16,7 @@ const projects = [
     title: "Operations Agent",
     description: "A tool-using agent that turns messy requests into observable workflows—with explicit approvals at the moments that matter.",
     tags: ["Agents", "Tool calling", "MCP"],
-    result: "Target result: 11 hrs saved / week",
+    result: "Outcome metrics coming with the case study",
     tone: "orange",
   },
   {
@@ -23,7 +25,7 @@ const projects = [
     title: "Unified Model Gateway",
     description: "One resilient interface across model providers, with routing, cost controls, structured telemetry, and graceful fallbacks.",
     tags: ["TypeScript", "APIs", "Observability"],
-    result: "Target result: 99.95% availability",
+    result: "Outcome metrics coming with the case study",
     tone: "blue",
   },
 ];
@@ -51,11 +53,8 @@ export default function Home() {
         <nav className="desktop-nav" aria-label="Primary navigation">
           <a href="#work">Work</a><a href="#expertise">Expertise</a><a href="#notes">Notes</a><a href="#profile">Profile</a>
         </nav>
-        <a className="header-cta" href="mailto:hello@example.com">Let&apos;s talk <span aria-hidden="true">↗</span></a>
-        <details className="mobile-menu">
-          <summary aria-label="Open navigation">Menu</summary>
-          <nav aria-label="Mobile navigation"><a href="#work">Work</a><a href="#expertise">Expertise</a><a href="#notes">Notes</a><a href="#profile">Profile</a></nav>
-        </details>
+        <a className="header-cta" href="mailto:jbmarvin21@gmail.com">Let&apos;s talk <span aria-hidden="true">↗</span></a>
+        <MobileNav />
       </header>
 
       <section className="hero">
@@ -76,6 +75,16 @@ export default function Home() {
         <div className="scroll-note"><span>SCROLL TO EXPLORE</span><i /></div>
       </section>
 
+      <section className="pathfinder section-shell" aria-labelledby="pathfinder-title">
+        <div><p className="section-kicker">START WHERE YOU ARE</p><h2 id="pathfinder-title">What would you like to know?</h2></div>
+        <div className="path-grid">
+          <a href="#work"><span>01</span><strong>What has Marvin built?</strong><i>Selected systems and case studies ↓</i></a>
+          <a href="#expertise"><span>02</span><strong>What can Marvin engineer?</strong><i>Capabilities across the AI stack ↓</i></a>
+          <a href="#notes"><span>03</span><strong>How does Marvin think?</strong><i>Field notes and engineering ideas ↓</i></a>
+          <a href="#profile"><span>04</span><strong>Who is Marvin?</strong><i>Background, résumé, and contact ↓</i></a>
+        </div>
+      </section>
+
       <section className="intro section-shell">
         <p className="section-kicker">01 / THE POINT OF VIEW</p>
         <div className="intro-statement"><span className="annotation">NOT AI FOR AI&apos;S SAKE</span><h2>Useful intelligence is a systems problem.</h2><p>The model is only one component. The real work is shaping context, tools, feedback, interfaces, and failure paths into something people can depend on.</p></div>
@@ -89,7 +98,7 @@ export default function Home() {
             <article className={`project-card ${project.tone}`} key={project.number}>
               <div className="project-number">{project.number}</div>
               <div className="project-content"><p className="meta">{project.status}</p><h3>{project.title}</h3><p>{project.description}</p><div className="tag-list">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div></div>
-              <div className="project-result"><span>{project.result}</span><a href="#contact" aria-label={`View ${project.title} case study`}>↗</a></div>
+              <div className="project-result"><span>{project.result}</span><span className="coming-soon" aria-label={`${project.title} case study coming soon`}>Soon</span></div>
             </article>
           ))}
         </div>
@@ -116,19 +125,19 @@ export default function Home() {
       <section className="notes section-shell" id="notes">
         <div className="section-head"><div><p className="section-kicker">05 / FROM THE NOTEBOOK</p><h2>Thinking in public.</h2></div><p>Placeholder articles for the ideas, implementation notes, and lessons that will grow alongside the work.</p></div>
         <div className="note-list">
-          {notes.map(([number,meta,title,copy]) => <article key={number}><span className="note-number">{number}</span><div><p className="meta">{meta}</p><h3>{title}</h3><p>{copy}</p></div><a href="#contact" aria-label={`Read ${title}`}>Read note <span>↗</span></a></article>)}
+          {notes.map(([number,meta,title,copy]) => <article key={number}><span className="note-number">{number}</span><div><p className="meta">PLANNED · {meta}</p><h3>{title}</h3><p>{copy}</p></div><span className="planned-label">Planned</span></article>)}
         </div>
       </section>
 
       <section className="profile section-shell dark-section" id="profile">
-        <div className="portrait-card" aria-label="Portrait placeholder"><div className="monogram">M</div><span>PORTRAIT<br />COMING SOON</span></div>
+        <figure className="portrait-card"><img src="/marvin-portrait.jpg" alt="Portrait of Marvin" /><figcaption>MARVIN<br />AI ENGINEER</figcaption></figure>
         <div className="profile-copy"><p className="section-kicker">06 / ABOUT MARVIN</p><h2>Engineer. Builder.<br />Persistent question-asker.</h2><p>This biography is a placeholder for the story behind the work: experience, technical background, the problems Marvin cares about, and the kind of team where he does his best work.</p><div className="profile-links"><a href="#contact">Résumé placeholder <span>↗</span></a><a href="#contact">GitHub placeholder <span>↗</span></a><a href="#contact">LinkedIn placeholder <span>↗</span></a></div></div>
       </section>
 
       <section className="contact section-shell" id="contact">
         <p className="section-kicker">07 / START A CONVERSATION</p>
         <h2>Have a hard AI problem?<br /><span>Let&apos;s make it tractable.</span></h2>
-        <div className="contact-row"><p>Project inquiry, technical collaboration, or simply comparing notes—send a signal.</p><a className="contact-button" href="mailto:hello@example.com">hello@example.com <span>↗</span></a></div>
+        <div className="contact-row"><p>Project inquiry, technical collaboration, or simply comparing notes—send a signal.</p><a className="contact-button" href="mailto:jbmarvin21@gmail.com">jbmarvin21@gmail.com <span>↗</span></a></div>
       </section>
 
       <footer><a className="brand" href="#top"><span className="brand-mark">M</span><span>marvinjb.dev</span></a><p>AI engineering, systems, and notes.<br />Built with care. Content placeholders for now.</p><div><a href="#work">Work</a><a href="#expertise">Expertise</a><a href="#notes">Notes</a><a href="#profile">Profile</a></div><a className="back-top" href="#top">Back to top ↑</a></footer>

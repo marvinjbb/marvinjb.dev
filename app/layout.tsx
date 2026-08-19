@@ -26,6 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase,
     title,
     description,
+    alternates: { canonical: "https://marvinjb.dev" },
     openGraph: { title, description, type: "website", images: [{ url: image, width: 1536, height: 1024, alt: "AI systems that earn their place — marvinjb.dev" }] },
     twitter: { card: "summary_large_image", title, description, images: [image] },
   };
