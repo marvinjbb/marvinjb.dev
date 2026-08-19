@@ -14,10 +14,12 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /<title>Marvin — AI Engineer<\/title>/i);
-  assert.match(html, /What would you like to know about Marvin\?/);
-  assert.match(html, /Who is Marvin\?/);
-  assert.match(html, /What has Marvin built\?/);
-  assert.match(html, /How does Marvin think\?/);
+  assert.match(html, /I build reliable AI systems\./);
+  assert.match(html, /Microsoft SQL Server in production environments/);
+  assert.match(html, /What would you like to know about me\?/);
+  assert.match(html, /Who am I\?/);
+  assert.match(html, /What have I built\?/);
+  assert.match(html, /How do I think\?/);
   assert.match(html, /Hire Marvin/);
   assert.match(html, /jbmarvin21@gmail\.com/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/i);

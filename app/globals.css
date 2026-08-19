@@ -52,3 +52,16 @@
 /* Complete dotted construction grid: horizontal + vertical guides. */
 .page-content{background-image:radial-gradient(circle,rgba(52,66,63,.25) .8px,transparent 1px),radial-gradient(circle,rgba(52,66,63,.14) .6px,transparent .85px),radial-gradient(circle,rgba(52,66,63,.14) .6px,transparent .85px);background-size:88px 88px,6px 88px,88px 6px;background-position:0 0,0 0,0 0}
 @media(max-width:700px){.page-content{background-size:64px 64px,5px 64px,64px 5px}}
+
+/* Personal introduction and a lime transition emerging from the sidebar. */
+.personal-intro{display:grid;grid-template-columns:220px 1fr;gap:48px;align-items:start;padding-top:35px}
+.personal-intro>img{width:220px;aspect-ratio:4/5;object-fit:cover;object-position:center 24%;filter:saturate(.82);border:1px solid var(--line)}
+.personal-intro h1{margin-top:8px;font-size:clamp(46px,5.4vw,76px)}
+.personal-intro div>p:not(.overline){max-width:720px;margin:18px 0 0;color:var(--muted);font-size:16px;line-height:1.7}
+.personal-map{margin-top:105px;padding-top:50px;border-top:1px solid var(--line)}
+.personal-map h2{max-width:820px}
+@media(min-width:701px){
+  .page-content::before{left:0;top:58px;width:24px;height:330px;border:0;background:repeating-linear-gradient(135deg,transparent 0 5px,var(--lime) 5px 7px,transparent 7px 12px);background-size:24px 100%;background-repeat:no-repeat}
+  .sidebar::after{display:none}
+}
+@media(max-width:700px){.personal-intro{grid-template-columns:1fr;gap:25px;padding-top:10px}.personal-intro>img{width:130px}.personal-map{margin-top:70px;padding-top:35px}}
