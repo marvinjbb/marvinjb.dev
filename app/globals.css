@@ -37,23 +37,3 @@
   .map-section::after{top:67px;left:112px}
 }
 @media(max-width:700px){.map-section h1,.content-section h2,.map-section .lead,.content-section .section-intro{box-shadow:0 0 14px 10px rgba(248,248,246,.92)}}
-
-/* Match the warm dotted drafting paper used in the AI-systems artwork. */
-:root{--bg:#f4f1e7;--soft:#eae7dc;--line:#d3d1c7}
-body{background:#f4f1e7}
-.topbar{background:rgba(244,241,231,.95)}
-.page-content{background-color:#f4f1e7;background-image:radial-gradient(circle,rgba(42,58,55,.17) .65px,transparent .8px),radial-gradient(circle,rgba(42,58,55,.24) .8px,transparent 1px);background-size:22px 22px,88px 88px;background-position:0 0,0 0}
-.map-section h1,.content-section h2,.map-section .lead,.content-section .section-intro{background:rgba(244,241,231,.93);box-shadow:0 0 24px 17px rgba(244,241,231,.94)}
-.question-map,.info-card,.inline-callout{background:rgba(244,241,231,.82)}
-@media(min-width:701px){
-  .sidebar{background:#efede4}
-  .sidebar::after{display:none}
-  .page-content::before{left:0;top:0;width:170px;height:15px;border:0;background:repeating-linear-gradient(135deg,transparent 0 5px,var(--lime) 5px 7px,transparent 7px 12px);border-bottom:1px dotted rgba(126,156,35,.75)}
-  .page-content::after{content:"";position:absolute;z-index:4;left:22px;top:560px;width:19px;height:19px;border-left:3px solid #ff6b22;border-bottom:3px solid #ff6b22;pointer-events:none}
-  .map-section::before{top:0;left:0;right:28px;height:25px}
-  .map-section::after{top:29px;left:30px}
-}
-@media(max-width:700px){
-  .page-content{background-size:16px 16px,64px 64px}
-  .map-section h1,.content-section h2,.map-section .lead,.content-section .section-intro{background:rgba(244,241,231,.95);box-shadow:0 0 15px 11px rgba(244,241,231,.95)}
-}
