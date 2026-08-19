@@ -14,3 +14,14 @@
 .overline::before{content:"";width:28px;height:5px;background:var(--lime);box-shadow:9px 0 0 var(--accent)}
 .question-map,.info-card,.inline-callout{background:rgba(248,248,246,.78);backdrop-filter:blur(2px)}
 @media(max-width:700px){.page-content{background-size:64px 64px,64px 64px,16px 16px,16px 16px}.map-section::before,.content-section::before{left:7px;opacity:.55}.map-section::after{left:21px;top:20px}.map-section,.content-section{padding-left:30px}}
+
+/* Make the drafting ruler the structural divider between sidebar and page. */
+@media(min-width:701px){
+  .sidebar{border-right:1px solid #6f7b78;overflow:visible}
+  .sidebar::before{content:"";position:absolute;z-index:4;right:-9px;top:0;bottom:0;width:9px;background:repeating-linear-gradient(to bottom,transparent 0 10px,rgba(40,54,52,.72) 10px 11px,transparent 11px 21px);pointer-events:none}
+  .sidebar::after{content:"";position:absolute;z-index:5;right:-5px;top:30px;width:10px;height:10px;border:1px solid #52605e;border-radius:50%;background:linear-gradient(#52605e,#52605e) center/1px 14px no-repeat,linear-gradient(90deg,#52605e,#52605e) center/14px 1px no-repeat,var(--bg);pointer-events:none}
+  .page-content::before{content:"";position:absolute;z-index:3;left:0;top:0;width:15px;height:230px;border-left:4px solid var(--lime);background:repeating-linear-gradient(135deg,transparent 0 4px,var(--lime) 4px 6px,transparent 6px 10px);pointer-events:none}
+  .map-section::before{left:0;right:0;top:40px;bottom:auto;width:auto;height:18px;border:0;border-top:1px solid #6f7b78;background:repeating-linear-gradient(90deg,transparent 0 10px,rgba(40,54,52,.72) 10px 11px,transparent 11px 22px);pointer-events:none}
+  .map-section::after{content:"00  10  20  30  40";top:62px;left:30px}
+  .content-section::before{display:none}
+}
