@@ -30,5 +30,6 @@ test("renders the portfolio navigation and main sections", async () => {
   const html = await (await render()).text();
   for (const anchor of ["map", "skills", "projects", "blog", "contact"]) assert.match(html, new RegExp(`id=["']${anchor}["']`));
   for (const label of ["Projects", "Blog", "LinkedIn", "Résumé"]) assert.match(html, new RegExp(label));
+  assert.match(html, /https:\/\/www\.linkedin\.com\/in\/marvin-jbb/);
   assert.match(html, /marvin-portrait\.jpg/);
 });

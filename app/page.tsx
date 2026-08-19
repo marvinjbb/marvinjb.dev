@@ -23,7 +23,7 @@ export default function Home() {
   return <main id="top">
     <header className="topbar">
       <a className="identity" href="#top"><img src="/marvin-portrait.jpg" alt="Marvin" /><span>marvinjb.dev</span></a>
-      <nav className="topnav" aria-label="Primary navigation"><a href="#projects">Projects</a><a href="#blog">Blog</a><a href="#linkedin">LinkedIn</a><a href="#resume">Résumé</a><a className="hire-link" href="mailto:jbmarvin21@gmail.com">Hire Marvin</a></nav>
+      <nav className="topnav" aria-label="Primary navigation"><a href="#projects">Projects</a><a href="#blog">Blog</a><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noreferrer">LinkedIn</a><a href="#resume">Résumé</a><a className="hire-link" href="mailto:jbmarvin21@gmail.com">Hire Marvin</a></nav>
       <MobileNav />
     </header>
 
@@ -51,7 +51,7 @@ export default function Home() {
       <section className="content-section" id="blog"><p className="overline">03 · NOTES + BLOG</p><h2>How do I think?</h2><p className="section-intro">The blog will organize practical lessons from building AI systems into useful trails—not disconnected posts.</p><div className="card-list">{posts.map(([label,title,description]) => <article className="info-card post" key={title}><div className="card-icon">POST</div><div><p>{label}</p><h3>{title}</h3><span>{description}</span></div><i>→</i></article>)}</div></section>
 
       <section className="contact-section" id="contact"><p className="overline">04 · CONTACT</p><h2>Let&apos;s build something useful.</h2><p>Have an AI problem, a role, or an idea worth testing? Send Marvin a note.</p><a href="mailto:jbmarvin21@gmail.com">jbmarvin21@gmail.com →</a></section>
-      <footer><div><strong>marvinjb.dev</strong><span>AI engineering, projects, and field notes.</span></div><div id="linkedin"><a href="#linkedin">LinkedIn placeholder</a><a href="#resume">Résumé placeholder</a><a href="mailto:jbmarvin21@gmail.com">Hire Marvin</a></div><span>© 2026 Marvin</span></footer>
+      <footer><div><strong>marvinjb.dev</strong><span>AI engineering, projects, and field notes.</span></div><div id="linkedin"><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noreferrer">LinkedIn</a><a href="#resume">Résumé placeholder</a><a href="mailto:jbmarvin21@gmail.com">Hire Marvin</a></div><span>© 2026 Marvin</span></footer>
     </div>
   </main>;
 }
