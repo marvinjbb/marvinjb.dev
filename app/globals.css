@@ -37,3 +37,14 @@
   .map-section::after{top:67px;left:112px}
 }
 @media(max-width:700px){.map-section h1,.content-section h2,.map-section .lead,.content-section .section-intro{box-shadow:0 0 14px 10px rgba(248,248,246,.92)}}
+
+/* Final drafting-frame alignment from the supplied references. */
+.page-content{background-image:radial-gradient(circle,rgba(52,66,63,.21) .7px,transparent .9px),radial-gradient(circle,rgba(52,66,63,.13) .55px,transparent .75px);background-size:88px 88px,6px 88px;background-position:0 0,0 0}
+@media(min-width:701px){
+  .sidebar::before{display:none}
+  .page-content::before{left:10px;top:0;width:25px;height:390px;border:0;background-image:linear-gradient(90deg,transparent 12px,#65716f 12px 13px,transparent 13px),repeating-linear-gradient(135deg,transparent 0 5px,var(--lime) 5px 7px,transparent 7px 12px);background-position:0 0,0 62px;background-size:25px 390px,25px 280px;background-repeat:no-repeat;pointer-events:none}
+  .sidebar::after{display:block;right:-28px;top:24px;width:12px;height:12px}
+  .map-section::before{left:23px;right:28px;top:0;height:25px;border-top:1px solid #65716f;background-image:repeating-linear-gradient(90deg,transparent 0 21px,rgba(40,54,52,.64) 21px 22px),repeating-linear-gradient(90deg,transparent 0 87px,rgba(40,54,52,.94) 87px 89px);background-size:100% 10px,100% 18px;background-position:left top,left top;background-repeat:no-repeat}
+  .map-section::after{top:28px;left:45px}
+}
+@media(max-width:700px){.page-content{background-size:64px 64px,5px 64px}}
