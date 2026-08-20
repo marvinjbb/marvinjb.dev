@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-async function render() {
+async function render(path = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
-  return worker.fetch(new Request("http://localhost/", { headers: { accept: "text/html" } }), { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } }, { waitUntil() {}, passThroughOnException() {} });
+  return worker.fetch(new Request(`http://localhost${path}`, { headers: { accept: "text/html" } }), { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } }, { waitUntil() {}, passThroughOnException() {} });
 }
 
 test("server-renders the Marvin portfolio map", async () => {
@@ -32,4 +32,21 @@ test("renders the portfolio navigation and main sections", async () => {
   for (const label of ["Projects", "Blog", "LinkedIn", "Résumé"]) assert.match(html, new RegExp(label));
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/marvin-jbb/);
   assert.match(html, /marvin-portrait\.jpg/);
+});
+
+test("server-renders the extraction demo route", async () => {
+  const response = await render("/demo/extraction");
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+  const html = await response.text();
+  assert.match(html, /<title>Document Extraction Agent Demo — Marvin<\/title>/i);
+  assert.match(html, /Turn an invoice into structured data\./);
+  assert.match(html, /Drag and drop your invoice here\./);
+  assert.match(html, /Browse files/);
+  assert.match(html, /Extract invoice/);
+  assert.match(html, /Table/);
+  assert.match(html, /JSON/);
+  assert.match(html, /Mocked locally for Phase 2/);
+  assert.match(html, /5 MiB/);
+  assert.doesNotMatch(html, /OPENAI_API_KEY|api\.openai\.com/i);
 });

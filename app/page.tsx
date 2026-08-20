@@ -1,4 +1,4 @@
-import { MobileNav } from "./MobileNav";
+import { SiteHeader } from "./SiteHeader";
 
 const skills = [
   ["CORE", "Python + TypeScript", "The languages I use to build AI services, interfaces, and production workflows."],
@@ -21,11 +21,7 @@ const posts = [
 
 export default function Home() {
   return <main id="top">
-    <header className="topbar">
-      <a className="identity" href="#top"><img src="/marvin-portrait.jpg" alt="Marvin" /><span>marvinjb.dev</span></a>
-      <nav className="topnav" aria-label="Primary navigation"><a href="#projects">Projects</a><a href="#blog">Blog</a><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noreferrer">LinkedIn</a><a href="#resume">Résumé</a><a className="hire-link" href="mailto:jbmarvin21@gmail.com">Hire Marvin</a></nav>
-      <MobileNav />
-    </header>
+    <SiteHeader />
 
     <aside className="sidebar" aria-label="Explore">
       <div className="side-group"><p>EXPLORE</p><a href="#map"><span>⌘</span> Map</a><a href="#skills"><span>◆</span> Skills</a><a href="#projects"><span>↗</span> Projects</a></div>

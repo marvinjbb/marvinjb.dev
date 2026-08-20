@@ -6,16 +6,17 @@ Status labels: `NOT STARTED`, `IN PROGRESS`, `COMPLETE`, `BLOCKED`.
 
 ## Current Focus
 
-**Phase 0 — Shared architecture and project foundation**  
-**Status:** `IN PROGRESS`
+**Phase 2 — Extraction Agent demo UI**
 
-The current work is limited to understanding the existing portfolio, defining system boundaries, documenting the target architecture, planning repositories, and agreeing on the smallest useful Document Extraction Agent MVP. Agent implementation has not started.
+**Status:** `COMPLETE`
+
+The portfolio-native `/demo/extraction` interface is implemented and verified with mocked local behavior. It supports the full UI lifecycle without making API requests. Phase 3 remains not started pending review.
 
 ---
 
 ## Phase 0 — Shared architecture and project foundation
 
-**Status:** `IN PROGRESS`
+**Status:** `COMPLETE`
 
 **Goal:** Establish a shared, understandable foundation before writing agent code.
 
@@ -32,11 +33,13 @@ The current work is limited to understanding the existing portfolio, defining sy
 
 **Completion criteria:** Architecture and roadmap are reviewed; repository boundaries and responsibilities are agreed; the smallest useful Extraction Agent MVP and folder structure are approved; no unresolved foundation decision blocks Phase 1.
 
+**Completion evidence:** The platform architecture, repository boundaries, roadmap, and ADRs were reviewed, committed, and pushed before agent implementation began.
+
 ---
 
 ## Phase 1 — Document Extraction Agent MVP
 
-**Status:** `NOT STARTED`
+**Status:** `COMPLETE`
 
 **Goal:** Build the smallest locally working backend that accepts a supported document and returns validated structured extraction data.
 
@@ -51,11 +54,13 @@ The current work is limited to understanding the existing portfolio, defining sy
 
 **Completion criteria:** A supported local document can be submitted to the API and produces a schema-valid result; invalid inputs fail clearly; core behavior is tested and documented.
 
+**Completion evidence:** The backend MVP was completed and verified in the separate `extraction-agent` repository. It accepts one text-based invoice PDF, extracts embedded text, produces OpenAI Structured Outputs, validates them with Pydantic, and returns structured JSON with deterministic tests and documented failure behavior.
+
 ---
 
 ## Phase 2 — Extraction Agent demo UI
 
-**Status:** `NOT STARTED`
+**Status:** `COMPLETE`
 
 **Goal:** Build the portfolio-facing React experience for the extraction demo.
 
@@ -69,6 +74,8 @@ The current work is limited to understanding the existing portfolio, defining sy
 **What I should understand before considering the phase complete:** What belongs in the frontend, how UI state represents the request lifecycle, and why secrets and extraction logic stay on the backend.
 
 **Completion criteria:** The demo page is responsive and usable with representative mocked results and handles idle, loading, success, and error states.
+
+**Completion evidence:** `/demo/extraction` reuses the existing portfolio header, sidebar, typography, tokens, spacing, borders, grid, controls, and responsive breakpoints. It supports drag-and-drop and browse selection, PDF/size validation, selected-file controls, mocked extraction progress, recoverable errors, Table/JSON results, and reset. Lint has no errors, the production build succeeds, and route-rendering tests pass.
 
 ---
 
