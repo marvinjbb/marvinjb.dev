@@ -85,15 +85,13 @@ export default function ExtractionDemoPage() {
             Pydantic invoice schema before results reach the browser.
           </p>
           <div className="card-list">
-            <article className="info-card project">
+            <article className="info-card project static-summary">
               <div className="card-icon">API</div>
               <div><p>DELIVERY</p><h3>FastAPI · Docker · Nginx · VPS</h3><span>A separately deployable backend keeps provider credentials and document processing outside the portfolio frontend.</span></div>
-              <i>→</i>
             </article>
-            <article className="info-card project">
+            <article className="info-card project static-summary">
               <div className="card-icon">AI</div>
               <div><p>VALIDATED OUTPUT</p><h3>OpenAI · vision routing · Pydantic</h3><span>Every supported input follows the appropriate reading path and ends at one application-owned structured invoice contract.</span></div>
-              <i>→</i>
             </article>
           </div>
         </section>
