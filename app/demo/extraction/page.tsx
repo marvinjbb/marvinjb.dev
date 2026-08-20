@@ -52,14 +52,14 @@ export default function ExtractionDemoPage() {
           <h1>Turn an invoice into structured data.</h1>
           <p className="lead">
             Upload one text-based PDF and inspect the invoice fields an extraction
-            agent would return. This Phase 2 interface uses a local mocked result;
-            backend integration comes next.
+            agent returns. The browser sends the PDF to your locally configured
+            FastAPI service and renders its validated response.
           </p>
           <nav className="question-map demo-facts" aria-label="Demo scope">
             <div><span>INPUT</span><strong>Invoice PDF</strong><i>01</i></div>
             <div><span>LIMIT</span><strong>5 MiB</strong><i>02</i></div>
             <div><span>OUTPUT</span><strong>Table + JSON</strong><i>03</i></div>
-            <div><span>MODE</span><strong>Local mock</strong><i>04</i></div>
+            <div><span>MODE</span><strong>Local API</strong><i>04</i></div>
           </nav>
         </section>
 
@@ -68,7 +68,7 @@ export default function ExtractionDemoPage() {
           <h2>Choose an invoice.</h2>
           <p className="section-intro">
             Use a PDF with selectable text. Your file stays in this browser during
-            this mocked UI phase and is not sent to a backend.
+            local request and is not stored by the frontend.
           </p>
           <ExtractionDemo />
         </section>

@@ -9,9 +9,11 @@ This document describes the platform boundary and the target production architec
 - `marvinjb.dev` is the existing portfolio website.
 - The portfolio source is maintained in GitHub.
 - The portfolio is deployed from GitHub to Hostinger.
-- `/demo/extraction` now exists as a responsive React demo interface with local mocked states for PDF selection, extraction progress, errors, and structured invoice results.
+- `/demo/extraction` is a responsive React demo connected to the local `extraction-agent` FastAPI service through an environment-configured API base URL.
 
-The Extraction Agent backend MVP is complete in the separate `extraction-agent` repository, but the portfolio demo is not connected to it yet. The current demo makes no API request and contains no provider credentials, document parsing, or LLM logic. Local frontend-to-backend integration remains Phase 3.
+The Extraction Agent backend MVP is complete in the separate `extraction-agent` repository. In local development, the demo sends a multipart `file` upload to `POST /extractions/invoice`, then displays the validated invoice in Table or JSON form. Provider credentials, PDF parsing, schema validation, and LLM logic remain exclusively in the backend repository.
+
+Local request failures are mapped into configuration, validation, backend/provider, and network categories so the UI can preserve the selected file and offer retry or reset. The public production API is not connected yet.
 
 The production agent services and their infrastructure are target-state components. This document does not assume that `api.marvinjb.dev`, the Ubuntu VPS, Nginx, Docker, databases, or any agent backend has already been provisioned or deployed.
 

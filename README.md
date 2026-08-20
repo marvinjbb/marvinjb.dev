@@ -16,6 +16,8 @@ npm run dev
 npm run build
 ```
 
+For the local Extraction Agent demo, copy `.env.example` to `.env.local` and keep `NEXT_PUBLIC_EXTRACTION_API_BASE_URL=http://127.0.0.1:8000`. Start the separate `extraction-agent` FastAPI service before opening `/demo/extraction`. This frontend variable is a public service URL; `OPENAI_API_KEY` belongs only in the backend repository and must never be added here.
+
 This starter does not use `wrangler.jsonc`.
 
 ## Included Shape

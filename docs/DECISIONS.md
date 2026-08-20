@@ -246,3 +246,22 @@ Do not adopt a monorepo by default.
 **Tradeoffs:** Changes require disciplined commits, secret exclusion, and synchronization with deployment workflows. GitHub availability and repository access become dependencies of the release process.
 
 **When we should reconsider it:** Reconsider only if the organization adopts a different authoritative version-control platform or a formally managed artifact source, with migration and traceability preserved.
+
+---
+
+## ADR-014 — Configure the demo API boundary by environment
+
+**Decision ID:** ADR-014
+
+**Status:** ACCEPTED
+**Classification:** STANDARD
+
+**Context:** The same browser client must call a local FastAPI origin during development and, later, the production API without embedding either deployment choice or any backend secret in application logic.
+
+**Decision:** Read the Extraction Agent base URL from `NEXT_PUBLIC_EXTRACTION_API_BASE_URL`, keep HTTP requests in a small frontend API module, and configure the backend with an explicit `FRONTEND_ORIGINS` allowlist.
+
+**Why:** Environment-specific public routing stays separate from code, request/error behavior has one owner, and narrow CORS grants only the browser origins that need access. `OPENAI_API_KEY` remains backend-only.
+
+**Tradeoffs:** Each environment must supply a correct public base URL and matching CORS origin. Misconfiguration appears as a browser configuration or network failure and must be diagnosed across two processes.
+
+**When we should reconsider it:** Reconsider if the frontend gains a same-origin server proxy, the API contract needs generated clients, or production hosting requires runtime configuration rather than the current public build-time variable.

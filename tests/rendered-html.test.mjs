@@ -46,7 +46,7 @@ test("server-renders the extraction demo route", async () => {
   assert.match(html, /Extract invoice/);
   assert.match(html, /Table/);
   assert.match(html, /JSON/);
-  assert.match(html, /Mocked locally for Phase 2/);
+  assert.match(html, /Uses your locally configured Extraction Agent API/);
   assert.match(html, /5 MiB/);
   assert.doesNotMatch(html, /OPENAI_API_KEY|api\.openai\.com/i);
 });

@@ -2,33 +2,36 @@
 
 import { DragEvent, useRef, useState } from "react";
 
+import {
+  extractInvoice as extractInvoiceRequest,
+  ExtractionApiError,
+  InvoiceResult,
+} from "./extractionApi";
+
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 type DemoState = "idle" | "ready" | "extracting" | "success" | "error";
 type View = "table" | "json";
 
-const mockInvoice = {
-  vendor: "Northstar Office Supply",
-  invoice_number: "INV-2026-0148",
-  invoice_date: "2026-08-12",
-  currency: "USD",
-  subtotal: "240.00",
-  tax: "19.20",
-  total: "259.20",
-  line_items: [
-    {
-      description: "Ergonomic keyboard",
-      quantity: "2",
-      unit_price: "120.00",
-      amount: "240.00",
-    },
-  ],
-  warnings: [],
-};
-
 function formatFileSize(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
   return `${(bytes / (1024 * 1024)).toFixed(2)} MiB`;
+}
+
+function displayValue(value: string | null) {
+  return value ?? "Not found";
+}
+
+function displayMoney(value: string | null, currency: string | null) {
+  if (value === null) return "Not found";
+  if (!currency) return value;
+
+  const amount = Number(value);
+  if (!Number.isFinite(amount)) return `${currency} ${value}`;
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+  }).format(amount);
 }
 
 export function ExtractionDemo() {
@@ -36,11 +39,12 @@ export function ExtractionDemo() {
   const [file, setFile] = useState<File | null>(null);
   const [state, setState] = useState<DemoState>("idle");
   const [error, setError] = useState("");
+  const [result, setResult] = useState<InvoiceResult | null>(null);
   const [view, setView] = useState<View>("table");
   const [dragging, setDragging] = useState(false);
-
   function selectFile(nextFile?: File) {
     setError("");
+    setResult(null);
     setView("table");
 
     if (!nextFile) return;
@@ -82,23 +86,36 @@ export function ExtractionDemo() {
     if (!file) return;
     setError("");
     setState("extracting");
-    await new Promise((resolve) => window.setTimeout(resolve, 1100));
-    setState("success");
+    try {
+      const invoice = await extractInvoiceRequest(file);
+      setResult(invoice);
+      setState("success");
+    } catch (caught) {
+      setResult(null);
+      setState("error");
+      setError(
+        caught instanceof ExtractionApiError
+          ? caught.message
+          : "The invoice could not be extracted. Please try again.",
+      );
+    }
   }
 
   function reset() {
     setFile(null);
     setError("");
+    setResult(null);
     setState("idle");
     setView("table");
     if (inputRef.current) inputRef.current.value = "";
   }
 
-  const showResults = state === "success";
+  const showResults = state === "success" && result !== null;
 
   return (
     <div className="extraction-demo">
       <input
+        id="invoice-file"
         ref={inputRef}
         className="visually-hidden"
         type="file"
@@ -124,15 +141,11 @@ export function ExtractionDemo() {
         <div className="upload-mark" aria-hidden="true">PDF</div>
         <div>
           <h3>Drag and drop your invoice here.</h3>
-          <p>Text-based PDF only. The file is not uploaded during this UI phase.</p>
+          <p>Text-based PDF only. The file is sent only to your local FastAPI service.</p>
         </div>
-        <button
-          className="secondary-button"
-          type="button"
-          onClick={() => inputRef.current?.click()}
-        >
+        <label className="secondary-button" htmlFor="invoice-file">
           Browse files
-        </button>
+        </label>
       </div>
 
       {file && (
@@ -152,11 +165,17 @@ export function ExtractionDemo() {
 
       {state === "error" && (
         <div className="demo-error" role="alert">
-          <span>UPLOAD ERROR</span>
+          <span>{file ? "EXTRACTION ERROR" : "UPLOAD ERROR"}</span>
           <strong>{error}</strong>
-          <button type="button" onClick={() => inputRef.current?.click()}>
-            Choose another file
-          </button>
+          {file ? (
+            <button type="button" onClick={extractInvoice}>
+              Retry extraction
+            </button>
+          ) : (
+            <button type="button" onClick={() => inputRef.current?.click()}>
+              Choose another file
+            </button>
+          )}
         </div>
       )}
 
@@ -171,8 +190,8 @@ export function ExtractionDemo() {
         </button>
         <p aria-live="polite">
           {state === "extracting"
-            ? "Reading the document and validating structured fields."
-            : "Mocked locally for Phase 2 — no API request will be made."}
+            ? "Uploading to FastAPI and extracting structured fields."
+            : "Uses your locally configured Extraction Agent API."}
         </p>
       </div>
 
@@ -216,37 +235,49 @@ export function ExtractionDemo() {
           {view === "table" ? (
             <div role="tabpanel" className="table-view">
               <dl className="invoice-fields">
-                <div><dt>Vendor</dt><dd>{mockInvoice.vendor}</dd></div>
-                <div><dt>Invoice number</dt><dd>{mockInvoice.invoice_number}</dd></div>
-                <div><dt>Invoice date</dt><dd>{mockInvoice.invoice_date}</dd></div>
-                <div><dt>Currency</dt><dd>{mockInvoice.currency}</dd></div>
-                <div><dt>Subtotal</dt><dd>${mockInvoice.subtotal}</dd></div>
-                <div><dt>Tax</dt><dd>${mockInvoice.tax}</dd></div>
-                <div className="total-field"><dt>Total</dt><dd>${mockInvoice.total}</dd></div>
+                <div><dt>Vendor</dt><dd>{displayValue(result.vendor)}</dd></div>
+                <div><dt>Invoice number</dt><dd>{displayValue(result.invoice_number)}</dd></div>
+                <div><dt>Invoice date</dt><dd>{displayValue(result.invoice_date)}</dd></div>
+                <div><dt>Currency</dt><dd>{displayValue(result.currency)}</dd></div>
+                <div><dt>Subtotal</dt><dd>{displayMoney(result.subtotal, result.currency)}</dd></div>
+                <div><dt>Tax</dt><dd>{displayMoney(result.tax, result.currency)}</dd></div>
+                <div className="total-field"><dt>Total</dt><dd>{displayMoney(result.total, result.currency)}</dd></div>
               </dl>
               <div className="line-items">
                 <h4>Line items</h4>
                 <div className="table-scroll">
                   <table>
                     <thead><tr><th>Description</th><th>Quantity</th><th>Unit price</th><th>Amount</th></tr></thead>
-                    <tbody>{mockInvoice.line_items.map((item) => (
+                    <tbody>{result.line_items.length > 0 ? result.line_items.map((item) => (
                       <tr key={item.description}>
-                        <td>{item.description}</td><td>{item.quantity}</td>
-                        <td>${item.unit_price}</td><td>${item.amount}</td>
+                        <td>{item.description}</td><td>{displayValue(item.quantity)}</td>
+                        <td>{displayMoney(item.unit_price, result.currency)}</td>
+                        <td>{displayMoney(item.amount, result.currency)}</td>
                       </tr>
-                    ))}</tbody>
+                    )) : (
+                      <tr><td colSpan={4}>No line items were extracted.</td></tr>
+                    )}</tbody>
                   </table>
                 </div>
               </div>
             </div>
           ) : (
             <pre role="tabpanel" className="json-view">
-              <code>{JSON.stringify(mockInvoice, null, 2)}</code>
+              <code>{JSON.stringify(result, null, 2)}</code>
             </pre>
           )}
 
+          {result.warnings.length > 0 && (
+            <div className="result-warnings" role="note">
+              <strong>Extraction warnings</strong>
+              <ul>{result.warnings.map((warning) => (
+                <li key={warning}>{warning}</li>
+              ))}</ul>
+            </div>
+          )}
+
           <div className="results-footer">
-            <p>Mock response · Schema-valid example data</p>
+            <p>FastAPI response · Pydantic-validated data</p>
             <button className="secondary-button" type="button" onClick={reset}>
               Upload another invoice
             </button>

@@ -6,11 +6,11 @@ Status labels: `NOT STARTED`, `IN PROGRESS`, `COMPLETE`, `BLOCKED`.
 
 ## Current Focus
 
-**Phase 2 — Extraction Agent demo UI**
+**Phase 3 — Frontend ↔ FastAPI local integration**
 
 **Status:** `COMPLETE`
 
-The portfolio-native `/demo/extraction` interface is implemented and verified with mocked local behavior. It supports the full UI lifecycle without making API requests. Phase 3 remains not started pending review.
+The portfolio-native `/demo/extraction` interface now submits invoice PDFs to the local Extraction Agent API and renders its Pydantic-validated response. The local integration is implemented and verified; production deployment remains out of scope.
 
 ---
 
@@ -81,7 +81,7 @@ The portfolio-native `/demo/extraction` interface is implemented and verified wi
 
 ## Phase 3 — Frontend ↔ FastAPI local integration
 
-**Status:** `NOT STARTED`
+**Status:** `COMPLETE`
 
 **Goal:** Connect the local extraction demo to the local Extraction Agent API.
 
@@ -95,6 +95,8 @@ The portfolio-native `/demo/extraction` interface is implemented and verified wi
 **What I should understand before considering the phase complete:** HTTPS/API boundaries, multipart requests, CORS, environment-specific configuration, response validation, and end-to-end error flow.
 
 **Completion criteria:** A user can upload a supported document in the local React demo and see the real backend result; expected failures are visible and understandable.
+
+**Completion evidence:** The frontend uses an environment-configured API client and multipart `file` upload; the backend permits only the explicit local development origins. Automated frontend and backend checks pass, and a controlled browser test returned the expected invoice through React → FastAPI → pypdf → OpenAI → Pydantic → React in both Table and JSON views.
 
 ---
 
