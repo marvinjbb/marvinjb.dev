@@ -6,11 +6,11 @@ Status labels: `NOT STARTED`, `IN PROGRESS`, `COMPLETE`, `BLOCKED`.
 
 ## Current Focus
 
-**Phase 3.6 — Image and scanned invoice support**
+**Phase 9 — Production basics**
 
-**Status:** `COMPLETE`
+**Status:** `IN PROGRESS`
 
-The portfolio-native `/demo/extraction` interface accepts PDF, scanned PDF, JPG/JPEG, and PNG invoices, renders validated results, and supports independent grounded questions over that in-memory result. Production deployment remains out of scope.
+The Extraction Agent is live at `marvinjb.dev/demo/extraction` through `https://api.marvinjb.dev`. Final portfolio presentation and proportionate production hardening are now the focus.
 
 ---
 
@@ -134,7 +134,7 @@ The portfolio-native `/demo/extraction` interface accepts PDF, scanned PDF, JPG/
 
 ## Phase 4 — Dockerize Extraction Agent
 
-**Status:** `NOT STARTED`
+**Status:** `COMPLETE`
 
 **Goal:** Package the Extraction Agent as a reproducible container for deployment.
 
@@ -149,11 +149,13 @@ The portfolio-native `/demo/extraction` interface accepts PDF, scanned PDF, JPG/
 
 **Completion criteria:** The image builds cleanly; the container starts with documented commands; its API behaves like the non-containerized service; no secrets are embedded.
 
+**Completion evidence:** The backend has a production-oriented Dockerfile and `.dockerignore`; its image builds and runs the unchanged API with environment-supplied secrets and a verified health check.
+
 ---
 
 ## Phase 5 — VPS setup
 
-**Status:** `NOT STARTED`
+**Status:** `COMPLETE`
 
 **Goal:** Prepare one Ubuntu VPS to host all three isolated agent services progressively.
 
@@ -168,11 +170,13 @@ The portfolio-native `/demo/extraction` interface accepts PDF, scanned PDF, JPG/
 
 **Completion criteria:** The VPS is reachable through secured administrative access, exposes only required ports, can run a test container, and has a documented reproducible baseline.
 
+**Completion evidence:** The Ubuntu VPS foundation is active and supports the deployed Extraction Agent container behind the public API route.
+
 ---
 
 ## Phase 6 — Deploy Extraction Agent
 
-**Status:** `NOT STARTED`
+**Status:** `COMPLETE`
 
 **Goal:** Run the Extraction Agent reliably as the first isolated service on the VPS.
 
@@ -187,11 +191,13 @@ The portfolio-native `/demo/extraction` interface accepts PDF, scanned PDF, JPG/
 
 **Completion criteria:** The versioned Extraction Agent container runs after restart, passes its internal health check, and can process a representative request from the VPS.
 
+**Completion evidence:** The Extraction Agent is running as the first isolated VPS service and serves production extraction and invoice-query requests.
+
 ---
 
 ## Phase 7 — Configure api.marvinjb.dev
 
-**Status:** `NOT STARTED`
+**Status:** `COMPLETE`
 
 **Goal:** Establish the shared public API hostname and route extraction traffic securely to its container.
 
@@ -206,11 +212,13 @@ The portfolio-native `/demo/extraction` interface accepts PDF, scanned PDF, JPG/
 
 **Completion criteria:** `https://api.marvinjb.dev/extraction/...` reaches the correct service over valid HTTPS; unrelated paths are not accidentally exposed; routing survives restart.
 
+**Completion evidence:** `https://api.marvinjb.dev` is the active shared backend entry point and its extraction path reaches the deployed service over HTTPS.
+
 ---
 
 ## Phase 8 — Connect portfolio live demo to production API
 
-**Status:** `NOT STARTED`
+**Status:** `COMPLETE`
 
 **Goal:** Make the public extraction demo use the production Extraction Agent API.
 
@@ -225,11 +233,13 @@ The portfolio-native `/demo/extraction` interface accepts PDF, scanned PDF, JPG/
 
 **Completion criteria:** A recruiter can use `marvinjb.dev/demo/extraction` successfully against the production API, with clear loading and failure behavior and no client-side secrets.
 
+**Completion evidence:** The public demo at `marvinjb.dev/demo/extraction` uses the environment-configured production API, preserves backend-only provider credentials, and supports the complete extraction and grounded-query experience.
+
 ---
 
 ## Phase 9 — Production basics: logging, health checks, error handling, security, rate limiting where appropriate
 
-**Status:** `NOT STARTED`
+**Status:** `IN PROGRESS`
 
 **Goal:** Make the public Extraction Agent demo safe and diagnosable enough for portfolio traffic.
 

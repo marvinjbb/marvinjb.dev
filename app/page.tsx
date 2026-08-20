@@ -9,9 +9,27 @@ const skills = [
   ["DELIVERY", "Product engineering", "Turning uncertain ideas into focused, testable software people can actually use."],
 ];
 const projects = [
-  ["PROJECT · CASE STUDY COMING", "Knowledge Retrieval Engine", "A source-aware research system built around hybrid retrieval, grounded synthesis, and measurable relevance.", "RAG · PYTHON · EVALS"],
-  ["PROJECT · CASE STUDY COMING", "Operations Agent", "A tool-using agent that turns messy requests into visible workflows with approvals at the right moments.", "AGENTS · MCP · TOOL CALLING"],
-  ["PROJECT · CASE STUDY COMING", "Unified Model Gateway", "A resilient model interface with routing, usage controls, structured telemetry, and provider fallbacks.", "TYPESCRIPT · APIS · OBSERVABILITY"],
+  {
+    label: "LIVE PROJECT · EXTRACTION AGENT",
+    title: "Extraction Agent",
+    description: "Turn invoices into answers. Upload a PDF, scanned PDF, JPG, or PNG invoice. AI extracts structured invoice data, lets users review it in Table/JSON form, and supports grounded questions about the invoice.",
+    tags: "DOCUMENT AI · STRUCTURED OUTPUTS · VISION",
+    live: true,
+  },
+  {
+    label: "PROJECT · CASE STUDY COMING",
+    title: "Knowledge Retrieval Engine",
+    description: "A source-aware research system built around hybrid retrieval, grounded synthesis, and measurable relevance.",
+    tags: "RAG · PYTHON · EVALS",
+    live: false,
+  },
+  {
+    label: "PROJECT · CASE STUDY COMING",
+    title: "Operations Agent",
+    description: "A tool-using agent that turns messy requests into visible workflows with approvals at the right moments.",
+    tags: "AGENTS · MCP · TOOL CALLING",
+    live: false,
+  },
 ];
 const posts = [
   ["FIELD NOTE · PLANNED", "Retrieval quality starts before the vector database", "Why content boundaries and evaluation questions shape everything downstream."],
@@ -42,7 +60,7 @@ export default function Home() {
 
       <section className="content-section" id="skills"><p className="overline">01 · PROFILE + SKILLS</p><h2>Who am I?</h2><p className="section-intro">An AI engineer focused on turning ambitious ideas into useful systems—fundamentals first, frameworks second. These are the capabilities I take from idea to production.</p><div className="card-list">{skills.map(([label,title,description]) => <article className="info-card" key={title}><div className="card-icon">SKILL</div><div><p>{label}</p><h3>{title}</h3><span>{description}</span></div><i>→</i></article>)}</div><div className="inline-callout" id="resume"><div><strong>Want the formal version?</strong><span>Work history and experience will be added here.</span></div><a href="#resume">Résumé coming soon</a></div></section>
 
-      <section className="content-section" id="projects"><p className="overline">02 · SELECTED WORK</p><h2>What have I built?</h2><p className="section-intro">Real systems, clearly explained. Project links, screenshots, repositories, and verified results will replace these structured placeholders.</p><div className="card-list">{projects.map(([label,title,description,tags]) => <article className="info-card project" key={title}><div className="card-icon">DEMO</div><div><p>{label}</p><h3>{title}</h3><span>{description}</span><small>{tags}</small></div><i>→</i></article>)}</div><div className="feature-callout"><span>TRY THIS FIRST</span><strong>Your flagship project will live here.</strong><p>Visitors will be able to open the demo, read the case study, and inspect the code.</p><i>→</i></div></section>
+      <section className="content-section" id="projects"><p className="overline">02 · SELECTED WORK</p><h2>What have I built?</h2><p className="section-intro">Production-minded AI systems with live demos, clear engineering decisions, and code you can inspect.</p><div className="card-list">{projects.map((project) => <article className="info-card project" key={project.title}><div className="card-icon">{project.live ? "LIVE" : "DEMO"}</div><div><p>{project.label}</p><h3>{project.title}</h3><span>{project.description}</span><small>{project.tags}</small>{project.live && <div className="project-actions"><a className="primary-button" href="/demo/extraction">Try Live Demo</a><a className="secondary-button" href="/demo/extraction#project">View Project</a><a className="secondary-button" href="https://github.com/marvinjbb/extraction-agent" target="_blank" rel="noreferrer">View Backend Repository</a></div>}</div><i>→</i></article>)}</div><a className="feature-callout" href="/demo/extraction"><span>TRY THIS FIRST</span><strong>Turn invoices into answers.</strong><p>Upload an invoice, review structured data, and ask grounded questions in plain English.</p><i>→</i></a></section>
 
       <section className="content-section" id="blog"><p className="overline">03 · NOTES + BLOG</p><h2>How do I think?</h2><p className="section-intro">The blog will organize practical lessons from building AI systems into useful trails—not disconnected posts.</p><div className="card-list">{posts.map(([label,title,description]) => <article className="info-card post" key={title}><div className="card-icon">POST</div><div><p>{label}</p><h3>{title}</h3><span>{description}</span></div><i>→</i></article>)}</div></section>
 

@@ -9,11 +9,12 @@ This document describes the platform boundary and the target production architec
 - `marvinjb.dev` is the existing portfolio website.
 - The portfolio source is maintained in GitHub.
 - The portfolio is deployed from GitHub to Hostinger.
-- `/demo/extraction` is a responsive React demo connected to the local `extraction-agent` FastAPI service through an environment-configured API base URL.
+- [`marvinjb.dev/demo/extraction`](https://marvinjb.dev/demo/extraction) is the live responsive React interface for the Extraction Agent.
+- [`https://api.marvinjb.dev`](https://api.marvinjb.dev) is the deployed shared API entry point. Extraction traffic is routed to the containerized `extraction-agent` FastAPI service on the VPS.
 
-The Extraction Agent backend MVP is complete in the separate `extraction-agent` repository. In local development, the demo sends a multipart `file` upload to `POST /extractions/invoice`, then displays the validated invoice in Table or JSON form. Provider credentials, PDF parsing, schema validation, and LLM logic remain exclusively in the backend repository.
+The Extraction Agent backend is maintained in the separate public `extraction-agent` repository. The demo sends a multipart `file` upload to `POST /extractions/invoice`, then displays the validated invoice in Table or JSON form. Provider credentials, PDF parsing, schema validation, vision routing, and LLM logic remain exclusively in the backend repository.
 
-Local request failures are mapped into configuration, validation, backend/provider, and network categories so the UI can preserve the selected file and offer retry or reset. The public production API is not connected yet.
+Request failures are mapped into configuration, validation, backend/provider, and network categories so the UI can preserve the selected file and offer retry or reset. The frontend selects its local or production API base URL through `NEXT_PUBLIC_EXTRACTION_API_BASE_URL`; no provider secret enters the browser bundle.
 
 The local demo also supports one-shot questions about a successful result:
 
@@ -29,9 +30,9 @@ Concise answer
 
 Each question is independent. The frontend does not resend the PDF, previous questions, prompts, provider settings, or credentials. RAG is intentionally absent because the complete context is already small, structured, validated, and available in memory.
 
-Phase 3.6 broadens the same upload boundary to PDF, scanned PDF, JPG/JPEG, and PNG invoices. The frontend still sends one multipart `file` and receives the same `Invoice` JSON. Media routing is entirely backend-owned: readable PDFs use embedded text, while scanned PDFs and images use a bounded vision path. The Table, JSON, and Ask This Invoice states therefore do not branch by source format.
+The same upload boundary supports PDF, scanned PDF, JPG/JPEG, and PNG invoices. The frontend sends one multipart `file` and receives the same `Invoice` JSON. Media routing is entirely backend-owned: readable PDFs use embedded text, while scanned PDFs and images use a bounded vision path. The Table, JSON, and Ask This Invoice states therefore do not branch by source format.
 
-The production agent services and their infrastructure are target-state components. This document does not assume that `api.marvinjb.dev`, the Ubuntu VPS, Nginx, Docker, databases, or any agent backend has already been provisioned or deployed.
+The Extraction Agent path is deployed through Hostinger, `api.marvinjb.dev`, Nginx, Docker, and FastAPI. Research Agent and Voice Agent services remain target-state components. No PostgreSQL, Redis, vector database, or persistent file storage is claimed or required for the current Extraction Agent.
 
 ## Target Architecture
 
@@ -41,7 +42,7 @@ The existing portfolio remains the public presentation layer. Its React frontend
 - `marvinjb.dev/demo/research`
 - `marvinjb.dev/demo/voice`
 
-Each page will call the shared HTTPS API entry point, `api.marvinjb.dev`. DNS, with Cloudflare where configured, will direct that hostname to one Ubuntu VPS. Nginx will terminate/proxy HTTPS traffic and route each API path to the appropriate isolated Docker service:
+Each page uses the shared HTTPS API entry point, `api.marvinjb.dev`. The Extraction route is live; Research and Voice routes will be added progressively. DNS, with Cloudflare where configured, directs that hostname to one Ubuntu VPS. Nginx terminates/proxies HTTPS traffic and routes each available API path to its isolated Docker service:
 
 - `/extraction/*` -> Extraction Agent
 - `/research/*` -> Research Agent

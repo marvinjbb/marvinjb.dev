@@ -305,3 +305,23 @@ Do not adopt a monorepo by default.
 **Tradeoffs:** The frontend cannot explain which backend route was chosen, and every supported format shares the same 5 MiB client limit even though decoded-image and scanned-page limits differ server-side.
 
 **When we should reconsider it:** Reconsider if formats require materially different user controls, asynchronous processing, format-specific results, or distinct public limits that cannot be communicated clearly through one upload experience.
+
+---
+
+## ADR-017 — Present the Extraction Agent as a live portfolio project
+
+**Decision ID:** ADR-017
+
+**Status:** ACCEPTED
+
+**Classification:** CUSTOM
+
+**Context:** The Extraction Agent is deployed at `marvinjb.dev/demo/extraction` with its backend available through `https://api.marvinjb.dev`. Homepage placeholder language no longer reflects the project's real status or gives recruiters a direct path to the working system and its code.
+
+**Decision:** Feature the Extraction Agent in Selected Work as a finished live project with direct links to the demo, project overview, and public backend repository. Keep homepage language capability-led while retaining implementation details in the demo and project documentation.
+
+**Why:** Recruiters can understand the outcome quickly, verify it themselves, and inspect the engineering work without the homepage reading like an infrastructure diagram.
+
+**Tradeoffs:** Production availability now affects the first impression of the portfolio, and the project copy and links must stay synchronized with the deployed behavior.
+
+**When we should reconsider it:** Reconsider the prominence or CTA structure when additional live agents are ready, a dedicated case-study route is introduced, or the public deployment location changes.

@@ -1,8 +1,10 @@
-# vinext-starter
+# marvinjb.dev
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Marvin's AI engineering portfolio, built with React and [vinext](https://github.com/cloudflare/vinext). The live Extraction Agent turns PDF, scanned PDF, JPG, and PNG invoices into validated structured data and supports grounded questions about each result.
+
+- Live demo: [marvinjb.dev/demo/extraction](https://marvinjb.dev/demo/extraction)
+- Backend API entry point: [api.marvinjb.dev](https://api.marvinjb.dev)
+- Backend repository: [github.com/marvinjbb/extraction-agent](https://github.com/marvinjbb/extraction-agent)
 
 ## Prerequisites
 
@@ -16,7 +18,7 @@ npm run dev
 npm run build
 ```
 
-For the local Extraction Agent demo, copy `.env.example` to `.env.local` and keep `NEXT_PUBLIC_EXTRACTION_API_BASE_URL=http://127.0.0.1:8000`. Start the separate `extraction-agent` FastAPI service before opening `/demo/extraction`. This frontend variable is a public service URL; `OPENAI_API_KEY` belongs only in the backend repository and must never be added here.
+For local development, copy `.env.example` to `.env.local` and keep `NEXT_PUBLIC_EXTRACTION_API_BASE_URL=http://127.0.0.1:8000`. Start the separate `extraction-agent` FastAPI service before opening `/demo/extraction`. Production configures this public frontend variable for `https://api.marvinjb.dev/extraction`. `OPENAI_API_KEY` belongs only in the backend repository and must never be added here.
 
 After extraction, **Ask this invoice** sends only a natural-language question and the already-validated invoice JSON to `POST /extractions/invoice/query`. It does not resend the PDF or retain conversation history.
 

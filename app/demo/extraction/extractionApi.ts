@@ -97,7 +97,7 @@ function getApiBaseUrl(): string {
   );
   if (!baseUrl) {
     throw new ExtractionApiError(
-      "The local Extraction Agent API URL is not configured.",
+      "The Extraction Agent API URL is not configured.",
       "configuration",
     );
   }
@@ -136,7 +136,7 @@ export async function extractInvoice(file: File): Promise<InvoiceResult> {
     });
   } catch {
     throw new ExtractionApiError(
-      "Could not reach the local Extraction Agent. Confirm FastAPI is running.",
+      "Could not reach the Extraction Agent. Please try again.",
       "network",
     );
   }
@@ -179,7 +179,7 @@ export async function queryInvoice(
     });
   } catch {
     throw new ExtractionApiError(
-      "Could not reach the local Extraction Agent. Confirm FastAPI is running.",
+      "Could not reach the Extraction Agent. Please try again.",
       "network",
     );
   }
