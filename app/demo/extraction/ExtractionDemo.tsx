@@ -10,6 +10,12 @@ import {
 } from "./extractionApi";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const SUPPORTED_FILE_TYPES = new Set([
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+]);
+const SUPPORTED_EXTENSIONS = [".pdf", ".jpg", ".jpeg", ".png"];
 
 type DemoState = "idle" | "ready" | "extracting" | "success" | "error";
 type View = "table" | "json";
@@ -41,6 +47,15 @@ function displayMoney(value: string | null, currency: string | null) {
     style: "currency",
     currency,
   }).format(amount);
+}
+
+function fileKind(file: File) {
+  if (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")) {
+    return "PDF";
+  }
+  return file.type === "image/png" || file.name.toLowerCase().endsWith(".png")
+    ? "PNG"
+    : "JPG";
 }
 
 export function ExtractionDemo() {
@@ -75,24 +90,26 @@ export function ExtractionDemo() {
     if (nextFile.size === 0) {
       setFile(null);
       setState("error");
-      setError("That PDF is empty. Choose a file containing invoice text.");
+      setError("That invoice file is empty. Choose another file.");
       return;
     }
 
-    const isPdf =
-      nextFile.type === "application/pdf" ||
-      (nextFile.type === "" && nextFile.name.toLowerCase().endsWith(".pdf"));
-    if (!isPdf) {
+    const extension = SUPPORTED_EXTENSIONS.find((candidate) =>
+      nextFile.name.toLowerCase().endsWith(candidate),
+    );
+    const isSupported = SUPPORTED_FILE_TYPES.has(nextFile.type) ||
+      (nextFile.type === "" && extension !== undefined);
+    if (!isSupported) {
       setFile(null);
       setState("error");
-      setError("Only PDF files are supported in this demo.");
+      setError("Choose a PDF, JPG, JPEG, or PNG invoice.");
       return;
     }
 
     if (nextFile.size > MAX_FILE_SIZE) {
       setFile(null);
       setState("error");
-      setError("That PDF is larger than the 5 MiB demo limit.");
+      setError("That invoice is larger than the 5 MiB demo limit.");
       return;
     }
 
@@ -173,7 +190,7 @@ export function ExtractionDemo() {
         ref={inputRef}
         className="visually-hidden"
         type="file"
-        accept="application/pdf,.pdf"
+        accept="application/pdf,image/jpeg,image/png,.pdf,.jpg,.jpeg,.png"
         onChange={(event) => selectFile(event.target.files?.[0])}
       />
 
@@ -191,11 +208,11 @@ export function ExtractionDemo() {
         }}
         onDrop={handleDrop}
       >
-        <span className="upload-index">PDF / 5 MiB MAX</span>
-        <div className="upload-mark" aria-hidden="true">PDF</div>
+        <span className="upload-index">PDF · JPG · PNG / 5 MiB MAX</span>
+        <div className="upload-mark" aria-hidden="true">FILE</div>
         <div>
           <h3>Drag and drop your invoice here.</h3>
-          <p>Text-based PDF only. The file is sent only to your local FastAPI service.</p>
+          <p>PDF, scanned PDF, JPG, or PNG. One invoice at a time.</p>
         </div>
         <label className="secondary-button" htmlFor="invoice-file">
           Browse files
@@ -204,7 +221,7 @@ export function ExtractionDemo() {
 
       {file && (
         <div className="selected-file" aria-live="polite">
-          <div className="file-badge">PDF</div>
+          <div className="file-badge">{fileKind(file)}</div>
           <div>
             <span>SELECTED FILE</span>
             <strong>{file.name}</strong>
@@ -244,8 +261,8 @@ export function ExtractionDemo() {
         </button>
         <p aria-live="polite">
           {state === "extracting"
-            ? "Uploading to FastAPI and extracting structured fields."
-            : "Uses your locally configured Extraction Agent API."}
+            ? "AI is reading the invoice and organizing its details."
+            : "Upload → AI Extracts → Explore → Ask"}
         </p>
       </div>
 
@@ -339,8 +356,8 @@ export function ExtractionDemo() {
               <span>VALIDATED JSON ONLY</span>
             </div>
             <p className="invoice-query-intro">
-              Ask about the extracted fields. The PDF is not uploaded again, and each
-              question is answered independently from this validated invoice.
+              Ask about the extracted fields. The original file is not uploaded again,
+              and each question is answered independently from this invoice.
             </p>
             <div className="query-suggestions" aria-label="Example questions">
               {EXAMPLE_QUESTIONS.map((example) => (

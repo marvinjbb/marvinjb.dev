@@ -285,3 +285,23 @@ Do not adopt a monorepo by default.
 **Tradeoffs:** Follow-up questions cannot rely on conversational context, and accuracy still depends on the extracted invoice plus model adherence. The client resends the small invoice object for each question.
 
 **When we should reconsider it:** Reconsider if queries span multiple or very large documents, require citations to source regions, need durable conversation state, or exceed practical model context limits.
+
+---
+
+## ADR-016 — Keep one demo contract across text and image invoices
+
+**Decision ID:** ADR-016
+
+**Status:** ACCEPTED
+
+**Classification:** CUSTOM
+
+**Context:** The Extraction demo now supports text PDFs, scanned PDFs, JPG/JPEG, and PNG files. Media-specific extraction belongs to the backend, while recruiters need one coherent upload, result, and question experience.
+
+**Decision:** Keep the existing multipart `file` request and `Invoice` response contract for every supported format. Update only accepted-file validation and public copy in the portfolio; keep parsing, vision routing, provider access, and safety processing in `extraction-agent`.
+
+**Why:** One contract prevents format-specific frontend logic, preserves Table/JSON and Ask This Invoice behavior, and keeps the page visually native to the portfolio while explaining capability in nontechnical language.
+
+**Tradeoffs:** The frontend cannot explain which backend route was chosen, and every supported format shares the same 5 MiB client limit even though decoded-image and scanned-page limits differ server-side.
+
+**When we should reconsider it:** Reconsider if formats require materially different user controls, asynchronous processing, format-specific results, or distinct public limits that cannot be communicated clearly through one upload experience.

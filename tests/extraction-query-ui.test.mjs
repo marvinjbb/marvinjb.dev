@@ -24,3 +24,11 @@ test("query UI includes loading, answer, error, and repeat-question states", asy
   assert.match(source, /setQuestion\(""\)/);
   assert.match(source, /onSubmit=\{askInvoice\}/);
 });
+
+test("upload UI accepts the approved invoice media formats", async () => {
+  const source = await readFile(componentPath, "utf8");
+
+  assert.match(source, /application\/pdf,image\/jpeg,image\/png/);
+  assert.match(source, /\.pdf,\.jpg,\.jpeg,\.png/);
+  assert.match(source, /PDF, scanned PDF, JPG, or PNG/);
+});

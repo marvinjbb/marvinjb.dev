@@ -5,7 +5,7 @@ import { ExtractionDemo } from "./ExtractionDemo";
 
 const title = "Document Extraction Agent Demo — Marvin";
 const description =
-  "Upload a text-based invoice PDF and preview structured extraction results.";
+  "Upload an invoice, turn it into structured data, and ask questions in plain English.";
 
 export const metadata: Metadata = {
   title,
@@ -41,7 +41,7 @@ export default function ExtractionDemoPage() {
         </div>
         <div className="side-help">
           <strong>Focused MVP</strong>
-          <p>One text-based invoice PDF, up to 5 MiB. OCR is not included yet.</p>
+          <p>One PDF, scanned PDF, JPG, or PNG invoice, up to 5 MiB.</p>
           <a href="#upload">Try the demo</a>
         </div>
       </aside>
@@ -49,17 +49,18 @@ export default function ExtractionDemoPage() {
       <div className="page-content demo-page">
         <section className="map-section demo-hero" id="overview">
           <p className="overline">LIVE DEMO · DOCUMENT EXTRACTION</p>
-          <h1>Turn an invoice into structured data.</h1>
+          <h1>Turn invoices into answers.</h1>
           <p className="lead">
-            Upload one text-based PDF and inspect the invoice fields an extraction
-            agent returns. The browser sends the PDF to your locally configured
-            FastAPI service and renders its validated response.
+            Upload an invoice and let AI extract the important details into structured
+            data. Then ask questions about it in plain English—find totals, vendors,
+            line items, dates, or get a quick summary without digging through the
+            document yourself.
           </p>
           <nav className="question-map demo-facts" aria-label="Demo scope">
-            <div><span>INPUT</span><strong>Invoice PDF</strong><i>01</i></div>
-            <div><span>LIMIT</span><strong>5 MiB</strong><i>02</i></div>
-            <div><span>OUTPUT</span><strong>Table + JSON</strong><i>03</i></div>
-            <div><span>MODE</span><strong>Local API</strong><i>04</i></div>
+            <div><span>01</span><strong>Upload</strong><i>PDF · JPG · PNG</i></div>
+            <div><span>02</span><strong>AI Extracts</strong><i>Invoice details</i></div>
+            <div><span>03</span><strong>Explore</strong><i>Table + JSON</i></div>
+            <div><span>04</span><strong>Ask</strong><i>Plain English</i></div>
           </nav>
         </section>
 
@@ -67,8 +68,8 @@ export default function ExtractionDemoPage() {
           <p className="overline">01 · UPLOAD</p>
           <h2>Choose an invoice.</h2>
           <p className="section-intro">
-            Use a PDF with selectable text. Your file stays in this browser during
-            local request and is not stored by the frontend.
+            Upload one PDF, scanned PDF, JPG, or PNG invoice up to 5 MiB. The
+            frontend does not store your file.
           </p>
           <ExtractionDemo />
         </section>

@@ -6,11 +6,11 @@ Status labels: `NOT STARTED`, `IN PROGRESS`, `COMPLETE`, `BLOCKED`.
 
 ## Current Focus
 
-**Phase 3.5 — Ask This Invoice**
+**Phase 3.6 — Image and scanned invoice support**
 
 **Status:** `COMPLETE`
 
-The portfolio-native `/demo/extraction` interface submits invoice PDFs to the local API, renders validated results, and supports independent grounded questions over that in-memory result. Production deployment remains out of scope.
+The portfolio-native `/demo/extraction` interface accepts PDF, scanned PDF, JPG/JPEG, and PNG invoices, renders validated results, and supports independent grounded questions over that in-memory result. Production deployment remains out of scope.
 
 ---
 
@@ -113,6 +113,22 @@ The portfolio-native `/demo/extraction` interface submits invoice PDFs to the lo
 **Completion criteria:** The Ask UI appears only after extraction, never resends the PDF, handles expected failures, and displays an answer grounded in the supplied invoice. Automated tests use fakes, and one controlled browser request verifies the real path.
 
 **Completion evidence:** Frontend request-contract and UI-state tests pass alongside the existing extraction tests. A controlled local browser check asks a question after extraction and renders the backend answer without exposing or moving provider credentials.
+
+---
+
+## Phase 3.6 — Image and scanned invoice support
+
+**Status:** `COMPLETE`
+
+**Goal:** Extend the local demo from text PDFs to scanned PDFs and common invoice images without changing the result or query contracts.
+
+**Major deliverables:** PDF/JPG/PNG selection and copy, hybrid backend media routing, bounded image handling, vision fallback, mocked tests, and controlled real verification.
+
+**What I should understand before considering the phase complete:** Why text PDFs retain parsing, why scans use vision, how media safety differs from byte-size validation, and why every input ends at one application-owned schema.
+
+**Completion criteria:** The existing interface accepts every approved format, text PDFs preserve their existing route, scanned/image inputs return the same invoice JSON, Ask This Invoice is unchanged, and automated plus controlled local verification passes.
+
+**Completion evidence:** The frontend preserves the portfolio design while presenting the recruiter-facing `Upload → AI Extracts → Explore → Ask` journey. The backend routes text PDFs through `pypdf` and scans/images through bounded vision processing, with deterministic mocked coverage and no new persistence or deployment infrastructure.
 
 ---
 

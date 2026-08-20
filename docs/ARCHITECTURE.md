@@ -29,6 +29,8 @@ Concise answer
 
 Each question is independent. The frontend does not resend the PDF, previous questions, prompts, provider settings, or credentials. RAG is intentionally absent because the complete context is already small, structured, validated, and available in memory.
 
+Phase 3.6 broadens the same upload boundary to PDF, scanned PDF, JPG/JPEG, and PNG invoices. The frontend still sends one multipart `file` and receives the same `Invoice` JSON. Media routing is entirely backend-owned: readable PDFs use embedded text, while scanned PDFs and images use a bounded vision path. The Table, JSON, and Ask This Invoice states therefore do not branch by source format.
+
 The production agent services and their infrastructure are target-state components. This document does not assume that `api.marvinjb.dev`, the Ubuntu VPS, Nginx, Docker, databases, or any agent backend has already been provisioned or deployed.
 
 ## Target Architecture
