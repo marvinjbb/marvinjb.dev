@@ -6,11 +6,11 @@ Status labels: `NOT STARTED`, `IN PROGRESS`, `COMPLETE`, `BLOCKED`.
 
 ## Current Focus
 
-**Phase 3 — Frontend ↔ FastAPI local integration**
+**Phase 3.5 — Ask This Invoice**
 
 **Status:** `COMPLETE`
 
-The portfolio-native `/demo/extraction` interface now submits invoice PDFs to the local Extraction Agent API and renders its Pydantic-validated response. The local integration is implemented and verified; production deployment remains out of scope.
+The portfolio-native `/demo/extraction` interface submits invoice PDFs to the local API, renders validated results, and supports independent grounded questions over that in-memory result. Production deployment remains out of scope.
 
 ---
 
@@ -97,6 +97,22 @@ The portfolio-native `/demo/extraction` interface now submits invoice PDFs to th
 **Completion criteria:** A user can upload a supported document in the local React demo and see the real backend result; expected failures are visible and understandable.
 
 **Completion evidence:** The frontend uses an environment-configured API client and multipart `file` upload; the backend permits only the explicit local development origins. Automated frontend and backend checks pass, and a controlled browser test returned the expected invoice through React → FastAPI → pypdf → OpenAI → Pydantic → React in both Table and JSON views.
+
+---
+
+## Phase 3.5 — Ask This Invoice
+
+**Status:** `COMPLETE`
+
+**Goal:** Let a user ask independent natural-language questions about a successfully extracted invoice without rerunning extraction.
+
+**Major deliverables:** Add a query helper for `POST /extractions/invoice/query`; send only the question and validated invoice JSON; render native loading, error, answer, suggestion, and repeat-question states; preserve backend-only prompts and credentials.
+
+**What I should understand before considering the phase complete:** Grounding an LLM in a small validated object; why this is not RAG; stateless query requests; and why provider instructions belong on the backend.
+
+**Completion criteria:** The Ask UI appears only after extraction, never resends the PDF, handles expected failures, and displays an answer grounded in the supplied invoice. Automated tests use fakes, and one controlled browser request verifies the real path.
+
+**Completion evidence:** Frontend request-contract and UI-state tests pass alongside the existing extraction tests. A controlled local browser check asks a question after extraction and renders the backend answer without exposing or moving provider credentials.
 
 ---
 

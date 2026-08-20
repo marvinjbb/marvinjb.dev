@@ -15,6 +15,20 @@ The Extraction Agent backend MVP is complete in the separate `extraction-agent` 
 
 Local request failures are mapped into configuration, validation, backend/provider, and network categories so the UI can preserve the selected file and offer retry or reset. The public production API is not connected yet.
 
+The local demo also supports one-shot questions about a successful result:
+
+```text
+Question + validated Invoice JSON
+        ↓
+POST /extractions/invoice/query
+        ↓
+Grounded backend provider request
+        ↓
+Concise answer
+```
+
+Each question is independent. The frontend does not resend the PDF, previous questions, prompts, provider settings, or credentials. RAG is intentionally absent because the complete context is already small, structured, validated, and available in memory.
+
 The production agent services and their infrastructure are target-state components. This document does not assume that `api.marvinjb.dev`, the Ubuntu VPS, Nginx, Docker, databases, or any agent backend has already been provisioned or deployed.
 
 ## Target Architecture

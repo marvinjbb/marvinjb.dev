@@ -1,17 +1,26 @@
 "use client";
 
-import { DragEvent, useRef, useState } from "react";
+import { DragEvent, FormEvent, useRef, useState } from "react";
 
 import {
   extractInvoice as extractInvoiceRequest,
   ExtractionApiError,
   InvoiceResult,
+  queryInvoice,
 } from "./extractionApi";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 type DemoState = "idle" | "ready" | "extracting" | "success" | "error";
 type View = "table" | "json";
+type QueryState = "idle" | "querying" | "answered" | "error";
+
+const EXAMPLE_QUESTIONS = [
+  "Summarize this invoice",
+  "What is the total?",
+  "Who is the vendor?",
+  "What is the most expensive item?",
+];
 
 function formatFileSize(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -42,10 +51,25 @@ export function ExtractionDemo() {
   const [result, setResult] = useState<InvoiceResult | null>(null);
   const [view, setView] = useState<View>("table");
   const [dragging, setDragging] = useState(false);
+  const [question, setQuestion] = useState("");
+  const [askedQuestion, setAskedQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [queryError, setQueryError] = useState("");
+  const [queryState, setQueryState] = useState<QueryState>("idle");
+
+  function resetQuery() {
+    setQuestion("");
+    setAskedQuestion("");
+    setAnswer("");
+    setQueryError("");
+    setQueryState("idle");
+  }
+
   function selectFile(nextFile?: File) {
     setError("");
     setResult(null);
     setView("table");
+    resetQuery();
 
     if (!nextFile) return;
     if (nextFile.size === 0) {
@@ -101,12 +125,42 @@ export function ExtractionDemo() {
     }
   }
 
+  async function askInvoice(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!result || queryState === "querying") return;
+
+    const normalizedQuestion = question.trim();
+    if (!normalizedQuestion) {
+      setQueryError("Enter a question about this invoice.");
+      setQueryState("error");
+      return;
+    }
+
+    setQueryError("");
+    setQueryState("querying");
+    try {
+      const response = await queryInvoice(normalizedQuestion, result);
+      setAskedQuestion(normalizedQuestion);
+      setAnswer(response.answer);
+      setQuestion("");
+      setQueryState("answered");
+    } catch (caught) {
+      setQueryError(
+        caught instanceof ExtractionApiError
+          ? caught.message
+          : "The invoice question could not be answered. Please try again.",
+      );
+      setQueryState("error");
+    }
+  }
+
   function reset() {
     setFile(null);
     setError("");
     setResult(null);
     setState("idle");
     setView("table");
+    resetQuery();
     if (inputRef.current) inputRef.current.value = "";
   }
 
@@ -275,6 +329,71 @@ export function ExtractionDemo() {
               ))}</ul>
             </div>
           )}
+
+          <section className="invoice-query" aria-labelledby="invoice-query-title">
+            <div className="invoice-query-heading">
+              <div>
+                <p className="overline">03 · GROUNDED QUERY</p>
+                <h4 id="invoice-query-title">Ask this invoice</h4>
+              </div>
+              <span>VALIDATED JSON ONLY</span>
+            </div>
+            <p className="invoice-query-intro">
+              Ask about the extracted fields. The PDF is not uploaded again, and each
+              question is answered independently from this validated invoice.
+            </p>
+            <div className="query-suggestions" aria-label="Example questions">
+              {EXAMPLE_QUESTIONS.map((example) => (
+                <button
+                  key={example}
+                  type="button"
+                  onClick={() => {
+                    setQuestion(example);
+                    setQueryError("");
+                  }}
+                >
+                  {example}
+                </button>
+              ))}
+            </div>
+            <form className="invoice-query-form" onSubmit={askInvoice}>
+              <label htmlFor="invoice-question">
+                What would you like to know about this invoice?
+              </label>
+              <div>
+                <input
+                  id="invoice-question"
+                  value={question}
+                  maxLength={500}
+                  disabled={queryState === "querying"}
+                  onChange={(event) => setQuestion(event.target.value)}
+                  placeholder="What was the most expensive item?"
+                />
+                <button
+                  className="primary-button"
+                  type="submit"
+                  disabled={!question.trim() || queryState === "querying"}
+                >
+                  {queryState === "querying" ? "Asking…" : "Ask"}
+                </button>
+              </div>
+            </form>
+
+            {queryState === "querying" && (
+              <div className="query-status" role="status">
+                Answering from the validated invoice…
+              </div>
+            )}
+            {queryState === "error" && (
+              <div className="query-error" role="alert">{queryError}</div>
+            )}
+            {queryState === "answered" && (
+              <div className="query-answer" aria-live="polite">
+                <div><span>You</span><p>{askedQuestion}</p></div>
+                <div><span>Answer</span><p>{answer}</p></div>
+              </div>
+            )}
+          </section>
 
           <div className="results-footer">
             <p>FastAPI response · Pydantic-validated data</p>

@@ -17,6 +17,10 @@ export type InvoiceResult = {
   warnings: string[];
 };
 
+export type InvoiceQueryResult = {
+  answer: string;
+};
+
 export type ExtractionErrorKind =
   | "configuration"
   | "validation"
@@ -86,7 +90,7 @@ async function readResponseBody(response: Response): Promise<unknown> {
   }
 }
 
-export async function extractInvoice(file: File): Promise<InvoiceResult> {
+function getApiBaseUrl(): string {
   const baseUrl = process.env.NEXT_PUBLIC_EXTRACTION_API_BASE_URL?.replace(
     /\/$/,
     "",
@@ -97,6 +101,29 @@ export async function extractInvoice(file: File): Promise<InvoiceResult> {
       "configuration",
     );
   }
+  return baseUrl;
+}
+
+async function parseApiResponse(response: Response): Promise<unknown> {
+  const body = await readResponseBody(response);
+  if (!response.ok) {
+    const detail =
+      typeof body === "object" &&
+      body !== null &&
+      typeof (body as Record<string, unknown>).detail === "string"
+        ? (body as Record<string, string>).detail
+        : "The Extraction Agent could not complete this request.";
+    const kind: ExtractionErrorKind =
+      response.status >= 400 && response.status < 500
+        ? "validation"
+        : "backend";
+    throw new ExtractionApiError(detail, kind, response.status);
+  }
+  return body;
+}
+
+export async function extractInvoice(file: File): Promise<InvoiceResult> {
+  const baseUrl = getApiBaseUrl();
 
   const formData = new FormData();
   formData.append("file", file);
@@ -114,20 +141,7 @@ export async function extractInvoice(file: File): Promise<InvoiceResult> {
     );
   }
 
-  const body = await readResponseBody(response);
-  if (!response.ok) {
-    const detail =
-      typeof body === "object" &&
-      body !== null &&
-      typeof (body as Record<string, unknown>).detail === "string"
-        ? (body as Record<string, string>).detail
-        : "The Extraction Agent could not complete this request.";
-    const kind: ExtractionErrorKind =
-      response.status >= 400 && response.status < 500
-        ? "validation"
-        : "backend";
-    throw new ExtractionApiError(detail, kind, response.status);
-  }
+  const body = await parseApiResponse(response);
 
   if (!isInvoiceResult(body)) {
     throw new ExtractionApiError(
@@ -138,4 +152,51 @@ export async function extractInvoice(file: File): Promise<InvoiceResult> {
   }
 
   return body;
+}
+
+export async function queryInvoice(
+  question: string,
+  invoice: InvoiceResult,
+): Promise<InvoiceQueryResult> {
+  const normalizedQuestion = question.trim();
+  if (!normalizedQuestion) {
+    throw new ExtractionApiError("Enter a question about this invoice.", "validation");
+  }
+  if (normalizedQuestion.length > 500) {
+    throw new ExtractionApiError(
+      "Invoice questions must be 500 characters or fewer.",
+      "validation",
+    );
+  }
+
+  const baseUrl = getApiBaseUrl();
+  let response: Response;
+  try {
+    response = await fetch(`${baseUrl}/extractions/invoice/query`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: normalizedQuestion, invoice }),
+    });
+  } catch {
+    throw new ExtractionApiError(
+      "Could not reach the local Extraction Agent. Confirm FastAPI is running.",
+      "network",
+    );
+  }
+
+  const body = await parseApiResponse(response);
+  if (
+    typeof body !== "object" ||
+    body === null ||
+    typeof (body as Record<string, unknown>).answer !== "string" ||
+    !(body as Record<string, string>).answer.trim()
+  ) {
+    throw new ExtractionApiError(
+      "The Extraction Agent returned an unexpected query response.",
+      "backend",
+      response.status,
+    );
+  }
+
+  return { answer: (body as Record<string, string>).answer };
 }

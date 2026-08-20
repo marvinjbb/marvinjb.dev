@@ -265,3 +265,23 @@ Do not adopt a monorepo by default.
 **Tradeoffs:** Each environment must supply a correct public base URL and matching CORS origin. Misconfiguration appears as a browser configuration or network failure and must be diagnosed across two processes.
 
 **When we should reconsider it:** Reconsider if the frontend gains a same-origin server proxy, the API contract needs generated clients, or production hosting requires runtime configuration rather than the current public build-time variable.
+
+---
+
+## ADR-015 — Query validated invoice JSON without retrieval infrastructure
+
+**Decision ID:** ADR-015
+
+**Status:** ACCEPTED
+
+**Classification:** CUSTOM
+
+**Context:** A successful extraction already leaves one small, structured, Pydantic-validated invoice in frontend memory. Users need factual questions about that object, not search across a document collection.
+
+**Decision:** Send each question with the validated invoice to a dedicated backend endpoint. Keep questions stateless, do not resend the PDF or previous answers, and keep grounding instructions and provider access exclusively on the backend.
+
+**Why:** The complete relevant context fits directly in one request. RAG, embeddings, persistent chat storage, and agent frameworks would add failure modes and operational cost without improving retrieval.
+
+**Tradeoffs:** Follow-up questions cannot rely on conversational context, and accuracy still depends on the extracted invoice plus model adherence. The client resends the small invoice object for each question.
+
+**When we should reconsider it:** Reconsider if queries span multiple or very large documents, require citations to source regions, need durable conversation state, or exceed practical model context limits.
