@@ -54,10 +54,19 @@ export default function ResearchDemoPage() {
           </p>
           <nav className="question-map research-flow" aria-label="Research workflow">
             {[
-              ["01", "Question"], ["02", "Research Plan"], ["03", "2–5 Workers"],
-              ["04", "Evidence"], ["05", "Synthesis"], ["06", "Final Report"],
-            ].map(([number, label]) => (
-              <div key={label}><span>{number}</span><strong>{label}</strong><i>→</i></div>
+              ["01", "Question", "User submits a research question and selects the research depth."],
+              ["02", "Research Plan", "The planner breaks the question into focused research assignments."],
+              ["03", "2–5 Workers", "Independent workers research their assignments in parallel using web search."],
+              ["04", "Evidence", "Findings are grounded to validated source evidence and citations."],
+              ["05", "Synthesis", "Results are combined, compared, and checked for conflicts and uncertainty."],
+              ["06", "Final Report", "A grounded research report is returned with findings, guidance, and sources."],
+            ].map(([number, label, description]) => (
+              <div key={label}>
+                <span>{number}</span>
+                <strong>{label}</strong>
+                <p>{description}</p>
+                <i>→</i>
+              </div>
             ))}
           </nav>
         </section>

@@ -86,6 +86,16 @@ test("server-renders the research demo route", async () => {
   assert.match(html, /Question/);
   assert.match(html, /Research Plan/);
   assert.match(html, /2–5 Workers/);
+  for (const description of [
+    "User submits a research question and selects the research depth.",
+    "The planner breaks the question into focused research assignments.",
+    "Independent workers research their assignments in parallel using web search.",
+    "Findings are grounded to validated source evidence and citations.",
+    "Results are combined, compared, and checked for conflicts and uncertainty.",
+    "A grounded research report is returned with findings, guidance, and sources.",
+  ]) {
+    assert.ok(html.includes(description));
+  }
   assert.match(html, /Grounding is an application rule\./);
   assert.match(html, /Application-owned evidence IDs/);
   assert.match(html, /Strict citation grounding/);
