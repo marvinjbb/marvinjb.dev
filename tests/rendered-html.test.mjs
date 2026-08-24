@@ -31,6 +31,10 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /View Project/);
   assert.match(html, /View Backend Repository/);
   assert.match(html, /https:\/\/github\.com\/marvinjbb\/extraction-agent/);
+  assert.match(html, /Research Agent/);
+  assert.match(html, /Turn one complex question into a source-grounded report/);
+  assert.match(html, /href="\/demo\/research"/);
+  assert.match(html, /https:\/\/github\.com\/marvinjbb\/research-agent/);
   assert.doesNotMatch(html, /Project links, screenshots, repositories, and verified results will replace these structured placeholders/);
   assert.doesNotMatch(html, /Your flagship project will live here/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/i);
@@ -68,4 +72,23 @@ test("server-renders the extraction demo route", async () => {
   assert.match(html, /5 MiB/);
   assert.doesNotMatch(html, /Ask this invoice/);
   assert.doesNotMatch(html, /OPENAI_API_KEY|api\.openai\.com/i);
+});
+
+test("server-renders the research demo route", async () => {
+  const response = await render("/demo/research");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /<title>Research Agent — Live Demo \| Marvin<\/title>/i);
+  assert.match(html, /From one question to a grounded report\./);
+  assert.match(html, /What should the team investigate\?/);
+  assert.match(html, /Research question/);
+  assert.match(html, /Start Research/);
+  assert.match(html, /Question/);
+  assert.match(html, /Research Plan/);
+  assert.match(html, /2–5 Workers/);
+  assert.match(html, /Grounding is an application rule\./);
+  assert.match(html, /Application-owned evidence IDs/);
+  assert.match(html, /Strict citation grounding/);
+  assert.match(html, /https:\/\/github\.com\/marvinjbb\/research-agent/);
+  assert.doesNotMatch(html, /OPENAI_API_KEY|TAVILY_API_KEY|api\.openai\.com/i);
 });

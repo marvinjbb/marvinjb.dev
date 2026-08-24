@@ -15,13 +15,17 @@ const projects = [
     description: "Turn invoices into answers. Upload a PDF, scanned PDF, JPG, or PNG invoice. AI extracts structured invoice data, lets users review it in Table/JSON form, and supports grounded questions about the invoice.",
     tags: "DOCUMENT AI · STRUCTURED OUTPUTS · VISION",
     live: true,
+    demo: "/demo/extraction",
+    repository: "https://github.com/marvinjbb/extraction-agent",
   },
   {
-    label: "PROJECT · CASE STUDY COMING",
-    title: "Knowledge Retrieval Engine",
-    description: "A source-aware research system built around hybrid retrieval, grounded synthesis, and measurable relevance.",
-    tags: "RAG · PYTHON · EVALS",
-    live: false,
+    label: "LIVE PROJECT · RESEARCH AGENT",
+    title: "Research Agent",
+    description: "Turn one complex question into a source-grounded report. A planner assigns 2–5 focused workers, evidence stays traceable, and synthesis can cite only validated claims.",
+    tags: "MULTI-AGENT · WEB SEARCH · CITED REPORTS",
+    live: true,
+    demo: "/demo/research",
+    repository: "https://github.com/marvinjbb/research-agent",
   },
   {
     label: "PROJECT · CASE STUDY COMING",
@@ -29,6 +33,8 @@ const projects = [
     description: "A tool-using agent that turns messy requests into visible workflows with approvals at the right moments.",
     tags: "AGENTS · MCP · TOOL CALLING",
     live: false,
+    demo: "",
+    repository: "",
   },
 ];
 const posts = [
@@ -60,7 +66,7 @@ export default function Home() {
 
       <section className="content-section" id="skills"><p className="overline">01 · PROFILE + SKILLS</p><h2>Who am I?</h2><p className="section-intro">An AI engineer focused on turning ambitious ideas into useful systems—fundamentals first, frameworks second. These are the capabilities I take from idea to production.</p><div className="card-list">{skills.map(([label,title,description]) => <article className="info-card" key={title}><div className="card-icon">SKILL</div><div><p>{label}</p><h3>{title}</h3><span>{description}</span></div><i>→</i></article>)}</div><div className="inline-callout" id="resume"><div><strong>Want the formal version?</strong><span>Work history and experience will be added here.</span></div><a href="#resume">Résumé coming soon</a></div></section>
 
-      <section className="content-section" id="projects"><p className="overline">02 · SELECTED WORK</p><h2>What have I built?</h2><p className="section-intro">Production-minded AI systems with live demos, clear engineering decisions, and code you can inspect.</p><div className="card-list">{projects.map((project) => <article className="info-card project" key={project.title}><div className="card-icon">{project.live ? "LIVE" : "DEMO"}</div><div><p>{project.label}</p><h3>{project.title}</h3><span>{project.description}</span><small>{project.tags}</small>{project.live && <div className="project-actions"><a className="primary-button" href="/demo/extraction">Try Live Demo</a><a className="secondary-button" href="/demo/extraction#project">View Project</a><a className="secondary-button" href="https://github.com/marvinjbb/extraction-agent" target="_blank" rel="noreferrer">View Backend Repository</a></div>}</div><i>→</i></article>)}</div><a className="feature-callout" href="/demo/extraction"><span>TRY THIS FIRST</span><strong>Turn invoices into answers.</strong><p>Upload an invoice, review structured data, and ask grounded questions in plain English.</p><i>→</i></a></section>
+      <section className="content-section" id="projects"><p className="overline">02 · SELECTED WORK</p><h2>What have I built?</h2><p className="section-intro">Production-minded AI systems with live demos, clear engineering decisions, and code you can inspect.</p><div className="card-list">{projects.map((project) => <article className="info-card project" key={project.title}><div className="card-icon">{project.live ? "LIVE" : "DEMO"}</div><div><p>{project.label}</p><h3>{project.title}</h3><span>{project.description}</span><small>{project.tags}</small>{project.live && <div className="project-actions"><a className="primary-button" href={project.demo}>Try Live Demo</a><a className="secondary-button" href={`${project.demo}#project`}>View Project</a><a className="secondary-button" href={project.repository} target="_blank" rel="noreferrer">View Backend Repository</a></div>}</div><i>→</i></article>)}</div><a className="feature-callout" href="/demo/research"><span>NEW LIVE PROJECT</span><strong>Watch a bounded research system work.</strong><p>Ask one question and receive a validated report with grounded evidence and citations.</p><i>→</i></a></section>
 
       <section className="content-section" id="blog"><p className="overline">03 · NOTES + BLOG</p><h2>How do I think?</h2><p className="section-intro">The blog will organize practical lessons from building AI systems into useful trails—not disconnected posts.</p><div className="card-list">{posts.map(([label,title,description]) => <article className="info-card post" key={title}><div className="card-icon">POST</div><div><p>{label}</p><h3>{title}</h3><span>{description}</span></div><i>→</i></article>)}</div></section>
 
