@@ -28,10 +28,10 @@ const projects = [
     repository: "https://github.com/marvinjbb/extraction-agent",
   },
   {
-    label: "PROJECT · CASE STUDY COMING",
-    title: "Operations Agent",
-    description: "A future tool-using agent concept for turning operational requests into visible workflows with approvals at the right moments.",
-    tags: "AGENTS · MCP · TOOL CALLING",
+    label: "COMING NEXT",
+    title: "Voice Agent",
+    description: "A real-time AI voice agent designed to listen, reason, use tools, and respond naturally.",
+    tags: "PLANNED ARCHITECTURE · Voice → Speech Recognition → Agent → Tools → LLM → Speech Response · PLANNED TECHNOLOGIES · Python · Streaming · Speech-to-Text · LLMs · Tool Calling · Text-to-Speech",
     live: false,
     demo: "",
     repository: "",
@@ -71,14 +71,15 @@ const posts = [
 ];
 
 export default function Home() {
-  return <main id="top">
+  return <main id="top" className="home-page">
     <SiteHeader />
 
     <aside className="sidebar" aria-label="Explore">
       <div className="side-group"><p>EXPLORE</p><a href="#map"><span>⌘</span> About</a><a href="#projects"><span>↗</span> Projects</a><a href="#skills"><span>◆</span> Skills</a><a href="#experience"><span>▣</span> Experience</a><a href="#credentials"><span>✓</span> Credentials</a></div>
-      <div className="side-group"><p>ENGINEERING PATH</p><a href="#map">Production data systems</a><a href="#projects">Backend + AI systems</a><a className="side-all" href="#contact">Connect →</a></div>
-      <div className="side-group topics"><p>TOPICS</p><a href="#blog">Think Like an AI Engineer <span>›</span></a><a href="#blog">Production AI Systems <span>›</span></a><a href="#blog">Grounded Agents <span>›</span></a></div>
-      <div className="side-help"><strong>Interested in the work?</strong><p>Explore the live systems or get in touch directly.</p><a href="mailto:jbmarvin21@gmail.com">Email Marvin</a></div>
+      <div className="side-group side-path"><p>ENGINEERING PATH</p><div><span>01</span>Production Data Systems</div><div><span>02</span>Backend Engineering</div><div><span>03</span>AI Engineering <small>NOW</small></div></div>
+      <div className="side-group"><p>PROJECTS</p><a href="/demo/extraction">Extraction Agent</a><a href="/demo/research">Research Agent</a><div className="side-static">Voice Agent <small>COMING NEXT</small></div></div>
+      <div className="side-group side-current"><p>CURRENTLY</p><div>Building <strong>Production AI systems</strong></div><div>Studying <strong>Claude Foundations</strong></div></div>
+      <div className="side-group"><p>CONNECT</p><a href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Résumé</a><a href="https://github.com/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="mailto:jbmarvin21@gmail.com">Email</a></div>
     </aside>
 
     <div className="page-content">
@@ -88,8 +89,8 @@ export default function Home() {
           <div>
             <p className="overline">MARVIN · ENGINEERING PORTFOLIO</p>
             <h1>AI Engineer | Backend &amp; Production Systems</h1>
-            <p className="intro-role">I build production-oriented AI systems with Python, FastAPI, LLMs, structured outputs, agent orchestration, web search, grounding, Docker, and production infrastructure.</p>
-            <p>My path into AI engineering began with production SQL Server and data engineering, then expanded into Python and backend services. I now apply that operational foundation to AI systems designed for validation, failure handling, observability, and dependable delivery.</p>
+            <p className="intro-role">I build production-ready AI systems and backend services with Python, FastAPI, LLMs, and agentic workflows. My background in production database and data engineering helps me build systems that are reliable, secure, and built to scale.</p>
+            <div className="hero-actions"><a className="primary-button" href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Download Résumé</a></div>
           </div>
         </div>
         <div className="personal-map engineering-story">
@@ -97,7 +98,7 @@ export default function Home() {
           <h2>Production foundations, applied to AI.</h2>
           <p className="lead">Production database &amp; data engineering → Python &amp; backend engineering → production AI systems</p>
         </div>
-        <nav className="question-map" aria-label="On this page"><a href="#projects"><span>01</span><strong>Featured AI work</strong><i>↓</i></a><a href="#skills"><span>02</span><strong>Engineering skills</strong><i>↓</i></a><a href="#experience"><span>03</span><strong>Production experience</strong><i>↓</i></a><a href="#credentials"><span>04</span><strong>Credentials</strong><i>↓</i></a></nav>
+        <nav className="question-map" aria-label="On this page"><a href="#projects"><span>01</span><span className="question-map-copy"><strong>Featured AI Work</strong><small>Projects I&apos;ve built and deployed.</small></span><i>↓</i></a><a href="#skills"><span>02</span><span className="question-map-copy"><strong>Engineering Skills</strong><small>Technologies and tools I work with.</small></span><i>↓</i></a><a href="#experience"><span>03</span><span className="question-map-copy"><strong>Professional Experience</strong><small>Where I&apos;ve worked and what I delivered.</small></span><i>↓</i></a><a href="#credentials"><span>04</span><span className="question-map-copy"><strong>Credentials</strong><small>Certifications and education.</small></span><i>↓</i></a></nav>
       </section>
 
       <section className="content-section" id="projects">
@@ -113,8 +114,8 @@ export default function Home() {
       </section>
 
       <section className="content-section" id="experience">
-        <p className="overline">03 · PROFESSIONAL EXPERIENCE</p><h2>Operating systems where reliability matters.</h2>
-        <p className="section-intro">Production database and data engineering experience that now informs how I build, debug, and operate backend and AI services.</p>
+        <p className="overline">03 · PROFESSIONAL EXPERIENCE</p><h2>I build systems people can count on.</h2>
+        <p className="section-intro">I&apos;ve spent years working with databases, data pipelines, and production systems. Now I use that experience to build AI tools and backend services that are fast, reliable, and solve real problems.</p>
         <div className="card-list experience-list">{experience.map((item) => <article className="info-card experience-card" key={item.company}><div className="card-icon">WORK</div><div><p>{item.dates}</p><h3>{item.company}</h3><strong>{item.role}</strong><span>{item.summary}</span><ul>{item.details.map((detail) => <li key={detail}>{detail}</li>)}</ul></div></article>)}</div>
       </section>
 
