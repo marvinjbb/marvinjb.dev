@@ -137,8 +137,8 @@ export default function Home() {
 
       <section className="content-section" id="blog"><p className="overline">06 · NOTES + BLOG</p><h2>Engineering notes in progress.</h2><p className="section-intro">Planned writing on the decisions behind reliable AI systems, retrieval, and agent behavior.</p><div className="card-list">{posts.map(([label, title, description]) => <article className="info-card post" key={title}><div className="card-icon">POST</div><div><p>{label}</p><h3>{title}</h3><span>{description}</span></div><i>→</i></article>)}</div></section>
 
-      <section className="contact-section" id="contact"><p className="overline">CONTACT</p><h2>Let&apos;s build something useful.</h2><p>Have an AI engineering role, a backend challenge, or a production system worth improving?</p><a href="mailto:jbmarvin21@gmail.com">jbmarvin21@gmail.com →</a></section>
-      <footer><div><strong>marvinjb.dev</strong><span>AI engineering, backend systems, and production infrastructure.</span></div><div id="linkedin"><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noreferrer">LinkedIn</a><a href="#experience">Experience</a><a href="mailto:jbmarvin21@gmail.com">Hire Marvin</a></div><span>© 2026 Marvin</span></footer>
+      <section className="contact-section" id="connect"><p className="overline">CONNECT</p><h2>Let&apos;s build something useful.</h2><p>Have an AI engineering role, a backend challenge, or a production system worth improving?</p><div className="contact-links"><a href="mailto:jbmarvin21@gmail.com">Email</a><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub</a></div></section>
+      <footer><div><strong>marvinjb.dev</strong><span>AI engineering, backend systems, and production infrastructure.</span></div><div id="linkedin"><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noreferrer">LinkedIn</a><a href="#experience">Experience</a><a href="#connect">Let&apos;s Connect</a></div><span>© 2026 Marvin</span></footer>
     </div>
   </main>;
 }

@@ -23,8 +23,9 @@ export function SiteHeader() {
         >
           LinkedIn
         </a>
-        <a className="hire-link" href="mailto:jbmarvin21@gmail.com">
-          Hire Marvin
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+        <a className="hire-link" href="/#connect">
+          Let&apos;s Connect
         </a>
       </nav>
       <MobileNav />

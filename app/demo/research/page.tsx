@@ -111,7 +111,8 @@ export default function ResearchDemoPage() {
             {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a href="/#projects">Selected work</a>
             <a href="https://github.com/marvinjbb/research-agent">View Backend Repository</a>
-            <a href="mailto:jbmarvin21@gmail.com">Hire Marvin</a>
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a href="/#connect">Let&apos;s Connect</a>
           </div>
           <span>© 2026 Marvin</span>
         </footer>

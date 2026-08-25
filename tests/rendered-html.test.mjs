@@ -33,7 +33,7 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /Certifications and education\./);
   assert.match(html, /I build systems people can count on\./);
   assert.match(html, /I(?:&#x27;|')ve spent years working with databases, data pipelines, and production systems\./);
-  assert.match(html, /Hire Marvin/);
+  assert.match(html, /Let(?:&#x27;|')s Connect/);
   assert.match(html, /jbmarvin21@gmail\.com/);
   assert.match(html, /Extraction Agent/);
   assert.match(html, /href="\/demo\/extraction"/);
@@ -79,7 +79,7 @@ test("server-renders the Marvin portfolio map", async () => {
 
 test("renders the portfolio navigation and main sections", async () => {
   const html = await (await render()).text();
-  for (const anchor of ["map", "projects", "skills", "experience", "credentials", "education", "blog", "contact"]) assert.match(html, new RegExp(`id=["']${anchor}["']`));
+  for (const anchor of ["map", "projects", "skills", "experience", "credentials", "education", "blog", "connect"]) assert.match(html, new RegExp(`id=["']${anchor}["']`));
   for (const label of ["Projects", "Skills", "Experience", "Credentials", "LinkedIn"]) assert.match(html, new RegExp(label));
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/marvin-jbb/);
   assert.match(html, /marvin-portrait\.jpg/);
@@ -92,6 +92,7 @@ test("renders the portfolio navigation and main sections", async () => {
   assert.match(html, /href="https:\/\/github\.com\/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub<\/a>/);
   assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.match(html, /href="mailto:jbmarvin21@gmail\.com">Email<\/a>/);
+  assert.match(html, /href="\/#connect">Let(?:&#x27;|')s Connect<\/a>/);
   assert.match(html, /href="\/resume\/Marvin-Joseph-Bogere-Resume\.pdf" download="">Résumé<\/a>/);
   assert.doesNotMatch(html, /<p>TOPICS<\/p>/);
 });
