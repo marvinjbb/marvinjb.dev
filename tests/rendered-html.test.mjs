@@ -83,10 +83,11 @@ test("renders the portfolio navigation and main sections", async () => {
   for (const label of ["Projects", "Skills", "Experience", "Credentials", "LinkedIn"]) assert.match(html, new RegExp(label));
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/marvin-jbb/);
   assert.match(html, /marvin-portrait\.jpg/);
-  for (const step of ["01", "Production Data Systems", "02", "Backend Engineering", "03", "AI Engineering", "NOW"]) assert.match(html, new RegExp(step));
+  for (const step of ["01", "Production Data Systems", "02", "Backend Engineering", "03", "AI Engineering"]) assert.match(html, new RegExp(step));
   assert.match(html, /href="\/demo\/extraction"[^>]*>Extraction Agent<\/a>/);
   assert.match(html, /href="\/demo\/research"[^>]*>Research Agent<\/a>/);
-  assert.match(html, /Voice Agent <small>COMING NEXT<\/small>/);
+  assert.match(html, /<div class="side-static">Voice Agent<\/div>/);
+  assert.match(html, /<p>COMING NEXT<\/p><h3>Voice Agent<\/h3>/);
   assert.match(html, /Building <strong>Production AI systems<\/strong>/);
   assert.match(html, /Studying <strong>Claude Foundations<\/strong>/);
   assert.match(html, /<strong>Let(?:&#x27;|')s connect<\/strong>/);
