@@ -103,7 +103,7 @@ export default function Home() {
       </section>
 
       <section className="content-section" id="projects">
-        <p className="overline">01 · FEATURED AI PROJECTS</p><h2>Proof through working systems.</h2>
+        <p className="overline">01 · FEATURED AI PROJECTS</p><h2>Projects I&apos;ve built.</h2>
         <p className="section-intro">Live, production-minded AI services with inspectable architecture, strict validation, and deployment-focused engineering.</p>
         <div className="card-list">{projects.map((project) => <article className="info-card project" key={project.title}><div className="card-icon">{project.live ? "LIVE" : "NEXT"}</div><div><p>{project.label}</p><h3>{project.title}</h3><span>{project.description}</span><small>{project.tags}</small>{project.live && <div className="project-actions"><a className="primary-button" href={project.demo}>Try Live Demo</a><a className="secondary-button" href={`${project.demo}#project`}>View Project</a><a className="secondary-button" href={project.repository} target="_blank" rel="noreferrer">View Backend Repository</a></div>}</div><i>→</i></article>)}</div>
       </section>
