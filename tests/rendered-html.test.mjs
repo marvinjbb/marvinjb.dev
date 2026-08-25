@@ -89,6 +89,9 @@ test("renders the portfolio navigation and main sections", async () => {
   assert.match(html, /Voice Agent <small>COMING NEXT<\/small>/);
   assert.match(html, /Building <strong>Production AI systems<\/strong>/);
   assert.match(html, /Studying <strong>Claude Foundations<\/strong>/);
+  assert.match(html, /<strong>Let(?:&#x27;|')s connect<\/strong>/);
+  assert.match(html, /Open to AI engineering opportunities, conversations, and collaboration\./);
+  assert.match(html, /<nav aria-label="Connect">/);
   assert.match(html, /href="https:\/\/github\.com\/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub<\/a>/);
   assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.match(html, /href="mailto:jbmarvin21@gmail\.com">Email<\/a>/);

@@ -79,7 +79,7 @@ export default function Home() {
       <div className="side-group side-path"><p>ENGINEERING PATH</p><div><span>01</span>Production Data Systems</div><div><span>02</span>Backend Engineering</div><div><span>03</span>AI Engineering <small>NOW</small></div></div>
       <div className="side-group"><p>PROJECTS</p><a href="/demo/extraction">Extraction Agent</a><a href="/demo/research">Research Agent</a><div className="side-static">Voice Agent <small>COMING NEXT</small></div></div>
       <div className="side-group side-current"><p>CURRENTLY</p><div>Building <strong>Production AI systems</strong></div><div>Studying <strong>Claude Foundations</strong></div></div>
-      <div className="side-group"><p>CONNECT</p><a href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Résumé</a><a href="https://github.com/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="mailto:jbmarvin21@gmail.com">Email</a></div>
+      <div className="side-group"><p>CONNECT</p><div className="side-connect-card"><strong>Let&apos;s connect</strong><span>Open to AI engineering opportunities, conversations, and collaboration.</span><nav aria-label="Connect"><a href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Résumé</a><a href="https://github.com/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="mailto:jbmarvin21@gmail.com">Email</a></nav></div></div>
     </aside>
 
     <div className="page-content">
