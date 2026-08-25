@@ -22,8 +22,9 @@ test("server-renders the Marvin portfolio map", async () => {
   const html = await response.text();
   assert.match(html, /<title>Marvin — AI Engineer \| Backend &amp; Production Systems<\/title>/i);
   assert.match(html, /AI Engineer \| Backend &amp; Production Systems/);
-  assert.match(html, /I build production-ready AI systems and backend services with Python, FastAPI, LLMs, and agentic workflows\./);
-  assert.match(html, /My background in production database and data engineering helps me build systems that are reliable, secure, and built to scale\./);
+  assert.match(html, /Hey, I(?:&#x27;|')m Marvin\./);
+  assert.match(html, /I started in production database and data engineering, where reliability, incident response, automation, and performance mattered every day\./);
+  assert.match(html, /That foundation led me deeper into Python and backend engineering, and now I use it to build production-oriented AI systems with FastAPI, LLMs, agent workflows, grounding, Docker, and real deployment infrastructure\./);
   assert.match(html, /href="\/resume\/Marvin-Joseph-Bogere-Resume\.pdf" download="">Download Résumé<\/a>/);
   assert.match(html, /Production database &amp; data engineering → Python &amp; backend engineering → production AI systems/);
   assert.match(html, /Featured AI Work/);

@@ -88,8 +88,9 @@ export default function Home() {
           <img src="/marvin-portrait.jpg" alt="Portrait of Marvin" />
           <div>
             <p className="overline">MARVIN · ENGINEERING PORTFOLIO</p>
-            <h1>AI Engineer | Backend &amp; Production Systems</h1>
-            <p className="intro-role">I build production-ready AI systems and backend services with Python, FastAPI, LLMs, and agentic workflows. My background in production database and data engineering helps me build systems that are reliable, secure, and built to scale.</p>
+            <h1>Hey, I&apos;m Marvin.</h1>
+            <p className="hero-role">AI Engineer | Backend &amp; Production Systems</p>
+            <p className="intro-role">I started in production database and data engineering, where reliability, incident response, automation, and performance mattered every day. That foundation led me deeper into Python and backend engineering, and now I use it to build production-oriented AI systems with FastAPI, LLMs, agent workflows, grounding, Docker, and real deployment infrastructure.</p>
             <div className="hero-actions"><a className="primary-button" href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Download Résumé</a></div>
           </div>
         </div>
