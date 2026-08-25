@@ -13,7 +13,9 @@ export function SiteHeader() {
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a href="/#projects">Projects</a>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/#blog">Blog</a>
+        <a href="/#skills">Skills</a>
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+        <a href="/#experience">Experience</a>
         <a
           href="https://www.linkedin.com/in/marvin-jbb"
           target="_blank"
@@ -21,8 +23,6 @@ export function SiteHeader() {
         >
           LinkedIn
         </a>
-        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/#resume">Résumé</a>
         <a className="hire-link" href="mailto:jbmarvin21@gmail.com">
           Hire Marvin
         </a>
