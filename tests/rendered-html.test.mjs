@@ -34,6 +34,15 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /Certifications and education\./);
   assert.match(html, /I build systems people can count on\./);
   assert.match(html, /I(?:&#x27;|')ve spent years working with databases, data pipelines, and production systems\./);
+  assert.match(html, /What I(?:&#x27;|')m learning and building\./);
+  assert.match(html, /Notes on AI engineering, production systems, certifications, and the lessons I pick up while building\./);
+  assert.match(html, /CLAUDE · CERTIFICATION/);
+  assert.match(html, /<small>PUBLISHED<\/small>/);
+  assert.match(html, /The AI Study Loop I Used to Pass the Claude Certified Associate Exam/);
+  assert.match(html, /How I used Anthropic’s official material, ChatGPT, NotebookLM, and practice questions to understand the concepts instead of just memorizing them\./);
+  assert.match(html, /href="https:\/\/medium\.com\/@jbmarvin21\/the-ai-study-loop-i-used-to-pass-the-claude-certified-associate-exam-7d7ad25361a9" target="_blank" rel="noopener noreferrer">Read on Medium ↗<\/a>/);
+  for (const plannedPost of ["What makes an agent trustworthy?", "The small model gateway I keep rebuilding"]) assert.match(html, new RegExp(plannedPost.replace(/[?]/g, "\\?")));
+  assert.doesNotMatch(html, /Retrieval quality starts before the vector database/);
   assert.match(html, /Let(?:&#x27;|')s Connect/);
   assert.match(html, /jbmarvin21@gmail\.com/);
   assert.match(html, /Extraction Agent/);
