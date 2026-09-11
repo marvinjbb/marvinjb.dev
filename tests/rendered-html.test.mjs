@@ -66,8 +66,15 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /JULY 2018–AUG 2019/);
   assert.match(html, /Microsoft Certified: Azure Database Administrator Associate \(DP-300\)/);
   assert.match(html, /CompTIA Security\+/);
+  assert.match(html, /EARNED CERTIFICATIONS/);
+  assert.match(html, /<span>EARNED<\/span><h4>Claude Certified Associate – Foundations<\/h4>/);
+  assert.match(html, /src="\/credentials\/claude-certified-associate-foundations\.png" alt="Official Claude Certified Associate – Foundations badge"/);
+  assert.match(html, /href="https:\/\/www\.credly\.com\/badges\/34471933-cede-4253-813c-044842b7fc6a\/public_url" target="_blank" rel="noopener noreferrer"/);
   assert.match(html, /CURRENTLY STUDYING/);
-  assert.match(html, /Claude Certified Associate – Foundations/);
+  const studying = html.match(/<p class="overline">CURRENTLY STUDYING<\/p><h3>Claude foundations<\/h3><ul>(.*?)<\/ul>/)?.[1] ?? "";
+  assert.doesNotMatch(studying, /Claude Certified Associate – Foundations/);
+  assert.match(studying, /Claude Certified Developer – Foundations/);
+  assert.match(studying, /Claude Certified Architect – Foundations/);
   assert.match(html, /Bachelor of Science in Information Technology/);
   assert.match(html, /Western Governors University/);
   assert.match(html, /EXPECTED 2026/);
@@ -90,7 +97,7 @@ test("renders the portfolio navigation and main sections", async () => {
   assert.match(html, /<div class="side-static">Voice Agent<\/div>/);
   assert.match(html, /<p>COMING NEXT<\/p><h3>Voice Agent<\/h3>/);
   assert.match(html, /Building <strong>Production AI systems<\/strong>/);
-  assert.match(html, /Studying <strong>Claude Foundations<\/strong>/);
+  assert.match(html, /Studying <strong>Claude Developer &amp; Architect<\/strong>/);
   assert.match(html, /<strong>Let(?:&#x27;|')s connect<\/strong>/);
   assert.match(html, /Open to AI engineering opportunities, conversations, and collaboration\./);
   assert.match(html, /<nav aria-label="Connect">/);

@@ -78,7 +78,7 @@ export default function Home() {
       <div className="side-group"><p>EXPLORE</p><a href="#map"><span>⌘</span> About</a><a href="#projects"><span>↗</span> Projects</a><a href="#skills"><span>◆</span> Skills</a><a href="#experience"><span>▣</span> Experience</a><a href="#credentials"><span>✓</span> Credentials</a></div>
       <div className="side-group side-path"><p>ENGINEERING PATH</p><div><span>01</span>Production Data Systems</div><div><span>02</span>Backend Engineering</div><div><span>03</span>AI Engineering</div></div>
       <div className="side-group"><p>PROJECTS</p><a href="/demo/extraction">Extraction Agent</a><a href="/demo/research">Research Agent</a><div className="side-static">Voice Agent</div></div>
-      <div className="side-group side-current"><p>CURRENTLY</p><div>Building <strong>Production AI systems</strong></div><div>Studying <strong>Claude Foundations</strong></div></div>
+      <div className="side-group side-current"><p>CURRENTLY</p><div>Building <strong>Production AI systems</strong></div><div>Studying <strong>Claude Developer &amp; Architect</strong></div></div>
       <div className="side-group"><p>CONNECT</p><div className="side-connect-card"><strong>Let&apos;s connect</strong><span>Open to AI engineering opportunities, conversations, and collaboration.</span><nav aria-label="Connect"><a href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Résumé</a><a href="https://github.com/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="mailto:jbmarvin21@gmail.com">Email</a></nav></div></div>
     </aside>
 
@@ -123,8 +123,8 @@ export default function Home() {
       <section className="content-section" id="credentials">
         <p className="overline">04 · CERTIFICATIONS</p><h2>Completed and in progress.</h2>
         <div className="credential-grid">
-          <article><p className="overline">COMPLETED</p><h3>Earned certifications</h3><ul><li>Microsoft Certified: Azure Database Administrator Associate (DP-300)</li><li>CompTIA Security+</li></ul></article>
-          <article><p className="overline">CURRENTLY STUDYING</p><h3>Claude foundations</h3><ul><li>Claude Certified Associate – Foundations</li><li>Claude Certified Developer – Foundations</li><li>Claude Certified Architect – Foundations</li></ul></article>
+          <article className="credential-earned"><p className="overline">EARNED CERTIFICATIONS</p><h3>Earned certifications</h3><div className="credential-feature"><a className="credential-badge-link" href="https://www.credly.com/badges/34471933-cede-4253-813c-044842b7fc6a/public_url" target="_blank" rel="noopener noreferrer" aria-label="Verify Claude Certified Associate – Foundations credential on Credly"><img src="/credentials/claude-certified-associate-foundations.png" alt="Official Claude Certified Associate – Foundations badge" /></a><div><span>EARNED</span><h4>Claude Certified Associate – Foundations</h4><a href="https://www.credly.com/badges/34471933-cede-4253-813c-044842b7fc6a/public_url" target="_blank" rel="noopener noreferrer">Verify credential ↗</a></div></div><ul><li>Microsoft Certified: Azure Database Administrator Associate (DP-300)</li><li>CompTIA Security+</li></ul></article>
+          <article><p className="overline">CURRENTLY STUDYING</p><h3>Claude foundations</h3><ul><li>Claude Certified Developer – Foundations</li><li>Claude Certified Architect – Foundations</li></ul></article>
         </div>
       </section>
 
