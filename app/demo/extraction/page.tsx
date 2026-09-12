@@ -1,116 +1,63 @@
 import type { Metadata } from "next";
-
+import Link from "next/link";
 import { SiteHeader } from "../../SiteHeader";
 import { ExtractionDemo } from "./ExtractionDemo";
 
+const repositoryUrl = "https://github.com/marvinjbb/extraction-agent";
 const title = "Extraction Agent — Live Demo | Marvin";
-const description =
-  "Upload an invoice, turn it into structured data, and ask questions in plain English.";
+const description = "Upload an invoice, turn it into structured data, and ask questions in plain English.";
 
 export const metadata: Metadata = {
-  title,
-  description,
+  title, description,
   alternates: { canonical: "https://marvinjb.dev/demo/extraction" },
   openGraph: { title, description, type: "website", images: [] },
   twitter: { card: "summary", title, description, images: [] },
 };
 
+const proof = [
+  ["Multimodal input", "PDF · JPG · PNG"], ["Structured output", "Pydantic validation"],
+  ["Document intelligence", "Extraction + Q&A"], ["Production deployment", "FastAPI · Docker · Nginx"],
+];
+const decisions = [
+  ["Input-aware routing", "Text PDFs use direct parsing while scanned PDFs and images follow a bounded vision path."],
+  ["One output contract", "Every supported document path ends at the same application-owned Pydantic invoice schema."],
+  ["Structured Outputs", "The provider returns schema-constrained data instead of prose that the frontend must interpret."],
+  ["Separate Q&A", "Invoice extraction and document questions remain distinct requests with explicit validated inputs."],
+];
+const reliability = [
+  ["File validation", "The browser rejects empty, unsupported, and larger-than-5-MiB files before submission."],
+  ["Response validation", "Malformed extraction and Q&A responses do not silently become usable application data."],
+  ["Explicit errors", "Upload, extraction, timeout, network, and document-question failures stay visible to the user."],
+  ["Regression coverage", "Frontend behavior, API handling, document routing, and structured contracts are tested."],
+];
+
 export default function ExtractionDemoPage() {
-  return (
-    <main id="top">
-      <SiteHeader />
+  return <main id="top" className="project-case-study extraction-case-study">
+    <SiteHeader />
+    <div className="project-page">
+      <section className="project-hero" id="overview">
+        <div className="project-hero-copy"><p className="overline">LIVE AI SYSTEM · EXTRACTION AGENT</p><h1>Turn unstructured invoices into validated data.</h1><p className="lead">A multimodal document pipeline that processes PDFs and images, routes inputs appropriately, extracts invoice fields with OpenAI Structured Outputs, validates responses with Pydantic, and supports questions over the extracted document.</p><div className="project-hero-actions"><a className="primary-button" href="#upload">Try the live demo</a><a className="secondary-button" href={repositoryUrl} target="_blank" rel="noopener noreferrer">View backend repository ↗</a></div></div>
+        <div className="project-live-mark" aria-label="Live system"><span aria-hidden="true" /><strong>LIVE</strong><small>PUBLIC DEMO</small></div>
+      </section>
+      <div className="project-proof" aria-label="Extraction Agent system properties">{proof.map(([label, value], index) => <div key={label}><span>0{index + 1}</span><small>{label}</small><strong>{value}</strong></div>)}</div>
+      <nav className="project-nav" aria-label="Extraction Agent project navigation"><a href="#upload">Demo</a><a href="#project">How it works</a><a href="#engineering">Engineering</a><a href="#reliability">Reliability</a><a href={repositoryUrl} target="_blank" rel="noopener noreferrer">Repository ↗</a></nav>
 
-      <aside className="sidebar demo-sidebar" aria-label="Extraction demo">
-        <div className="side-group">
-          <p>DEMO</p>
-          <a href="#overview"><span>01</span> Overview</a>
-          <a href="#upload"><span>02</span> Upload</a>
-          <a href="#results"><span>03</span> Results</a>
-          <a href="#project"><span>04</span> Project</a>
-        </div>
-        <div className="side-group topics">
-          <p>PROJECT</p>
-          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-          <a href="/#projects">Selected work <span>›</span></a>
-          <a
-            href="https://github.com/marvinjbb/extraction-agent"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Backend repository <span>↗</span>
-          </a>
-        </div>
-        <div className="side-help">
-          <strong>Live project</strong>
-          <p>One PDF, scanned PDF, JPG, or PNG invoice, up to 5 MiB.</p>
-          <a href="#upload">Try the demo</a>
-        </div>
-      </aside>
+      <section className="project-section project-demo-section" id="upload">
+        <header className="project-section-heading"><p className="overline">01 · LIVE DEMO</p><h2>Upload one invoice. Inspect structured data.</h2><p>Use a PDF, scanned PDF, JPG, or PNG up to 5 MiB. The frontend does not store your file.</p></header>
+        <ol className="demo-steps" aria-label="Extraction demo steps"><li><span>01</span>Upload invoice</li><li><span>02</span>Extract data</li><li><span>03</span>Inspect Table / JSON</li><li><span>04</span>Ask questions</li></ol>
+        <ExtractionDemo />
+      </section>
 
-      <div className="page-content demo-page">
-        <section className="map-section demo-hero" id="overview">
-          <p className="overline">LIVE DEMO · DOCUMENT EXTRACTION</p>
-          <h1>Turn invoices into answers.</h1>
-          <p className="lead">
-            Upload an invoice and let AI extract the important details into structured
-            data. Then ask questions about it in plain English—find totals, vendors,
-            line items, dates, or get a quick summary without digging through the
-            document yourself.
-          </p>
-          <nav className="question-map demo-facts" aria-label="Demo scope">
-            <div><span>01</span><strong>Upload</strong><i>Add a PDF, JPG, PNG, or scanned invoice</i></div>
-            <div><span>02</span><strong>AI Extracts</strong><i>AI reads and structures the invoice</i></div>
-            <div><span>03</span><strong>Explore</strong><i>Review extracted information in Table or JSON</i></div>
-            <div><span>04</span><strong>Ask</strong><i>Ask questions about the invoice in plain English</i></div>
-          </nav>
-        </section>
+      <section className="project-section" id="project">
+        <header className="project-section-heading"><p className="overline">02 · HOW IT WORKS</p><h2>One interface, two document-reading paths.</h2><p>Input routing changes how the document is read; every path converges on one validated invoice contract.</p></header>
+        <div className="extraction-system-map" aria-label="Extraction Agent architecture"><div className="system-node"><span>INPUT</span><strong>PDF / Image</strong></div><i aria-hidden="true">→</i><div className="system-node"><span>ROUTE</span><strong>Input routing</strong></div><i aria-hidden="true">→</i><div className="extraction-paths"><div><span>TEXT</span><strong>pypdf</strong></div><div><span>VISION</span><strong>Image path</strong></div></div><i aria-hidden="true">→</i><div className="system-node"><span>EXTRACT</span><strong>OpenAI Structured Outputs</strong></div><i aria-hidden="true">→</i><div className="system-node"><span>VALIDATE</span><strong>Pydantic</strong></div><i aria-hidden="true">→</i><div className="system-node system-node-output"><span>OUTPUT</span><strong>Structured invoice</strong><b aria-hidden="true">↓</b><strong>Document Q&amp;A</strong></div></div>
+      </section>
 
-        <section className="content-section demo-workspace" id="upload">
-          <p className="overline">01 · UPLOAD</p>
-          <h2>Choose an invoice.</h2>
-          <p className="section-intro">
-            Upload one PDF, scanned PDF, JPG, or PNG invoice up to 5 MiB. The
-            frontend does not store your file.
-          </p>
-          <ExtractionDemo />
-        </section>
-
-        <section className="content-section" id="project">
-          <p className="overline">PROJECT · HOW IT WORKS</p>
-          <h2>One interface. Two document paths.</h2>
-          <p className="section-intro">
-            The React demo sends files to a Dockerized FastAPI service through
-            api.marvinjb.dev. Text PDFs use pypdf; scanned PDFs and images use a
-            bounded vision route. OpenAI structured extraction finishes at the same
-            Pydantic invoice schema before results reach the browser.
-          </p>
-          <div className="card-list">
-            <article className="info-card project static-summary">
-              <div className="card-icon">API</div>
-              <div><p>DELIVERY</p><h3>FastAPI · Docker · Nginx · VPS</h3><span>A separately deployable backend keeps provider credentials and document processing outside the portfolio frontend.</span></div>
-            </article>
-            <article className="info-card project static-summary">
-              <div className="card-icon">AI</div>
-              <div><p>VALIDATED OUTPUT</p><h3>OpenAI · vision routing · Pydantic</h3><span>Every supported input follows the appropriate reading path and ends at one application-owned structured invoice contract.</span></div>
-            </article>
-          </div>
-        </section>
-
-        <footer>
-          <div>
-            <strong>marvinjb.dev</strong>
-            <span>AI engineering, projects, and field notes.</span>
-          </div>
-          <div>
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-            <a href="/#projects">Selected work</a>
-            <a href="https://github.com/marvinjbb/extraction-agent">View Backend Repository</a>
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-            <a href="/#connect">Let&apos;s Connect</a>
-          </div>
-          <span>© 2026 Marvin</span>
-        </footer>
-      </div>
-    </main>
-  );
+      <section className="project-section" id="engineering"><header className="project-section-heading"><p className="overline">03 · ENGINEERING DECISIONS</p><h2>Different inputs, one dependable result shape.</h2></header><div className="decision-grid">{decisions.map(([heading, copy], index) => <article key={heading}><span>0{index + 1}</span><h3>{heading}</h3><p>{copy}</p></article>)}</div></section>
+      <section className="project-section reliability-section" id="reliability"><header className="project-section-heading"><p className="overline">04 · RELIABILITY</p><h2>Invalid input and output fail clearly.</h2><p>Validation protects both sides of the provider call, and errors remain actionable in the interface.</p></header><div className="reliability-list">{reliability.map(([heading, copy]) => <article key={heading}><h3>{heading}</h3><p>{copy}</p></article>)}</div></section>
+      <section className="project-section stack-section" id="stack"><p className="overline">05 · TECHNOLOGY STACK</p><div><strong>Interface</strong><span>React · TypeScript</span></div><div><strong>Application</strong><span>Python · FastAPI · Pydantic · pypdf</span></div><div><strong>AI</strong><span>OpenAI Structured Outputs · multimodal vision</span></div><div><strong>Production</strong><span>Docker · Nginx · Ubuntu VPS · HTTPS · health checks</span></div></section>
+      <section className="project-repository" id="repository"><div><p className="overline">INSPECT THE IMPLEMENTATION</p><h2>See the routing, schemas, tests, and deployment design.</h2></div><a className="primary-button" href={repositoryUrl} target="_blank" rel="noopener noreferrer">View backend repository ↗</a></section>
+      <footer className="project-footer"><div><strong>marvinjb.dev</strong><span>AI engineering, projects, and field notes.</span></div><div><Link href="/#projects">Selected work</Link><Link href="/#connect">Let&apos;s Connect</Link></div><span>© 2026 Marvin</span></footer>
+    </div>
+  </main>;
 }

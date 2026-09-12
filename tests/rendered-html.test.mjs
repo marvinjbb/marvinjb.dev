@@ -22,18 +22,17 @@ test("server-renders the Marvin portfolio map", async () => {
   const html = await response.text();
   assert.match(html, /<title>Marvin — AI Engineer \| Backend &amp; Production Systems<\/title>/i);
   assert.match(html, /AI Engineer \| Backend &amp; Production Systems/);
-  assert.match(html, /Hey, I(?:&#x27;|')m Marvin\./);
-  assert.match(html, /I started in production database and data engineering, where reliability, incident response, automation, and performance mattered every day\./);
-  assert.match(html, /That foundation led me deeper into Python and backend engineering, and now I use it to build production-oriented AI systems with FastAPI, LLMs, agent workflows, grounding, Docker, and real deployment infrastructure\./);
+  assert.match(html, /AI Engineer building production systems, not prototypes\./);
+  assert.match(html, /I(?:&#x27;|')m Marvin — a production engineer turned AI engineer building reliable AI applications with Python, FastAPI, LLMs, agent workflows, structured outputs, and real deployment infrastructure\./);
+  assert.match(html, /Production systems experience/);
+  assert.match(html, /Python \/ FastAPI/);
+  assert.match(html, /Live AI projects/);
+  assert.match(html, /href="#projects">View Projects<\/a>/);
   assert.match(html, /href="\/resume\/Marvin-Joseph-Bogere-Resume\.pdf" download="">Download Résumé<\/a>/);
-  assert.match(html, /Production database &amp; data engineering → Python &amp; backend engineering → production AI systems/);
-  assert.match(html, /Featured AI Work/);
-  assert.match(html, /Projects I(?:&#x27;|')ve built and deployed\./);
-  assert.match(html, /Technologies and tools I work with\./);
-  assert.match(html, /Where I(?:&#x27;|')ve worked and what I delivered\./);
-  assert.match(html, /Certifications and education\./);
-  assert.match(html, /I build systems people can count on\./);
-  assert.match(html, /I(?:&#x27;|')ve spent years working with databases, data pipelines, and production systems\./);
+  assert.match(html, /Production database &amp; data engineering.*Python &amp; backend engineering.*Production AI systems/);
+  assert.match(html, /Production experience is the foundation\./);
+  assert.doesNotMatch(html, /Featured AI Work/);
+  assert.doesNotMatch(html, /Projects I(?:&#x27;|')ve built and deployed\./);
   assert.match(html, /What I(?:&#x27;|')m learning and building\./);
   assert.match(html, /Notes on AI engineering, production systems, certifications, and the lessons I pick up while building\./);
   assert.match(html, /CLAUDE · CERTIFICATION/);
@@ -49,23 +48,21 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /href="\/demo\/extraction"/);
   assert.match(html, /Try Live Demo/);
   assert.match(html, /View Project/);
-  assert.match(html, /View Backend Repository/);
+  assert.match(html, /GitHub ↗/);
   assert.match(html, /https:\/\/github\.com\/marvinjbb\/extraction-agent/);
   assert.match(html, /Research Agent/);
-  assert.match(html, /planner dynamically creates 2–5 focused assignments/i);
+  assert.match(html, /breaks complex questions into focused assignments, researches them in parallel/i);
   assert.match(html, /Application-owned evidence IDs/);
-  assert.match(html, /deterministic aggregation/);
   assert.match(html, /TAVILY/);
-  assert.match(html, /RATE LIMITING/);
+  assert.match(html, /ASYNCIO/);
   assert.match(html, /href="\/demo\/research"/);
   assert.match(html, /https:\/\/github\.com\/marvinjbb\/research-agent/);
-  assert.match(html, /multimodal invoice pipeline processes PDFs and images/i);
+  assert.match(html, /multimodal document system that turns invoices from PDFs and images/i);
   assert.match(html, /PYPDF/);
   assert.match(html, /Voice Agent/);
   assert.match(html, /COMING NEXT/);
   assert.match(html, /A real-time AI voice agent designed to listen, reason, use tools, and respond naturally\./);
-  assert.match(html, /PLANNED ARCHITECTURE · Voice → Speech Recognition → Agent → Tools → LLM → Speech Response/);
-  assert.match(html, /PLANNED TECHNOLOGIES · Python · Streaming · Speech-to-Text · LLMs · Tool Calling · Text-to-Speech/);
+  assert.match(html, /PLANNED · PYTHON · STREAMING · SPEECH-TO-TEXT · TOOL CALLING · TEXT-TO-SPEECH/);
   assert.doesNotMatch(html, /Operations Agent/);
   assert.match(html, /Diplomatic Solutions Corporation/);
   assert.match(html, /Senior SQL Server DBA/);
@@ -88,7 +85,7 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /Western Governors University/);
   assert.match(html, /EXPECTED 2026/);
   assert.match(html, /Montgomery College/);
-  for (const skill of ["AI Engineering", "Backend Engineering", "Production &amp; Infrastructure", "Data Engineering", "Production Systems"]) assert.match(html, new RegExp(skill));
+  for (const capability of ["AI Systems", "Backend", "Production &amp; Infrastructure", "Data Foundation"]) assert.match(html, new RegExp(capability));
   assert.doesNotMatch(html, /Project links, screenshots, repositories, and verified results will replace these structured placeholders/);
   assert.doesNotMatch(html, /Your flagship project will live here/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/i);
@@ -97,24 +94,26 @@ test("server-renders the Marvin portfolio map", async () => {
 test("renders the portfolio navigation and main sections", async () => {
   const html = await (await render()).text();
   for (const anchor of ["map", "projects", "skills", "experience", "credentials", "education", "blog", "connect"]) assert.match(html, new RegExp(`id=["']${anchor}["']`));
-  for (const label of ["Projects", "Skills", "Experience", "Credentials", "LinkedIn"]) assert.match(html, new RegExp(label));
+  for (const label of ["Projects", "Capabilities", "Experience", "Credentials", "Writing", "LinkedIn"]) assert.match(html, new RegExp(label));
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/marvin-jbb/);
   assert.match(html, /marvin-portrait\.jpg/);
-  for (const step of ["01", "Production Data Systems", "02", "Backend Engineering", "03", "AI Engineering"]) assert.match(html, new RegExp(step));
-  assert.match(html, /href="\/demo\/extraction"[^>]*>Extraction Agent<\/a>/);
-  assert.match(html, /href="\/demo\/research"[^>]*>Research Agent<\/a>/);
-  assert.match(html, /<div class="side-static">Voice Agent<\/div>/);
-  assert.match(html, /<p>COMING NEXT<\/p><h3>Voice Agent<\/h3>/);
+  assert.doesNotMatch(html, /ENGINEERING PATH/);
+  assert.doesNotMatch(html, /<p>PROJECTS<\/p><a href="\/demo\/extraction">/);
+  assert.match(html, /<span>COMING NEXT<\/span><h3>Voice Agent<\/h3>/);
   assert.match(html, /Building <strong>Production AI systems<\/strong>/);
   assert.match(html, /Studying <strong>Claude Developer &amp; Architect<\/strong>/);
-  assert.match(html, /<strong>Let(?:&#x27;|')s connect<\/strong>/);
-  assert.match(html, /Open to AI engineering opportunities, conversations, and collaboration\./);
-  assert.match(html, /<nav aria-label="Connect">/);
-  assert.match(html, /href="https:\/\/github\.com\/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub<\/a>/);
-  assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
-  assert.match(html, /href="mailto:jbmarvin21@gmail\.com">Email<\/a>/);
+  assert.doesNotMatch(html, /<nav aria-label="Connect">/);
   assert.match(html, /href="\/#connect">Let(?:&#x27;|')s Connect<\/a>/);
-  assert.match(html, /href="\/resume\/Marvin-Joseph-Bogere-Resume\.pdf" download="">Résumé<\/a>/);
+  assert.match(html, /href="\/resume\/Marvin-Joseph-Bogere-Resume\.pdf" download="">Download Résumé/);
+  assert.match(html, /FLAGSHIP AI PROJECTS/);
+  assert.match(html, /SYSTEM PREVIEW/);
+  assert.match(html, /Open live interface →/);
+  for (const step of ["User question", "Planner", "2–5 parallel research workers", "Grounded report", "PDF / image", "Input routing", "Extraction", "Pydantic validation", "Structured invoice data", "Document Q&amp;A"]) assert.ok(html.includes(step));
+  assert.match(html, /Evidence \+ sources/);
+  assert.match(html, /class="research-preview-flow" aria-label="Research Agent parallel workflow"/);
+  assert.match(html, /class="extraction-pipeline" aria-label="Extraction Agent linear workflow"/);
+  for (const capability of ["AI Systems", "Backend Engineering", "Production &amp; Infrastructure", "Data Foundation"]) assert.match(html, new RegExp(`<h3>${capability}<\\/h3>`));
+  assert.match(html, /class="capability-strengths">LLM APIs · Agent workflows · Structured Outputs/);
   assert.doesNotMatch(html, /<p>TOPICS<\/p>/);
 });
 
@@ -124,21 +123,22 @@ test("server-renders the extraction demo route", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /<title>Extraction Agent — Live Demo \| Marvin<\/title>/i);
-  assert.match(html, /Turn invoices into answers\./);
-  assert.match(html, /Upload an invoice and let AI extract the important details/);
-  assert.match(html, /Add a PDF, JPG, PNG, or scanned invoice/);
-  assert.match(html, /AI Extracts/);
-  assert.match(html, /AI reads and structures the invoice/);
-  assert.match(html, /Review extracted information in Table or JSON/);
-  assert.match(html, /Ask questions about the invoice in plain English/);
+  assert.match(html, /Turn unstructured invoices into validated data\./);
+  assert.match(html, /LIVE AI SYSTEM · EXTRACTION AGENT/);
+  assert.match(html, /Upload one invoice\. Inspect structured data\./);
+  assert.match(html, /Upload invoice/);
+  assert.match(html, /Inspect Table \/ JSON/);
+  assert.match(html, /Ask questions/);
   assert.match(html, /Drag and drop your invoice here\./);
   assert.match(html, /Browse files/);
   assert.match(html, /Extract invoice/);
   assert.match(html, /Table/);
   assert.match(html, /JSON/);
-  assert.match(html, /Upload → AI Extracts → Explore → Ask/);
-  assert.match(html, /FastAPI · Docker · Nginx · VPS/);
-  assert.match(html, /OpenAI · vision routing · Pydantic/);
+  assert.match(html, /One interface, two document-reading paths\./);
+  assert.match(html, /Input-aware routing/);
+  assert.match(html, /OpenAI Structured Outputs/);
+  assert.match(html, /Invalid input and output fail clearly\./);
+  assert.match(html, /FastAPI · Docker · Nginx/);
   assert.match(html, /5 MiB/);
   assert.doesNotMatch(html, /Ask this invoice/);
   assert.doesNotMatch(html, /OPENAI_API_KEY|api\.openai\.com/i);
@@ -149,26 +149,18 @@ test("server-renders the research demo route", async () => {
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /<title>Research Agent — Live Demo \| Marvin<\/title>/i);
-  assert.match(html, /From one question to a grounded report\./);
-  assert.match(html, /What should the team investigate\?/);
+  assert.match(html, /Grounded research with parallel AI workers\./);
+  assert.match(html, /LIVE AI SYSTEM · RESEARCH AGENT/);
+  assert.match(html, /Give the research team one question\./);
   assert.match(html, /Research question/);
   assert.match(html, /Start Research/);
-  assert.match(html, /Question/);
-  assert.match(html, /Research Plan/);
-  assert.match(html, /2–5 Workers/);
-  for (const description of [
-    "User submits a research question and selects the research depth.",
-    "The planner breaks the question into focused research assignments.",
-    "Independent workers research their assignments in parallel using web search.",
-    "Findings are grounded to validated source evidence and citations.",
-    "Results are combined, compared, and checked for conflicts and uncertainty.",
-    "A grounded research report is returned with findings, guidance, and sources.",
-  ]) {
-    assert.ok(html.includes(description));
-  }
-  assert.match(html, /Grounding is an application rule\./);
+  assert.match(html, /2–5 research workers/);
+  assert.match(html, /Evidence stays traceable from search to report\./);
+  assert.match(html, /Worker 01/);
+  assert.match(html, /Deterministic aggregation/);
+  assert.match(html, /Claim-bound synthesis/);
   assert.match(html, /Application-owned evidence IDs/);
-  assert.match(html, /Strict citation grounding/);
+  assert.match(html, /Failure is bounded and visible\./);
   assert.match(html, /https:\/\/github\.com\/marvinjbb\/research-agent/);
   assert.doesNotMatch(html, /OPENAI_API_KEY|TAVILY_API_KEY|api\.openai\.com/i);
 });

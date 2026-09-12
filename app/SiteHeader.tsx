@@ -13,7 +13,7 @@ export function SiteHeader() {
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a href="/#projects">Projects</a>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/#skills">Skills</a>
+        <a href="/#skills">Capabilities</a>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a href="/#experience">Experience</a>
         <a
