@@ -24,7 +24,10 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /AI Engineer \| Backend &amp; Production Systems/);
   assert.match(html, /AI Engineer building production systems, not prototypes\./);
   assert.match(html, /I(?:&#x27;|')m Marvin — a production database administrator turned AI engineer, building reliable AI systems with Python, FastAPI, LLMs, agent workflows, and real deployment infrastructure\./);
-  for (const item of ["↗</span> Projects", "▣</span> Experience", "⌘</span> Capabilities", "✓</span> Credentials", "¶</span> Writing"]) assert.match(html, new RegExp(item));
+  for (const [anchor, item] of [["projects", "Projects"], ["experience", "Experience"], ["skills", "Capabilities"], ["credentials", "Credentials"], ["blog", "Writing"]]) assert.match(html, new RegExp(`href="#${anchor}">${item}</a>`));
+  const sidebar = html.match(/<aside class="sidebar"[\s\S]*?<\/aside>/)?.[0] ?? "";
+  assert.ok(sidebar);
+  for (const icon of ["↗", "▣", "⌘", "✓", "¶"]) assert.doesNotMatch(sidebar, new RegExp(icon));
   assert.match(html, /Production systems experience/);
   assert.match(html, /Python \/ FastAPI/);
   assert.match(html, /Live AI projects/);

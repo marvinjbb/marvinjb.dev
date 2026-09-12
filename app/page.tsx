@@ -110,7 +110,7 @@ export default function Home() {
     <SiteHeader />
 
     <aside className="sidebar" aria-label="Explore">
-      <div className="side-group"><p>EXPLORE</p><a href="#projects"><span>↗</span> Projects</a><a href="#experience"><span>▣</span> Experience</a><a href="#skills"><span>⌘</span> Capabilities</a><a href="#credentials"><span>✓</span> Credentials</a><a href="#blog"><span>¶</span> Writing</a></div>
+      <div className="side-group"><p>EXPLORE</p><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#skills">Capabilities</a><a href="#credentials">Credentials</a><a href="#blog">Writing</a></div>
       <div className="side-group side-current"><p>CURRENTLY</p><div>Building <strong>Production AI systems</strong></div><div>Studying <strong>Claude Developer &amp; Architect</strong></div></div>
       <a className="side-resume" href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Download Résumé <span>↓</span></a>
     </aside>
