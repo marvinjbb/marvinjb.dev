@@ -110,7 +110,7 @@ export default function Home() {
     <SiteHeader />
 
     <aside className="sidebar" aria-label="Explore">
-      <div className="side-group"><p>EXPLORE</p><a href="#projects"><span>↗</span> Projects</a><a href="#experience"><span>▣</span> Experience</a><a href="#skills"><span>◆</span> Capabilities</a><a href="#credentials"><span>✓</span> Credentials</a><a href="#blog"><span>¶</span> Writing</a></div>
+      <div className="side-group"><p>EXPLORE</p><a href="#projects"><span>↗</span> Projects</a><a href="#experience"><span>▣</span> Experience</a><a href="#skills"><span>⌘</span> Capabilities</a><a href="#credentials"><span>✓</span> Credentials</a><a href="#blog"><span>¶</span> Writing</a></div>
       <div className="side-group side-current"><p>CURRENTLY</p><div>Building <strong>Production AI systems</strong></div><div>Studying <strong>Claude Developer &amp; Architect</strong></div></div>
       <a className="side-resume" href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Download Résumé <span>↓</span></a>
     </aside>
@@ -122,7 +122,7 @@ export default function Home() {
           <div>
             <p className="overline">MARVIN · AI ENGINEERING</p>
             <h1>AI Engineer building production systems, not prototypes.</h1>
-            <p className="intro-role">I&apos;m Marvin — a production engineer turned AI engineer building reliable AI applications with Python, FastAPI, LLMs, agent workflows, structured outputs, and real deployment infrastructure.</p>
+            <p className="intro-role">I&apos;m Marvin — a production database administrator turned AI engineer, building reliable AI systems with Python, FastAPI, LLMs, agent workflows, and real deployment infrastructure.</p>
             <div className="hero-actions"><a className="primary-button" href="#projects">View Projects</a><a className="secondary-button" href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Download Résumé</a></div>
             <ul className="hero-proof" aria-label="Engineering highlights"><li>Production systems experience</li><li>Python / FastAPI</li><li>Live AI projects</li></ul>
           </div>
