@@ -221,6 +221,14 @@
 .home-page #experience,.home-page #skills,.home-page #credentials,.home-page #education,.home-page #blog{padding-top:68px;padding-bottom:68px}
 .home-page #experience>h2,.home-page #skills>h2,.home-page #credentials>h2,.home-page #education>h2,.home-page #blog>h2{font-size:clamp(2.1rem,3.4vw,3.25rem)}
 
+@media(min-width:1400px){
+  .home-page .map-section,.home-page .content-section,.home-page footer{width:calc(100% - 80px);max-width:1240px;margin-left:40px;margin-right:auto}
+  .home-page .personal-intro{grid-template-columns:minmax(210px,240px) minmax(0,1fr);gap:56px}
+  .home-page .personal-intro>img{max-width:240px}
+  .home-page .personal-intro h1{max-width:760px}
+  .home-page .personal-intro .intro-role{max-width:700px}
+}
+
 @media(max-width:1180px) and (min-width:701px){
   :root{--side:220px}
   .sidebar{padding-left:20px;padding-right:20px}
