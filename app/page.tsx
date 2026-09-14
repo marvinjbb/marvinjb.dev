@@ -25,6 +25,20 @@ const capabilities = [
 
 const projects = [
   {
+    label: "LIVE · INCIDENT INVESTIGATION AGENT",
+    title: "Incident Investigation Agent",
+    description: "A production-backed AI operations system that investigates real synthetic application and PostgreSQL failures through restricted diagnostic tools, then requires human approval before remediation.",
+    outcome: "An evidence-backed root-cause report, bounded remediation proposal, human approval gate, audit trail, and verified recovery.",
+    proof: ["Progressive diagnostic tool selection", "Strict evidence citation validation", "Allowlisted human-approved remediation"],
+    tags: "PYTHON · FASTAPI · OPENAI · POSTGRESQL · DOCKER · NGINX",
+    flow: ["Controlled incident", "Restricted diagnostics", "Evidence-backed report", "Human approval", "Recovery verification"],
+    deliverables: ["Root cause", "Validated evidence", "Audited recovery"],
+    flowLabel: "INCIDENT → EVIDENCE → RECOVERY",
+    previewKind: "incident",
+    demo: "/demo/incident-investigation",
+    repository: null,
+  },
+  {
     label: "LIVE · RESEARCH AGENT",
     title: "Research Agent",
     description: "A research system that breaks complex questions into focused assignments, researches them in parallel, and produces a grounded report with traceable evidence and citations.",
@@ -99,7 +113,7 @@ function ProjectPreview({ project }: { project: (typeof projects)[number] }) {
       <div className="preview-node"><span>04</span><strong>Evidence + sources</strong></div>
       <i aria-hidden="true">↓</i>
       <div className="preview-node preview-final-node"><span>05</span><strong>Grounded report</strong></div>
-    </div> : <ol className="extraction-pipeline" aria-label="Extraction Agent linear workflow">{project.flow.map((step, stepIndex) => <li key={step}><span>{String(stepIndex + 1).padStart(2, "0")}</span><strong>{step}</strong></li>)}</ol>}
+    </div> : <ol className="extraction-pipeline" aria-label={`${project.title} linear workflow`}>{project.flow.map((step, stepIndex) => <li key={step}><span>{String(stepIndex + 1).padStart(2, "0")}</span><strong>{step}</strong></li>)}</ol>}
     <div className="preview-deliverables"><span>VALIDATED OUTPUT</span><ul>{project.deliverables.map((item) => <li key={item}>{item}</li>)}</ul></div>
     <a href={project.demo}>Open live interface →</a>
   </div>;
@@ -131,8 +145,8 @@ export default function Home() {
 
       <section className="content-section flagship-section" id="projects">
         <p className="overline">01 · FLAGSHIP AI PROJECTS</p><h2>Built to work beyond the prompt.</h2>
-        <p className="section-intro">Two live AI systems that demonstrate orchestration, validation, grounding, backend engineering, and production deployment.</p>
-        <div className="flagship-list">{projects.map((project, index) => <article className={`flagship-project${index % 2 ? " flagship-project-reverse" : ""}`} key={project.title}><div className="flagship-copy"><div className="project-status"><span aria-hidden="true" />{project.label}</div><h3>{project.title}</h3><p>{project.description}</p><div className="project-outcome"><span>OUTPUT</span><strong>{project.outcome}</strong></div><ul>{project.proof.map((item) => <li key={item}>{item}</li>)}</ul><small>{project.tags}</small><div className="project-actions"><a className="primary-button" href={project.demo}>Try Live Demo</a><a className="secondary-button" href={`${project.demo}#project`}>View Project</a><a className="text-link" href={project.repository} target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div><div className="project-preview"><div className="preview-bar"><span>SYSTEM PREVIEW</span><i aria-hidden="true" /></div><ProjectPreview project={project} /></div></article>)}</div>
+        <p className="section-intro">Three live AI systems that demonstrate orchestration, validation, grounding, backend engineering, and production deployment.</p>
+        <div className="flagship-list">{projects.map((project, index) => <article className={`flagship-project${index % 2 ? " flagship-project-reverse" : ""}`} key={project.title}><div className="flagship-copy"><div className="project-status"><span aria-hidden="true" />{project.label}</div><h3>{project.title}</h3><p>{project.description}</p><div className="project-outcome"><span>OUTPUT</span><strong>{project.outcome}</strong></div><ul>{project.proof.map((item) => <li key={item}>{item}</li>)}</ul><small>{project.tags}</small><div className="project-actions"><a className="primary-button" href={project.demo}>Try Live Demo</a><a className="secondary-button" href={`${project.demo}${project.previewKind === "incident" ? "#architecture" : "#project"}`}>View Project</a>{project.repository && <a className="text-link" href={project.repository} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}</div></div><div className="project-preview"><div className="preview-bar"><span>SYSTEM PREVIEW</span><i aria-hidden="true" /></div><ProjectPreview project={project} /></div></article>)}</div>
         <article className="voice-next"><div><span>COMING NEXT</span><h3>Voice Agent</h3><p>A real-time AI voice agent designed to listen, reason, use tools, and respond naturally.</p></div><small>PLANNED · PYTHON · STREAMING · SPEECH-TO-TEXT · TOOL CALLING · TEXT-TO-SPEECH</small></article>
       </section>
 

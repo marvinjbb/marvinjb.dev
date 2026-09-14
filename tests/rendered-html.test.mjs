@@ -31,6 +31,7 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /Production systems experience/);
   assert.match(html, /Python \/ FastAPI/);
   assert.match(html, /Live AI projects/);
+  assert.match(html, /Three live AI systems/);
   assert.match(html, /href="#projects">View Projects<\/a>/);
   assert.match(html, /href="\/resume\/Marvin-Joseph-Bogere-Resume\.pdf" download="">Download Résumé<\/a>/);
   assert.match(html, /Production database &amp; data engineering.*Python &amp; backend engineering.*Production AI systems/);
@@ -61,6 +62,9 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /ASYNCIO/);
   assert.match(html, /href="\/demo\/research"/);
   assert.match(html, /https:\/\/github\.com\/marvinjbb\/research-agent/);
+  assert.match(html, /Incident Investigation Agent/);
+  assert.match(html, /href="\/demo\/incident-investigation"/);
+  assert.match(html, /Progressive diagnostic tool selection/);
   assert.match(html, /multimodal document system that turns invoices from PDFs and images/i);
   assert.match(html, /PYPDF/);
   assert.match(html, /Voice Agent/);
@@ -167,4 +171,20 @@ test("server-renders the research demo route", async () => {
   assert.match(html, /Failure is bounded and visible\./);
   assert.match(html, /https:\/\/github\.com\/marvinjbb\/research-agent/);
   assert.doesNotMatch(html, /OPENAI_API_KEY|TAVILY_API_KEY|api\.openai\.com/i);
+});
+
+test("server-renders the incident investigation demo route", async () => {
+  const response = await render("/demo/incident-investigation");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /<title>Incident Investigation Agent — Live Demo \| Marvin<\/title>/i);
+  assert.match(html, /Investigate failure\. Prove the cause\. Approve the fix\./);
+  assert.match(html, /Blocked PostgreSQL Query/);
+  assert.match(html, /Connection Pool Exhaustion/);
+  assert.match(html, /Failing Application Deployment/);
+  assert.match(html, /Run Incident/);
+  assert.match(html, /Restricted diagnostics/);
+  assert.match(html, /Human approval/);
+  assert.match(html, /Allowlisted remediation/);
+  assert.doesNotMatch(html, /OPENAI_API_KEY|POSTGRES_PASSWORD|api\.openai\.com/i);
 });
