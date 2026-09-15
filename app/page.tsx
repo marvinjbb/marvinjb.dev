@@ -97,16 +97,10 @@ const experience = [
 const posts = [
   { label: "AI AGENTS · SECURITY", status: "PUBLISHED", title: "We're Giving AI Agents Tools, Memory, and Permissions. What Could Go Wrong?", description: "A practical look at the security risks that emerge when AI agents are given tools, memory, and permission to act.", href: "https://medium.com/@jbmarvin21/were-giving-ai-agents-tools-memory-and-permissions-what-could-go-wrong-630294132412?sharedUserId=jbmarvin21" },
   { label: "CLAUDE · CERTIFICATION", status: "PUBLISHED", title: "The AI Study Loop I Used to Pass the Claude Certified Associate Exam", description: "How I used Anthropic’s official material, ChatGPT, NotebookLM, and practice questions to understand the concepts instead of just memorizing them.", href: "https://medium.com/@jbmarvin21/the-ai-study-loop-i-used-to-pass-the-claude-certified-associate-exam-7d7ad25361a9" },
-  { label: "LAB NOTE · PLANNED", title: "What makes an agent trustworthy?", description: "The product decisions that matter more than choosing an orchestration framework." },
-  { label: "SYSTEM NOTE · PLANNED", title: "The small model gateway I keep rebuilding", description: "A practical architecture for routing, fallbacks, usage data, and provider independence." },
 ];
 
 function MediumMark() {
   return <svg viewBox="0 0 48 28" role="img" aria-label="Medium"><path d="M2 4.5 8.2 9v12.3L2 25.5V27h16v-1.5l-5.9-4.2V10.6L21.3 27h2.3l8-16.4v13.2l-4.5 1.7V27H46v-1.5l-4.1-1.7V6.2L46 4.5V3H33.1l-7.5 15.4L17 3H2v1.5Z" /></svg>;
-}
-
-function ArticleMark() {
-  return <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3.5h11l5 5V28.5H8zM19 3.5v6h5M12 14h8M12 18h8M12 22h6" /></svg>;
 }
 
 function ProjectPreview({ project }: { project: (typeof projects)[number] }) {
@@ -194,7 +188,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="content-section" id="blog"><p className="overline">07 · ARTICLES</p><h2>Articles on what I&apos;m learning and building.</h2><p className="section-intro">Notes on AI engineering, production systems, certifications, and the lessons I pick up while building.</p><div className="card-list">{posts.map((post) => <article className={`info-card post${post.href ? " post-live" : " post-planned"}`} key={post.title}><div className="card-icon article-icon">{post.href ? <MediumMark /> : <ArticleMark />}</div><div><p>{post.label}</p><h3>{post.title}</h3><span>{post.description}</span>{post.href && <div className="post-published"><small>{post.status}</small><a href={post.href} target="_blank" rel="noopener noreferrer">Read on Medium ↗</a></div>}</div></article>)}</div></section>
+      <section className="content-section" id="blog"><p className="overline">07 · ARTICLES</p><h2>Articles on what I&apos;m learning and building.</h2><p className="section-intro">Notes on AI engineering, production systems, certifications, and the lessons I pick up while building.</p><div className="card-list">{posts.map((post) => <article className="info-card post post-live" key={post.title}><div className="card-icon article-icon"><MediumMark /></div><div><p>{post.label}</p><h3>{post.title}</h3><span>{post.description}</span><div className="post-published"><small>{post.status}</small><a href={post.href} target="_blank" rel="noopener noreferrer">Read on Medium ↗</a></div></div></article>)}</div></section>
 
       <section className="contact-section" id="connect"><p className="overline">CONNECT</p><h2>Let&apos;s build something useful.</h2><p>Have an AI engineering role, a backend challenge, or a production system worth improving?</p><div className="contact-links"><a href="mailto:jbmarvin21@gmail.com">Email</a><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub</a></div></section>
       <footer><div><strong>marvinjb.dev</strong><span>AI engineering, backend systems, and production infrastructure.</span></div><div id="linkedin"><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noreferrer">LinkedIn</a><a href="#experience">Experience</a><a href="#connect">Let&apos;s Connect</a></div><span>© 2026 Marvin</span></footer>

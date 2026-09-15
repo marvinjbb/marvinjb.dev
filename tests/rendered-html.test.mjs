@@ -54,7 +54,7 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.ok(html.search(new RegExp(newArticleTitle)) < html.indexOf("The AI Study Loop I Used to Pass the Claude Certified Associate Exam"));
   assert.equal((html.match(/aria-label="Medium"/g) ?? []).length, 2);
   assert.doesNotMatch(html, />POST<\/div>/);
-  for (const plannedPost of ["What makes an agent trustworthy?", "The small model gateway I keep rebuilding"]) assert.match(html, new RegExp(plannedPost.replace(/[?]/g, "\\?")));
+  assert.doesNotMatch(html, /What makes an agent trustworthy\?|The small model gateway I keep rebuilding/);
   assert.doesNotMatch(html, /Retrieval quality starts before the vector database/);
   assert.match(html, /Let(?:&#x27;|')s Connect/);
   assert.match(html, /jbmarvin21@gmail\.com/);
