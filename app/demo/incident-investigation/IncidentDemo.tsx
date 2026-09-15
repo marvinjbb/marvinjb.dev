@@ -230,6 +230,11 @@ export function IncidentDemo() {
   }
 
   const busy = ["creating", "investigating", "proposing", "approving", "executing"].includes(phase);
+  const approvalBoundary = phase === "resolved"
+    ? "Human approval recorded"
+    : phase === "auto_recovered"
+      ? "No execution — automatically recovered"
+      : "Human approval required";
 
   return (
     <div className="incident-demo">
@@ -335,7 +340,7 @@ export function IncidentDemo() {
                   <p className="overline">CONTROLLED REMEDIATION</p>
                   <h4>{remediation?.summary ?? report.recommended_actions[0]?.action ?? "No remediation proposed"}</h4>
                   <p>{report.recommended_actions[0]?.reason}</p>
-                  <strong className="approval-boundary">Human approval required</strong>
+                  <strong className="approval-boundary">{approvalBoundary}</strong>
                 </div>
                 <div className="remediation-action">
                   {phase === "awaiting_approval" && remediation && (

@@ -29,6 +29,8 @@ test("uses the real approval sequence and represents automatic recovery", async 
   const execution = source.indexOf("executeRemediation(remediation.proposal_id)");
   assert.ok(approval > 0 && execution > approval);
   assert.match(source, /Human approval required/);
+  assert.match(source, /Human approval recorded/);
+  assert.match(source, /No execution — automatically recovered/);
   assert.match(source, /automatically recovered before remediation was executed/);
   assert.doesNotMatch(source, /Reject Remediation/);
 });
