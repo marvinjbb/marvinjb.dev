@@ -40,7 +40,7 @@ export default function IncidentInvestigationPage() {
           <div className="project-hero-copy">
             <p className="overline">LIVE AI SYSTEM · INCIDENT INVESTIGATION AGENT</p>
             <h1>Investigate failure. Prove the cause. Approve the fix.</h1>
-            <p className="lead">An AI operations system that investigates application and PostgreSQL failures through restricted diagnostic tools, produces evidence-backed root-cause analysis, and requires human approval before bounded remediation.</p>
+            <p className="lead">Trigger a safe demo failure, let the AI investigate what happened, inspect the evidence behind its conclusion, and decide whether to approve the recommended fix. Nothing changes without human approval.</p>
             <div className="project-hero-actions">
               <a className="primary-button" href="#incident-demo">Run a controlled incident</a>
               <a className="secondary-button" href="#architecture">Inspect the architecture</a>
@@ -60,7 +60,7 @@ export default function IncidentInvestigationPage() {
           <header className="project-section-heading">
             <p className="overline">01 · CONTROLLED INCIDENT LAB</p>
             <h2>Watch evidence—not intuition—drive the response.</h2>
-            <p>Choose one genuine synthetic failure. The investigation normally takes 15–30 seconds and returns only after the backend validates its report.</p>
+            <p>Choose one genuine synthetic failure. The investigation normally takes 15–30 seconds while the AI selects restricted diagnostic tools; the result appears only after the backend validates its report.</p>
           </header>
           <IncidentDemo />
         </section>

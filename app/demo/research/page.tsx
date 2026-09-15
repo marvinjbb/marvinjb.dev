@@ -41,7 +41,7 @@ export default function ResearchDemoPage() {
         <div className="project-hero-copy">
           <p className="overline">LIVE AI SYSTEM · RESEARCH AGENT</p>
           <h1>Grounded research with parallel AI workers.</h1>
-          <p className="lead">A production-oriented research system that decomposes complex questions into focused assignments, researches them in parallel, builds an evidence catalog, and synthesizes a grounded report with traceable citations.</p>
+          <p className="lead">Ask one question. The AI divides the work, researches multiple sources in parallel, compares what it finds, and returns one answer with evidence you can inspect.</p>
           <div className="project-hero-actions">
             <a className="primary-button" href="#research">Try the live demo</a>
             <a className="secondary-button" href={repositoryUrl} target="_blank" rel="noopener noreferrer">View backend repository ↗</a>

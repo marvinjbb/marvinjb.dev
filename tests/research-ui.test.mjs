@@ -10,6 +10,8 @@ test("research UI exposes the approved question and depth controls", async () =>
   assert.match(source, /"quick", "deep"/);
   assert.match(source, /Start Research/);
   assert.match(source, /maxLength=\{2_000\}/);
+  assert.match(source, /EXAMPLE_RESEARCH_QUESTIONS/);
+  assert.match(source, /TRY AN EXAMPLE/);
 });
 
 test("progress is explicitly honest about completed-response API behavior", async () => {
@@ -51,4 +53,11 @@ test("top sources stay concise while all safe source links remain available", as
   assert.match(source, /window\.history\.replaceState/);
   assert.match(source, /safeSourceUrl/);
   assert.match(source, /noopener noreferrer/);
+});
+
+test("completed research moves accessible focus to the report", async () => {
+  const source = await readFile(componentPath, "utf8");
+  assert.match(source, /reportRef\.current\?\.focus\(\{ preventScroll: true \}\)/);
+  assert.match(source, /reportRef\.current\?\.scrollIntoView/);
+  assert.match(source, /aria-labelledby="report-title" tabIndex=\{-1\}/);
 });

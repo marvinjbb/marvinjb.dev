@@ -141,6 +141,7 @@ test("server-renders the extraction demo route", async () => {
   const html = await response.text();
   assert.match(html, /<title>Extraction Agent — Live Demo \| Marvin<\/title>/i);
   assert.match(html, /Turn unstructured invoices into validated data\./);
+  assert.match(html, /Upload a PDF or image of an invoice\. The AI finds the vendor, dates, totals, and line items/);
   assert.match(html, /LIVE AI SYSTEM · EXTRACTION AGENT/);
   assert.match(html, /Upload one invoice\. Inspect structured data\./);
   assert.match(html, /Upload invoice/);
@@ -167,6 +168,7 @@ test("server-renders the research demo route", async () => {
   const html = await response.text();
   assert.match(html, /<title>Research Agent — Live Demo \| Marvin<\/title>/i);
   assert.match(html, /Grounded research with parallel AI workers\./);
+  assert.match(html, /Ask one question\. The AI divides the work, researches multiple sources in parallel/);
   assert.match(html, /LIVE AI SYSTEM · RESEARCH AGENT/);
   assert.match(html, /Give the research team one question\./);
   assert.match(html, /Research question/);
@@ -188,6 +190,7 @@ test("server-renders the incident investigation demo route", async () => {
   const html = await response.text();
   assert.match(html, /<title>Incident Investigation Agent — Live Demo \| Marvin<\/title>/i);
   assert.match(html, /Investigate failure\. Prove the cause\. Approve the fix\./);
+  assert.match(html, /Trigger a safe demo failure, let the AI investigate what happened/);
   assert.match(html, /Blocked PostgreSQL Query/);
   assert.match(html, /Connection Pool Exhaustion/);
   assert.match(html, /Failing Application Deployment/);

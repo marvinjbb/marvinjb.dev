@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   CitedReportClaim,
@@ -20,6 +20,11 @@ const PROGRESS_STAGES = [
   "Grounding evidence",
   "Synthesizing findings",
   "Final report ready",
+];
+
+const EXAMPLE_RESEARCH_QUESTIONS = [
+  "What are the strongest arguments for and against AI coding agents in production?",
+  "How are companies reducing the security risks of AI agents with tool access?",
 ];
 
 type DemoState = "idle" | "researching" | "success" | "error";
@@ -79,6 +84,7 @@ function ClaimList({
 
 function ResearchReport({ report }: { report: FinalResearchReport }) {
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const reportRef = useRef<HTMLElement>(null);
   const sourceNumbers = useMemo(
     () => new Map(report.sources.map((source, index) => [source.source_id, index + 1])),
     [report.sources],
@@ -102,6 +108,10 @@ function ResearchReport({ report }: { report: FinalResearchReport }) {
       .sort((left, right) => right.count - left.count || left.index - right.index)
       .slice(0, 5);
   }, [report]);
+  useEffect(() => {
+    reportRef.current?.focus({ preventScroll: true });
+    reportRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
   function navigateToCitation(sourceId: string) {
     setDetailsOpen(true);
     window.setTimeout(() => {
@@ -114,7 +124,7 @@ function ResearchReport({ report }: { report: FinalResearchReport }) {
   }
 
   return (
-    <section className="research-report" id="report" aria-labelledby="report-title">
+    <section ref={reportRef} className="research-report" id="report" aria-labelledby="report-title" tabIndex={-1}>
       <header className="report-header">
         <div>
           <p className="overline">VALIDATED · CITED REPORT</p>
@@ -332,9 +342,6 @@ export function ResearchDemo() {
       setStage(PROGRESS_STAGES.length - 1);
       setReport(result);
       setState("success");
-      window.setTimeout(() => {
-        document.getElementById("report")?.scrollIntoView({ behavior: "smooth" });
-      }, 0);
     } catch (caught) {
       setState("error");
       setError(
@@ -358,6 +365,12 @@ export function ResearchDemo() {
           disabled={state === "researching"}
           onChange={(event) => setQuestion(event.target.value)}
         />
+        <div className="research-examples" aria-label="Example research questions">
+          <span>TRY AN EXAMPLE</span>
+          {EXAMPLE_RESEARCH_QUESTIONS.map((example) => (
+            <button key={example} type="button" disabled={state === "researching"} onClick={() => setQuestion(example)}>{example}</button>
+          ))}
+        </div>
         <div className="research-controls">
           <fieldset disabled={state === "researching"}>
             <legend>Research depth</legend>

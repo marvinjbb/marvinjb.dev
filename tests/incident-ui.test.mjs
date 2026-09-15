@@ -12,6 +12,10 @@ test("offers only the three allowlisted incident scenarios", async () => {
   }
   assert.equal(source.match(/Run Incident/g)?.length, 1);
   assert.doesNotMatch(source, /arbitrary SQL|custom query/i);
+  for (const explanation of ["One database operation prevents another from finishing", "Every application database connection is busy", "A new release asks the database for a field that does not exist"]) {
+    assert.match(source, new RegExp(explanation));
+  }
+  assert.match(source, /Technical detail:/);
 });
 
 test("renders actual investigation evidence and selected tool activity", async () => {
@@ -33,6 +37,15 @@ test("uses the real approval sequence and represents automatic recovery", async 
   assert.match(source, /No execution — automatically recovered/);
   assert.match(source, /automatically recovered before remediation was executed/);
   assert.doesNotMatch(source, /Reject Remediation/);
+  assert.match(source, /Approve and run this demo fix/);
+  assert.match(source, /Fix executed, system recovered, and incident resolved/);
+});
+
+test("completed investigation moves focus to the plain-first result hierarchy", async () => {
+  const source = await readFile(componentPath, "utf8");
+  assert.match(source, /resultsRef\.current\?\.focus\(\{ preventScroll: true \}\)/);
+  assert.match(source, /aria-label="Completed incident investigation"/);
+  assert.match(source, /RECOMMENDED ACTION · HUMAN APPROVAL/);
 });
 
 test("documents the restricted architecture and production safety boundary", async () => {

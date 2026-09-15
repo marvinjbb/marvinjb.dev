@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   approveRemediation,
@@ -21,27 +21,31 @@ const scenarios: Array<{
   number: string;
   title: string;
   description: string;
+  technicalDetail: string;
   signal: string;
 }> = [
   {
     id: "blocked_query",
     number: "01",
     title: "Blocked PostgreSQL Query",
-    description: "A transaction holds a database lock while another query waits.",
+    description: "One database operation prevents another from finishing.",
+    technicalDetail: "A transaction holds a PostgreSQL lock while another query waits.",
     signal: "LOCK WAIT",
   },
   {
     id: "connection_exhaustion",
     number: "02",
     title: "Connection Pool Exhaustion",
-    description: "The application consumes every pool connection while PostgreSQL still has capacity.",
+    description: "Every application database connection is busy, so a new request cannot continue.",
+    technicalDetail: "The application pool is saturated while PostgreSQL still has capacity.",
     signal: "POOL SATURATION",
   },
   {
     id: "bad_deployment",
     number: "03",
     title: "Failing Application Deployment",
-    description: "A bad release creates a genuine application/database schema incompatibility.",
+    description: "A new release asks the database for a field that does not exist.",
+    technicalDetail: "The controlled failure is a genuine application/database schema incompatibility.",
     signal: "RELEASE FAILURE",
   },
 ];
@@ -116,6 +120,7 @@ function errorMessage(error: unknown) {
 }
 
 export function IncidentDemo() {
+  const resultsRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<IncidentScenario | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
   const [incident, setIncident] = useState<PublicIncident | null>(null);
@@ -129,6 +134,12 @@ export function IncidentDemo() {
     () => new Set(report?.evidence.map((item) => item.evidence_id) ?? []),
     [report],
   );
+
+  useEffect(() => {
+    if (!report) return;
+    resultsRef.current?.focus({ preventScroll: true });
+    resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [report]);
 
   useEffect(() => {
     if (!incident || !["investigating", "awaiting_approval"].includes(phase)) return;
@@ -247,6 +258,7 @@ export function IncidentDemo() {
             <div className="scenario-index"><span>{scenario.number}</span><small>{scenario.signal}</small></div>
             <h3>{scenario.title}</h3>
             <p>{scenario.description}</p>
+            <small className="scenario-technical">Technical detail: {scenario.technicalDetail}</small>
             <button
               type="button"
               onClick={() => void runScenario(scenario.id)}
@@ -285,7 +297,7 @@ export function IncidentDemo() {
               <div className="activity-pulse" aria-hidden="true"><span /><span /><span /></div>
               <div>
                 <strong>Investigating incident…</strong>
-                <p>The backend selects restricted diagnostics and returns one validated report. No fabricated percentage or tool activity is shown while it runs.</p>
+                <p>The AI is checking the incident with a limited set of read-only tools. It cannot make changes while it investigates, and this screen shows only activity the backend actually returns.</p>
               </div>
             </div>
           )}
@@ -293,7 +305,7 @@ export function IncidentDemo() {
           {message && <div className="incident-alert" role="alert"><strong>Demo status</strong><p>{message}</p></div>}
 
           {report && (
-            <div className="investigation-results">
+            <div ref={resultsRef} className="investigation-results" tabIndex={-1} aria-label="Completed incident investigation">
               <section className="root-cause-card">
                 <div className="result-heading"><p className="overline">LIKELY CAUSE</p><span>{report.primary_hypothesis.confidence} confidence</span></div>
                 <h4>{report.primary_hypothesis.cause}</h4>
@@ -337,18 +349,18 @@ export function IncidentDemo() {
 
               <section className="remediation-panel">
                 <div>
-                  <p className="overline">CONTROLLED REMEDIATION</p>
+                  <p className="overline">RECOMMENDED ACTION · HUMAN APPROVAL</p>
                   <h4>{remediation?.summary ?? report.recommended_actions[0]?.action ?? "No remediation proposed"}</h4>
                   <p>{report.recommended_actions[0]?.reason}</p>
                   <strong className="approval-boundary">{approvalBoundary}</strong>
                 </div>
                 <div className="remediation-action">
                   {phase === "awaiting_approval" && remediation && (
-                    <button type="button" onClick={() => void approveAndExecute()}>Approve Remediation</button>
+                    <button type="button" onClick={() => void approveAndExecute()}>Approve and run this demo fix</button>
                   )}
                   {(phase === "approving" || phase === "executing") && <span role="status">{phaseLabel(phase)}…</span>}
                   {phase === "auto_recovered" && <span>The incident recovered automatically. No remediation was executed.</span>}
-                  {phase === "resolved" && <span className="recovery-complete">✓ Remediation and recovery verified</span>}
+                  {phase === "resolved" && <span className="recovery-complete">✓ Fix executed, system recovered, and incident resolved</span>}
                 </div>
               </section>
 

@@ -32,3 +32,11 @@ test("upload UI accepts the approved invoice media formats", async () => {
   assert.match(source, /\.pdf,\.jpg,\.jpeg,\.png/);
   assert.match(source, /PDF, scanned PDF, JPG, or PNG/);
 });
+
+test("completed extraction moves accessible focus to the human-readable result", async () => {
+  const source = await readFile(componentPath, "utf8");
+  assert.match(source, /resultsRef\.current\?\.focus\(\{ preventScroll: true \}\)/);
+  assert.match(source, /resultsRef\.current\?\.scrollIntoView/);
+  assert.match(source, /aria-labelledby="results-title" tabIndex=\{-1\}/);
+  assert.match(source, /aria-selected=\{view === "table"\}/);
+});

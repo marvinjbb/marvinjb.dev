@@ -1,6 +1,6 @@
 "use client";
 
-import { DragEvent, FormEvent, useRef, useState } from "react";
+import { DragEvent, FormEvent, useEffect, useRef, useState } from "react";
 
 import {
   extractInvoice as extractInvoiceRequest,
@@ -60,6 +60,7 @@ function fileKind(file: File) {
 
 export function ExtractionDemo() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const resultsRef = useRef<HTMLElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [state, setState] = useState<DemoState>("idle");
   const [error, setError] = useState("");
@@ -183,6 +184,12 @@ export function ExtractionDemo() {
 
   const showResults = state === "success" && result !== null;
 
+  useEffect(() => {
+    if (!showResults) return;
+    resultsRef.current?.focus({ preventScroll: true });
+    resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [showResults]);
+
   return (
     <div className="extraction-demo">
       <input
@@ -277,7 +284,7 @@ export function ExtractionDemo() {
       )}
 
       {showResults && (
-        <section className="results-panel" id="results" aria-labelledby="results-title">
+        <section ref={resultsRef} className="results-panel" id="results" aria-labelledby="results-title" tabIndex={-1}>
           <div className="results-heading">
             <div>
               <p className="overline">02 · STRUCTURED RESULT</p>
