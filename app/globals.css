@@ -99,6 +99,7 @@
 .side-path{gap:0}.side-path>div,.side-static,.side-current>div{display:flex;align-items:center;gap:9px;padding:7px 4px;font-size:12px}.side-path>div{position:relative}.side-path>div:not(:last-child)::after{content:"↓";position:absolute;left:8px;bottom:-7px;color:var(--muted);font:8px var(--font-geist-mono)}.side-path>div>span{width:18px;color:var(--accent);font:10px var(--font-geist-mono)}.side-path small,.side-static small{margin-left:auto;padding:3px 5px;background:var(--lime);color:var(--ink);font:700 7px var(--font-geist-mono);letter-spacing:.06em}.side-static{color:var(--muted)}.side-current>div{display:block;padding-top:4px;padding-bottom:4px;color:var(--muted);line-height:1.45}.side-current strong{display:block;color:var(--ink);font-size:12px}
 .side-connect-card{padding:17px;background:var(--ink);color:white}.side-connect-card>strong{display:block;font-size:13px}.side-connect-card>span{display:block;margin-top:7px;color:#bfc1bd;font-size:11px;line-height:1.5}.side-connect-card nav{display:grid;margin-top:13px;border-top:1px solid #ffffff24}.side-connect-card nav a{padding:8px 0;border-bottom:1px solid #ffffff24;border-radius:0;color:var(--lime);font-size:11px}.side-connect-card nav a:hover,.side-connect-card nav a:focus-visible{background:transparent;color:white}
 .home-page .sidebar>.side-group:first-child>a{gap:0}.home-page .sidebar>.side-group:first-child>a:hover,.home-page .sidebar>.side-group:first-child>a:focus-visible{background:rgba(216,255,95,.18);color:var(--ink)}.home-page .sidebar>.side-group:first-child>a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.home-page .sidebar .side-group>p{font-size:11px;font-weight:720;color:#555853}
 @media(max-width:700px){.credential-grid{grid-template-columns:1fr}.credential-feature{grid-template-columns:1fr;gap:14px;padding:16px}.credential-badge-link img{width:120px;height:120px}.credential-feature h4{font-size:17px}.experience-card,.education-list .info-card{grid-template-columns:58px 1fr}.personal-intro h1{font-size:clamp(2.5rem,11vw,3.25rem)}.personal-intro .hero-role{font-size:clamp(1.35rem,6vw,1.75rem)}.home-page .personal-map h2,.home-page .content-section>h2,.home-page .contact-section>h2{font-size:clamp(2rem,8vw,2.65rem)}}
 
 /* Project case studies: compact technical context wrapped around the live demos. */
@@ -213,6 +214,10 @@
 .home-page .post-planned{grid-template-columns:76px 1fr;transition:none}
 .home-page .post-planned:hover{padding-left:4px;background:rgba(248,248,246,.78)}
 .home-page .post-live{grid-template-columns:76px 1fr}
+.home-page .post .card-icon{background:transparent}
+.article-icon{border-color:var(--line);background:transparent}
+.article-icon svg{width:31px;height:20px;display:block;fill:var(--ink)}
+.post-planned .article-icon svg{width:24px;height:24px;fill:none;stroke:var(--muted);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 .capability-grid{display:grid;grid-template-columns:1fr 1fr;margin-top:38px;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
 .capability-grid>article{min-height:205px;padding:28px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);background:rgba(248,248,246,.86)}
 .capability-grid h3{margin:0 0 12px;font-size:24px;letter-spacing:-.035em}

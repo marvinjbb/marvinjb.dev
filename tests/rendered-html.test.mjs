@@ -24,7 +24,7 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /AI Engineer \| Backend &amp; Production Systems/);
   assert.match(html, /AI Engineer building production systems, not prototypes\./);
   assert.match(html, /I(?:&#x27;|')m Marvin — a production database administrator turned AI engineer, building reliable AI systems with Python, FastAPI, LLMs, agent workflows, and real deployment infrastructure\./);
-  for (const [anchor, item] of [["projects", "Projects"], ["experience", "Experience"], ["skills", "Capabilities"], ["credentials", "Credentials"], ["blog", "Writing"]]) assert.match(html, new RegExp(`href="#${anchor}">${item}</a>`));
+  for (const [anchor, item] of [["projects", "Projects"], ["experience", "Experience"], ["skills", "Capabilities"], ["credentials", "Credentials"], ["blog", "Articles"]]) assert.match(html, new RegExp(`href="#${anchor}">${item}</a>`));
   const sidebar = html.match(/<aside class="sidebar"[\s\S]*?<\/aside>/)?.[0] ?? "";
   assert.ok(sidebar);
   for (const icon of ["↗", "▣", "⌘", "✓", "¶"]) assert.doesNotMatch(sidebar, new RegExp(icon));
@@ -38,13 +38,22 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /Production experience is the foundation\./);
   assert.doesNotMatch(html, /Featured AI Work/);
   assert.doesNotMatch(html, /Projects I(?:&#x27;|')ve built and deployed\./);
-  assert.match(html, /What I(?:&#x27;|')m learning and building\./);
+  assert.match(html, /07 · ARTICLES/);
+  assert.match(html, /Articles on what I(?:&#x27;|')m learning and building\./);
   assert.match(html, /Notes on AI engineering, production systems, certifications, and the lessons I pick up while building\./);
   assert.match(html, /CLAUDE · CERTIFICATION/);
-  assert.match(html, /<small>PUBLISHED<\/small>/);
+  assert.equal((html.match(/<small>PUBLISHED<\/small>/g) ?? []).length, 2);
+  const newArticleTitle = "We(?:&#x27;|')re Giving AI Agents Tools, Memory, and Permissions\\. What Could Go Wrong\\?";
+  assert.match(html, new RegExp(newArticleTitle));
+  assert.match(html, /AI AGENTS · SECURITY/);
+  assert.match(html, /A practical look at the security risks that emerge when AI agents are given tools, memory, and permission to act\./);
+  assert.match(html, /href="https:\/\/medium\.com\/@jbmarvin21\/were-giving-ai-agents-tools-memory-and-permissions-what-could-go-wrong-630294132412\?sharedUserId=jbmarvin21" target="_blank" rel="noopener noreferrer">Read on Medium ↗<\/a>/);
   assert.match(html, /The AI Study Loop I Used to Pass the Claude Certified Associate Exam/);
   assert.match(html, /How I used Anthropic’s official material, ChatGPT, NotebookLM, and practice questions to understand the concepts instead of just memorizing them\./);
   assert.match(html, /href="https:\/\/medium\.com\/@jbmarvin21\/the-ai-study-loop-i-used-to-pass-the-claude-certified-associate-exam-7d7ad25361a9" target="_blank" rel="noopener noreferrer">Read on Medium ↗<\/a>/);
+  assert.ok(html.search(new RegExp(newArticleTitle)) < html.indexOf("The AI Study Loop I Used to Pass the Claude Certified Associate Exam"));
+  assert.equal((html.match(/aria-label="Medium"/g) ?? []).length, 2);
+  assert.doesNotMatch(html, />POST<\/div>/);
   for (const plannedPost of ["What makes an agent trustworthy?", "The small model gateway I keep rebuilding"]) assert.match(html, new RegExp(plannedPost.replace(/[?]/g, "\\?")));
   assert.doesNotMatch(html, /Retrieval quality starts before the vector database/);
   assert.match(html, /Let(?:&#x27;|')s Connect/);
@@ -102,7 +111,7 @@ test("server-renders the Marvin portfolio map", async () => {
 test("renders the portfolio navigation and main sections", async () => {
   const html = await (await render()).text();
   for (const anchor of ["map", "projects", "skills", "experience", "credentials", "education", "blog", "connect"]) assert.match(html, new RegExp(`id=["']${anchor}["']`));
-  for (const label of ["Projects", "Capabilities", "Experience", "Credentials", "Writing", "LinkedIn"]) assert.match(html, new RegExp(label));
+  for (const label of ["Projects", "Capabilities", "Experience", "Credentials", "Articles", "LinkedIn"]) assert.match(html, new RegExp(label));
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/marvin-jbb/);
   assert.match(html, /marvin-portrait\.jpg/);
   assert.doesNotMatch(html, /ENGINEERING PATH/);
