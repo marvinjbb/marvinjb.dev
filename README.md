@@ -1,106 +1,163 @@
-# marvinjb.dev
+# Marvin Joseph B. — AI Engineering Portfolio
 
-Marvin's AI engineering portfolio, built with React and [vinext](https://github.com/cloudflare/vinext). The live Extraction Agent turns PDF, scanned PDF, JPG, and PNG invoices into validated structured data and supports grounded questions about each result.
+Production SQL Server DBA transitioning into AI and generative AI engineering, building reliable AI systems with Python, FastAPI, LLMs, agentic workflows, structured outputs, evaluation, Docker, and production infrastructure.
 
-- Live demo: [marvinjb.dev/demo/extraction](https://marvinjb.dev/demo/extraction)
-- Backend API entry point: [api.marvinjb.dev](https://api.marvinjb.dev)
-- Backend repository: [github.com/marvinjbb/extraction-agent](https://github.com/marvinjbb/extraction-agent)
+## Portfolio
 
-## Prerequisites
+[Visit marvinjb.dev](https://marvinjb.dev)
+
+The portfolio is the presentation layer for three independently implemented AI systems. Each demo has its own frontend experience here and communicates over HTTPS with a separate backend service.
+
+## Featured AI Systems
+
+### Incident Investigation Agent
+
+Investigates genuine controlled application and PostgreSQL incidents through restricted diagnostic tools. It produces an evidence-backed diagnosis, creates an application-owned remediation proposal, requires explicit human approval, executes only an allowlisted demo action, and verifies recovery with an audit trail.
+
+- [Live demo](https://marvinjb.dev/demo/incident-investigation)
+- [Backend repository](https://github.com/marvinjbb/incident-investigation-agent)
+
+### Research Agent
+
+Plans one research request into two to five focused assignments, runs bounded workers concurrently, searches with Tavily, preserves application-owned evidence, aggregates deterministically, and synthesizes a report with validated citations, conflicts, and uncertainties.
+
+- [Live demo](https://marvinjb.dev/demo/research)
+- [Backend repository](https://github.com/marvinjbb/research-agent)
+
+### Extraction Agent
+
+Routes invoices through text-first PDF extraction or a bounded vision path, requests OpenAI Structured Outputs, and validates the result against an application-owned Pydantic `Invoice` contract before the frontend renders structured fields and optional document Q&A.
+
+- [Live demo](https://marvinjb.dev/demo/extraction)
+- [Backend repository](https://github.com/marvinjbb/extraction-agent)
+
+The public demo uses the deployed Extraction service. This repository does not claim that the latest backend repository revision is the currently deployed revision.
+
+## Portfolio Architecture
+
+```mermaid
+flowchart TB
+    U[Recruiter / user] --> F[marvinjb.dev<br/>React + TypeScript + Vinext]
+    F --> X[Extraction demo]
+    F --> R[Research demo]
+    F --> I[Incident demo]
+
+    X -->|HTTPS| XA[Extraction API<br/>FastAPI]
+    R -->|HTTPS| RA[Research API<br/>FastAPI]
+    I -->|HTTPS| IA[Incident API<br/>FastAPI]
+
+    XA --> O1[OpenAI Structured Outputs]
+    RA --> O2[OpenAI]
+    RA --> T[Tavily Search]
+    IA --> O3[OpenAI]
+    IA --> P[(PostgreSQL controlled lab)]
+
+    N[Nginx on Ubuntu VPS] -. routes API traffic .-> XA
+    N -. routes API traffic .-> RA
+    N -. routes API traffic .-> IA
+```
+
+The browser contains no provider credentials or agent logic. It validates user input, calls the configured public API boundaries, validates response shapes, and presents progress, results, and failures. See [Architecture](docs/ARCHITECTURE.md) for the service and security boundaries.
+
+## Technology
+
+**Frontend**
+
+- React 19, TypeScript, CSS
+- Vinext and Vite
+- Node.js 22
+
+**AI and backend systems**
+
+- Python, FastAPI, Pydantic
+- OpenAI APIs and Structured Outputs
+- Tavily search
+- PostgreSQL
+
+**Infrastructure and delivery**
+
+- Docker, Nginx, Ubuntu VPS, HTTPS
+- Hostinger frontend hosting
+- Cloudflare-backed build/runtime tooling and public DNS where configured
+- GitHub Actions for frontend validation
+
+Backend implementation details live in the three backend repositories rather than this frontend repository.
+
+## Local Development
+
+### Prerequisites
 
 - Node.js `>=22.13.0`
+- npm
+- Optional: locally running agent APIs for interactive demo calls
 
-## Quick Start
+### Install and run
 
 ```bash
-npm install
+npm ci
+copy .env.example .env.local
 npm run dev
+```
+
+On macOS or Linux, use `cp .env.example .env.local` instead of `copy`.
+
+`.env.example` contains local API URL placeholders only. Provider keys belong in the backend repositories and must never be added to this frontend.
+
+### Verify
+
+```bash
+npm run lint
+npm test
 npm run build
 ```
 
-For local development, copy `.env.example` to `.env.local` and keep `NEXT_PUBLIC_EXTRACTION_API_BASE_URL=http://127.0.0.1:8000`. Start the separate `extraction-agent` FastAPI service before opening `/demo/extraction`. Production configures this public frontend variable for `https://api.marvinjb.dev/extraction`. `OPENAI_API_KEY` belongs only in the backend repository and must never be added here.
+`npm test` performs a production build before running the Node test suite. The test suite exercises API response guards, demo behavior, rendered routes, public links, and key content invariants.
 
-After extraction, **Ask this invoice** sends only a natural-language question and the already-validated invoice JSON to `POST /extractions/invoice/query`. It does not resend the PDF or retain conversation history.
+## Deployment
 
-This starter does not use `wrangler.jsonc`.
+The Vinext frontend is built from this repository and served by the established Hostinger workflow. Public `NEXT_PUBLIC_*` variables select the three HTTPS API boundaries. The independently deployed FastAPI services run in Docker on an Ubuntu VPS behind Nginx and `api.marvinjb.dev`.
 
-## Included Shape
+See [Deployment](docs/DEPLOYMENT.md) for frontend commands, configuration names, verification, and rollback principles. Backend deployment procedures remain in their respective repositories.
 
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+## Repository Structure
 
-## Workspace Auth Headers
-
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
-
-The user ID is stable for the same user on the same Site and different across Sites. Email and name are intended for display or contact purposes.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```text
+app/                 Homepage, shared navigation, and three demo routes
+app/demo/            Extraction, Research, and Incident demo interfaces
+docs/                Architecture, deployment, decisions, and roadmap
+public/              Public images, credential artwork, and résumé PDF
+tests/               Node tests for APIs, rendered HTML, and demo UX
+worker/              Vinext/Cloudflare-compatible worker entry point
+.github/workflows/   Validation-only CI
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+## Engineering Principles
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+- Prefer evidence over unsupported model claims.
+- Validate provider output and frontend response shapes explicitly.
+- Keep tools, concurrency, and public actions bounded.
+- Require human approval before a demo performs controlled remediation.
+- Fail closed when configuration, validation, or provider behavior is unsafe.
+- Keep secrets in backend runtime environments, never in browser code.
+- Test the same build path used for production delivery.
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+## Articles
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+- [We're Giving AI Agents Tools, Memory, and Permissions. What Could Go Wrong?](https://medium.com/@jbmarvin21/were-giving-ai-agents-tools-memory-and-permissions-what-could-go-wrong-630294132412?sharedUserId=jbmarvin21)
+- [The AI Study Loop I Used to Pass the Claude Certified Associate Exam](https://medium.com/@jbmarvin21/the-ai-study-loop-i-used-to-pass-the-claude-certified-associate-exam-7d7ad25361a9)
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+## Contact
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+- [Portfolio](https://marvinjb.dev)
+- [GitHub](https://github.com/marvinjbb)
+- [LinkedIn](https://www.linkedin.com/in/marvin-jbb)
+- [Email](mailto:jbmarvin21@gmail.com)
 
-## Useful Commands
+## Additional Documentation
 
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Deployment](docs/DEPLOYMENT.md)
+- [Security](SECURITY.md)
+- [Contributing](CONTRIBUTING.md)
+- [Architecture decisions](docs/DECISIONS.md)
+- [Project roadmap](docs/ROADMAP.md)

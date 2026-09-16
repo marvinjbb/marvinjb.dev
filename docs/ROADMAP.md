@@ -1,355 +1,70 @@
-# AI Agent Portfolio Platform Roadmap
+# Portfolio Roadmap
 
-This is the living progress tracker for the platform. Update it when meaningful milestones are completed, blocked, or resumed rather than relying on conversation history.
+This roadmap records the current portfolio state and the next bounded priorities. Detailed implementation and deployment histories remain in each backend repository.
 
-Status labels: `NOT STARTED`, `IN PROGRESS`, `COMPLETE`, `BLOCKED`.
+Status labels: `COMPLETE`, `IN PROGRESS`, `PLANNED`.
 
-## Current Focus
+## Current state
 
-**Phase 9 — Production basics**
+### Portfolio platform and shared architecture
+
+**Status:** `COMPLETE`
+
+- `marvinjb.dev` is the public presentation layer.
+- Three independently deployed FastAPI services remain in separate repositories.
+- Browser-to-backend routing is configured with public environment variables.
+- Backend provider credentials remain outside the frontend.
+- Production APIs are exposed through HTTPS and service-specific routes on `api.marvinjb.dev`.
+
+### Extraction Agent
+
+**Status:** `COMPLETE`
+
+The live demo accepts supported invoice PDFs and images, uses backend-owned text-first or vision routing, renders validated structured results, and supports bounded invoice questions. The deployed backend and its GitHub repository are released independently; this frontend does not claim that the newest backend revision is deployed.
+
+- [Live demo](https://marvinjb.dev/demo/extraction)
+- [Backend repository](https://github.com/marvinjbb/extraction-agent)
+
+### Research Agent
+
+**Status:** `COMPLETE`
+
+The live demo submits one question and depth to a bounded research workflow. The backend plans two to five assignments, runs workers concurrently, grounds findings in application-owned evidence, aggregates deterministically, and validates final citations.
+
+- [Live demo](https://marvinjb.dev/demo/research)
+- [Backend repository](https://github.com/marvinjbb/research-agent)
+
+### Incident Investigation Agent
+
+**Status:** `COMPLETE`
+
+The flagship live demo creates only controlled synthetic incidents. The backend collects evidence through restricted diagnostics, produces an evidence-backed investigation, requires explicit human approval, executes only allowlisted demo remediation, and verifies recovery.
+
+- [Live demo](https://marvinjb.dev/demo/incident-investigation)
+- [Backend repository](https://github.com/marvinjbb/incident-investigation-agent)
+
+### Portfolio packaging and release quality
 
 **Status:** `IN PROGRESS`
 
-The Extraction Agent is live at `marvinjb.dev/demo/extraction` through `https://api.marvinjb.dev`. Final portfolio presentation and proportionate production hardening are now the focus.
+Current work keeps repository documentation, link coverage, security guidance, CI validation, and deployment notes aligned with the implemented system. It does not change the approved visual design or backend behavior.
 
----
+## Planned work
 
-## Phase 0 — Shared architecture and project foundation
+### Voice Agent
 
-**Status:** `COMPLETE`
+**Status:** `PLANNED`
 
-**Goal:** Establish a shared, understandable foundation before writing agent code.
+Before implementation, compare realistic realtime providers and transports for latency, reliability, cost, control, tool safety, and portfolio value. Define a bounded MVP and security model before adding a repository, demo, or deployment.
 
-**Major deliverables:**
+### Ongoing maintenance
 
-- Confirm the current portfolio, GitHub, and Hostinger setup.
-- Document the current state, target architecture, request flow, and frontend/backend boundary.
-- Define the separate repository strategy for the portfolio and three agents.
-- Define the one-VPS, Nginx, Docker, FastAPI, and `api.marvinjb.dev` target without provisioning it yet.
-- Agree on the Extraction Agent MVP and proposed repository structure.
-- Record meaningful architectural decisions and tradeoffs.
+**Status:** `PLANNED`
 
-**What I should understand before considering the phase complete:** How the portfolio, API, VPS, reverse proxy, containers, agent services, and optional data services fit together; which components exist today; and which are target state.
-
-**Completion criteria:** Architecture and roadmap are reviewed; repository boundaries and responsibilities are agreed; the smallest useful Extraction Agent MVP and folder structure are approved; no unresolved foundation decision blocks Phase 1.
-
-**Completion evidence:** The platform architecture, repository boundaries, roadmap, and ADRs were reviewed, committed, and pushed before agent implementation began.
-
----
-
-## Phase 1 — Document Extraction Agent MVP
-
-**Status:** `COMPLETE`
-
-**Goal:** Build the smallest locally working backend that accepts a supported document and returns validated structured extraction data.
-
-**Major deliverables:**
-
-- Create the separate `extraction-agent` repository and local Python environment.
-- Define one initial document type, extraction schema, and supported file constraints.
-- Implement FastAPI upload, parsing, extraction, validation, and structured response paths.
-- Add focused tests and a local verification workflow.
-
-**What I should understand before considering the phase complete:** The differences among document parsing, OCR, LLM extraction, schemas, structured outputs, and validation; how a request moves through FastAPI; and why each MVP dependency exists.
-
-**Completion criteria:** A supported local document can be submitted to the API and produces a schema-valid result; invalid inputs fail clearly; core behavior is tested and documented.
-
-**Completion evidence:** The backend MVP was completed and verified in the separate `extraction-agent` repository. It accepts one text-based invoice PDF, extracts embedded text, produces OpenAI Structured Outputs, validates them with Pydantic, and returns structured JSON with deterministic tests and documented failure behavior.
-
----
-
-## Phase 2 — Extraction Agent demo UI
-
-**Status:** `COMPLETE`
-
-**Goal:** Build the portfolio-facing React experience for the extraction demo.
-
-**Major deliverables:**
-
-- Add `/demo/extraction` to the portfolio.
-- Implement file selection and drag-and-drop interaction.
-- Add extraction controls, loading/progress states, errors, and responsive results views.
-- Display table, JSON, and raw-result views where useful.
-
-**What I should understand before considering the phase complete:** What belongs in the frontend, how UI state represents the request lifecycle, and why secrets and extraction logic stay on the backend.
-
-**Completion criteria:** The demo page is responsive and usable with representative mocked results and handles idle, loading, success, and error states.
-
-**Completion evidence:** `/demo/extraction` reuses the existing portfolio header, sidebar, typography, tokens, spacing, borders, grid, controls, and responsive breakpoints. It supports drag-and-drop and browse selection, PDF/size validation, selected-file controls, mocked extraction progress, recoverable errors, Table/JSON results, and reset. Lint has no errors, the production build succeeds, and route-rendering tests pass.
-
----
-
-## Phase 3 — Frontend ↔ FastAPI local integration
-
-**Status:** `COMPLETE`
-
-**Goal:** Connect the local extraction demo to the local Extraction Agent API.
-
-**Major deliverables:**
-
-- Define and document the frontend/backend API contract.
-- Configure local API URLs and CORS safely.
-- Submit real uploads from React to FastAPI and render responses.
-- Handle network, validation, timeout, and server failures.
-
-**What I should understand before considering the phase complete:** HTTPS/API boundaries, multipart requests, CORS, environment-specific configuration, response validation, and end-to-end error flow.
-
-**Completion criteria:** A user can upload a supported document in the local React demo and see the real backend result; expected failures are visible and understandable.
-
-**Completion evidence:** The frontend uses an environment-configured API client and multipart `file` upload; the backend permits only the explicit local development origins. Automated frontend and backend checks pass, and a controlled browser test returned the expected invoice through React → FastAPI → pypdf → OpenAI → Pydantic → React in both Table and JSON views.
-
----
-
-## Phase 3.5 — Ask This Invoice
-
-**Status:** `COMPLETE`
-
-**Goal:** Let a user ask independent natural-language questions about a successfully extracted invoice without rerunning extraction.
-
-**Major deliverables:** Add a query helper for `POST /extractions/invoice/query`; send only the question and validated invoice JSON; render native loading, error, answer, suggestion, and repeat-question states; preserve backend-only prompts and credentials.
-
-**What I should understand before considering the phase complete:** Grounding an LLM in a small validated object; why this is not RAG; stateless query requests; and why provider instructions belong on the backend.
-
-**Completion criteria:** The Ask UI appears only after extraction, never resends the PDF, handles expected failures, and displays an answer grounded in the supplied invoice. Automated tests use fakes, and one controlled browser request verifies the real path.
-
-**Completion evidence:** Frontend request-contract and UI-state tests pass alongside the existing extraction tests. A controlled local browser check asks a question after extraction and renders the backend answer without exposing or moving provider credentials.
-
----
-
-## Phase 3.6 — Image and scanned invoice support
-
-**Status:** `COMPLETE`
-
-**Goal:** Extend the local demo from text PDFs to scanned PDFs and common invoice images without changing the result or query contracts.
-
-**Major deliverables:** PDF/JPG/PNG selection and copy, hybrid backend media routing, bounded image handling, vision fallback, mocked tests, and controlled real verification.
-
-**What I should understand before considering the phase complete:** Why text PDFs retain parsing, why scans use vision, how media safety differs from byte-size validation, and why every input ends at one application-owned schema.
-
-**Completion criteria:** The existing interface accepts every approved format, text PDFs preserve their existing route, scanned/image inputs return the same invoice JSON, Ask This Invoice is unchanged, and automated plus controlled local verification passes.
-
-**Completion evidence:** The frontend preserves the portfolio design while presenting the recruiter-facing `Upload → AI Extracts → Explore → Ask` journey. The backend routes text PDFs through `pypdf` and scans/images through bounded vision processing, with deterministic mocked coverage and no new persistence or deployment infrastructure.
-
----
-
-## Phase 4 — Dockerize Extraction Agent
-
-**Status:** `COMPLETE`
-
-**Goal:** Package the Extraction Agent as a reproducible container for deployment.
-
-**Major deliverables:**
-
-- Create and explain the Dockerfile and ignore rules.
-- Configure runtime environment variables, ports, and non-secret defaults.
-- Add Docker Compose only where it improves local or deployment workflows.
-- Build and test the image locally.
-
-**What I should understand before considering the phase complete:** Dockerfiles, images, containers, build context, ports, volumes, networks, environment variables, and the reason containerization improves deployment consistency.
-
-**Completion criteria:** The image builds cleanly; the container starts with documented commands; its API behaves like the non-containerized service; no secrets are embedded.
-
-**Completion evidence:** The backend has a production-oriented Dockerfile and `.dockerignore`; its image builds and runs the unchanged API with environment-supplied secrets and a verified health check.
-
----
-
-## Phase 5 — VPS setup
-
-**Status:** `COMPLETE`
-
-**Goal:** Prepare one Ubuntu VPS to host all three isolated agent services progressively.
-
-**Major deliverables:**
-
-- Provision and secure the Ubuntu VPS.
-- Install and configure required Docker and Nginx foundations.
-- Establish deployment directories, environment handling, firewall rules, and access practices.
-- Define backup and recovery expectations for any persistent state.
-
-**What I should understand before considering the phase complete:** Server access, least privilege, ports, firewalls, processes versus containers, persistent data, and the operational responsibilities introduced by a VPS.
-
-**Completion criteria:** The VPS is reachable through secured administrative access, exposes only required ports, can run a test container, and has a documented reproducible baseline.
-
-**Completion evidence:** The Ubuntu VPS foundation is active and supports the deployed Extraction Agent container behind the public API route.
-
----
-
-## Phase 6 — Deploy Extraction Agent
-
-**Status:** `COMPLETE`
-
-**Goal:** Run the Extraction Agent reliably as the first isolated service on the VPS.
-
-**Major deliverables:**
-
-- Transfer or pull a versioned build and configure production environment values.
-- Start the Extraction Agent container on its internal service port/network.
-- Configure restart behavior and persistent storage only if required.
-- Validate the service from within the VPS.
-
-**What I should understand before considering the phase complete:** How source becomes a running production container, how configuration reaches it, how container networking works, and how to inspect startup/runtime failures.
-
-**Completion criteria:** The versioned Extraction Agent container runs after restart, passes its internal health check, and can process a representative request from the VPS.
-
-**Completion evidence:** The Extraction Agent is running as the first isolated VPS service and serves production extraction and invoice-query requests.
-
----
-
-## Phase 7 — Configure api.marvinjb.dev
-
-**Status:** `COMPLETE`
-
-**Goal:** Establish the shared public API hostname and route extraction traffic securely to its container.
-
-**Major deliverables:**
-
-- Configure DNS/Cloudflare for `api.marvinjb.dev`.
-- Configure HTTPS certificates and Nginx reverse proxying.
-- Route `/extraction/*` to the Extraction Agent.
-- Forward required headers and document timeout/body-size behavior.
-
-**What I should understand before considering the phase complete:** DNS resolution, TLS/HTTPS, reverse proxies, public versus internal ports, path routing, proxy headers, and where Cloudflare and Nginx responsibilities differ.
-
-**Completion criteria:** `https://api.marvinjb.dev/extraction/...` reaches the correct service over valid HTTPS; unrelated paths are not accidentally exposed; routing survives restart.
-
-**Completion evidence:** `https://api.marvinjb.dev` is the active shared backend entry point and its extraction path reaches the deployed service over HTTPS.
-
----
-
-## Phase 8 — Connect portfolio live demo to production API
-
-**Status:** `COMPLETE`
-
-**Goal:** Make the public extraction demo use the production Extraction Agent API.
-
-**Major deliverables:**
-
-- Configure the production frontend API base URL.
-- Allow only the required portfolio origin through CORS.
-- Deploy the updated portfolio through GitHub and Hostinger.
-- Run end-to-end checks from the public demo page.
-
-**What I should understand before considering the phase complete:** Build-time/runtime frontend configuration, browser origin rules, the full public request path, deployment propagation, and how to isolate frontend, DNS, proxy, and backend failures.
-
-**Completion criteria:** A recruiter can use `marvinjb.dev/demo/extraction` successfully against the production API, with clear loading and failure behavior and no client-side secrets.
-
-**Completion evidence:** The public demo at `marvinjb.dev/demo/extraction` uses the environment-configured production API, preserves backend-only provider credentials, and supports the complete extraction and grounded-query experience.
-
----
-
-## Phase 9 — Production basics: logging, health checks, error handling, security, rate limiting where appropriate
-
-**Status:** `IN PROGRESS`
-
-**Goal:** Make the public Extraction Agent demo safe and diagnosable enough for portfolio traffic.
-
-**Major deliverables:**
-
-- Add structured logs, health/readiness behavior, and consistent error responses.
-- Enforce appropriate upload type/size limits and timeouts.
-- Review secret handling, CORS, prompt injection exposure, and tool permissions.
-- Add cost/abuse controls and rate limiting where justified.
-- Document operational checks and common failure recovery.
-
-**What I should understand before considering the phase complete:** Logs versus health signals; validation versus security; layered failure handling; public AI abuse/cost risks; and why each control is proportionate to this demo.
-
-**Completion criteria:** Expected failures are safe and observable; secrets are not exposed; public inputs are bounded; health and logs support diagnosis; justified rate/cost controls are verified.
-
----
-
-## Phase 10 — Research Agent
-
-**Status:** `NOT STARTED`
-
-**Goal:** Build and locally integrate an independently understandable multi-step Research Agent and its portfolio demo.
-
-**Major deliverables:**
-
-- Create the separate `research-agent` repository and define its MVP/API contract.
-- Implement planning, search, retrieval, evidence comparison, synthesis, and citations.
-- Add async behavior, retries, timeouts, structured state/output, and focused evaluations.
-- Add `/demo/research` with progress, findings, sources, citations, and report output.
-- Use RAG only if the selected research workflow genuinely requires it.
-
-**What I should understand before considering the phase complete:** Orchestration, tool calling, search APIs, retrieval versus RAG, grounded citations, agent state, async work, retries, timeouts, and evaluation limitations.
-
-**Completion criteria:** The local demo completes representative research tasks, grounds claims in inspectable sources, communicates progress/failures, and passes defined tests/evaluations.
-
----
-
-## Phase 11 — Deploy Research Agent as second VPS service/container
-
-**Status:** `NOT STARTED`
-
-**Goal:** Deploy the Research Agent as a second isolated service on the existing VPS.
-
-**Major deliverables:**
-
-- Containerize and deploy the Research Agent independently.
-- Route `/research/*` through Nginx without disrupting extraction traffic.
-- Configure production secrets, resource limits, health checks, and justified persistence.
-- Connect and verify the public research demo.
-
-**What I should understand before considering the phase complete:** Multi-service container isolation, shared-host resource tradeoffs, independent configuration/deployment, and safe Nginx routing changes.
-
-**Completion criteria:** Both agents run concurrently, route correctly, survive restart, expose useful health/telemetry, and their public demos complete representative requests.
-
----
-
-## Phase 12 — Voice Agent
-
-**Status:** `NOT STARTED`
-
-**Goal:** Select and build a real-time conversational Voice Agent and its portfolio demo.
-
-**Major deliverables:**
-
-- Compare realistic providers/transports for complexity, latency, cost, reliability, control, and portfolio value.
-- Define the voice MVP, safety boundaries, tools, and API/session contract.
-- Create the separate `voice-agent` repository and implement the chosen realtime pipeline.
-- Add `/demo/voice` with conversation controls, transcripts, status, tool activity, and errors.
-- Add tests for non-realtime logic and practical end-to-end validation.
-
-**What I should understand before considering the phase complete:** Realtime model/provider choices, WebRTC versus WebSocket tradeoffs, audio/session flow, latency sources, interruption handling, tool permissions, and voice-specific failure/cost risks.
-
-**Completion criteria:** A local user can hold a representative conversation with acceptable latency; transcripts and permitted tool activity are visible; session failures are handled; the provider decision is documented.
-
----
-
-## Phase 13 — Deploy Voice Agent as third VPS service/container
-
-**Status:** `NOT STARTED`
-
-**Goal:** Deploy the Voice Agent as the third isolated service on the shared VPS.
-
-**Major deliverables:**
-
-- Containerize and deploy the Voice Agent with appropriate realtime networking.
-- Route `/voice/*` through Nginx and configure HTTPS/session requirements.
-- Add health signals, resource/cost controls, secret handling, and justified storage.
-- Connect and verify the public voice demo alongside the other two agents.
-
-**What I should understand before considering the phase complete:** Realtime proxying, persistent connections, timeout/upgrade headers, shared VPS resource pressure, and how to diagnose client-to-provider latency and disconnects.
-
-**Completion criteria:** All three services operate concurrently and independently; the public voice demo completes representative conversations; routing, restart, health, and resource behavior are verified.
-
----
-
-## Phase 14 — CI/CD, observability, documentation, testing, security and final portfolio polish
-
-**Status:** `NOT STARTED`
-
-**Goal:** Consolidate the three projects into a credible, maintainable, production-minded portfolio system.
-
-**Major deliverables:**
-
-- Add proportionate automated tests, CI checks, and documented deployment/CD workflows.
-- Improve structured logs, metrics, traces, dashboards/alerts, and health monitoring where useful.
-- Complete security reviews, dependency/update practices, backups, recovery checks, and cost controls.
-- Finish each repository README, architecture/decision records, API documentation, screenshots, and demo guidance.
-- Polish accessibility, responsiveness, performance, recruiter-facing case studies, and failure states.
+- Keep public claims synchronized with deployed behavior.
+- Maintain responsive and accessible demo experiences.
+- Preserve validation, cost controls, safe failure states, and backend-only secrets.
+- Update dependencies and CI checks proportionately.
 - Document scaling paths separately from the actual one-VPS portfolio architecture.
 
-**What I should understand before considering the phase complete:** The complete development-to-production lifecycle; CI versus CD; logs, metrics, and traces; testing/evaluation layers; operational/security tradeoffs; and how this architecture would evolve for larger traffic and teams.
-
-**Completion criteria:** Automated checks protect key behavior; deployments and recovery are documented and repeatable; all public demos are reliable and observable; documentation supports technical review and interview explanation; final security/accessibility/performance checks pass.
+The current architecture is intentionally portfolio-scale: one frontend, one API hostname, and isolated services on shared infrastructure. It should not be described as horizontally scaled or enterprise infrastructure.

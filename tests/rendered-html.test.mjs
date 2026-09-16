@@ -73,6 +73,7 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /https:\/\/github\.com\/marvinjbb\/research-agent/);
   assert.match(html, /Incident Investigation Agent/);
   assert.match(html, /href="\/demo\/incident-investigation"/);
+  assert.match(html, /https:\/\/github\.com\/marvinjbb\/incident-investigation-agent/);
   assert.match(html, /Progressive diagnostic tool selection/);
   assert.match(html, /multimodal document system that turns invoices from PDFs and images/i);
   assert.match(html, /PYPDF/);
@@ -132,6 +133,7 @@ test("renders the portfolio navigation and main sections", async () => {
   for (const capability of ["AI Systems", "Backend Engineering", "Production &amp; Infrastructure", "Data Foundation"]) assert.match(html, new RegExp(`<h3>${capability}<\\/h3>`));
   assert.match(html, /class="capability-strengths">LLM APIs · Agent workflows · Structured Outputs/);
   assert.doesNotMatch(html, /<p>TOPICS<\/p>/);
+  assert.doesNotMatch(html, />Writing<\/a>/);
 });
 
 test("server-renders the extraction demo route", async () => {
@@ -198,5 +200,42 @@ test("server-renders the incident investigation demo route", async () => {
   assert.match(html, /Restricted diagnostics/);
   assert.match(html, /Human approval/);
   assert.match(html, /Allowlisted remediation/);
+  assert.match(html, /href="https:\/\/github\.com\/marvinjbb\/incident-investigation-agent" target="_blank" rel="noopener noreferrer"/);
   assert.doesNotMatch(html, /OPENAI_API_KEY|POSTGRES_PASSWORD|api\.openai\.com/i);
+});
+
+test("keeps portfolio project and article links complete and safe", async () => {
+  const homepage = await (await render()).text();
+  const routes = [
+    "/demo/incident-investigation",
+    "/demo/research",
+    "/demo/extraction",
+  ];
+  const repositories = [
+    "https://github.com/marvinjbb/incident-investigation-agent",
+    "https://github.com/marvinjbb/research-agent",
+    "https://github.com/marvinjbb/extraction-agent",
+  ];
+
+  for (const route of routes) assert.match(homepage, new RegExp(`href="${route}"`));
+  for (const repository of repositories) {
+    const escaped = repository.replaceAll("/", "\\/").replaceAll(".", "\\.");
+    assert.match(
+      homepage,
+      new RegExp(`href="${escaped}" target="_blank" rel="noopener noreferrer"`),
+    );
+  }
+  assert.equal((homepage.match(/<small>PUBLISHED<\/small>/g) ?? []).length, 2);
+
+  const apiSources = await Promise.all(
+    [
+      "../app/demo/extraction/extractionApi.ts",
+      "../app/demo/research/researchApi.ts",
+      "../app/demo/incident-investigation/incidentApi.ts",
+    ].map((path) => readFile(new URL(path, import.meta.url), "utf8")),
+  );
+  assert.doesNotMatch(
+    apiSources.join("\n"),
+    /https?:\/\/(?:localhost|127\.0\.0\.1):\d+/,
+  );
 });

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SiteHeader } from "../../SiteHeader";
 import { IncidentDemo } from "./IncidentDemo";
 
+const repositoryUrl = "https://github.com/marvinjbb/incident-investigation-agent";
 const title = "Incident Investigation Agent — Live Demo | Marvin";
 const description = "Trigger a controlled production incident, inspect an evidence-backed AI investigation, and approve a bounded remediation.";
 
@@ -44,6 +45,7 @@ export default function IncidentInvestigationPage() {
             <div className="project-hero-actions">
               <a className="primary-button" href="#incident-demo">Run a controlled incident</a>
               <a className="secondary-button" href="#architecture">Inspect the architecture</a>
+              <a className="text-link" href={repositoryUrl} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
             </div>
           </div>
           <div className="project-live-mark" aria-label="Live production system"><span aria-hidden="true" /><strong>LIVE</strong><small>CONTROLLED LAB</small></div>
@@ -53,7 +55,7 @@ export default function IncidentInvestigationPage() {
           {proof.map(([label, value], index) => <div key={label}><span>0{index + 1}</span><small>{label}</small><strong>{value}</strong></div>)}
         </div>
         <nav className="project-nav" aria-label="Incident Agent project navigation">
-          <a href="#incident-demo">Live demo</a><a href="#architecture">Architecture</a><a href="#safety">Safety</a><a href="#production">Production</a>
+          <a href="#incident-demo">Live demo</a><a href="#architecture">Architecture</a><a href="#safety">Safety</a><a href="#production">Production</a><a href={repositoryUrl} target="_blank" rel="noopener noreferrer">Repository ↗</a>
         </nav>
 
         <section className="project-section project-demo-section" id="incident-demo">

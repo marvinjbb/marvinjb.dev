@@ -36,7 +36,7 @@ const projects = [
     flowLabel: "INCIDENT → EVIDENCE → RECOVERY",
     previewKind: "incident",
     demo: "/demo/incident-investigation",
-    repository: null,
+    repository: "https://github.com/marvinjbb/incident-investigation-agent",
   },
   {
     label: "LIVE · RESEARCH AGENT",

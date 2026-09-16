@@ -53,6 +53,8 @@ test("documents the restricted architecture and production safety boundary", asy
   for (const value of ["Restricted Diagnostic Tools", "Human decision", "TOCTOU revalidation", "No arbitrary administration", "automatically recovers abandoned incidents after 120 seconds"]) {
     assert.match(source, new RegExp(value, "i"));
   }
+  assert.match(source, /https:\/\/github\.com\/marvinjbb\/incident-investigation-agent/);
+  assert.match(source, /target="_blank" rel="noopener noreferrer"/);
 });
 
 test("includes explicit mobile layout rules for the incident workspace", async () => {

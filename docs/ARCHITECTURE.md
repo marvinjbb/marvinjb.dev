@@ -1,135 +1,118 @@
-# AI Agent Portfolio Platform Architecture
+# Portfolio Architecture
 
-## Scope
+## Purpose and scope
 
-This document describes the platform boundary and the target production architecture for three portfolio demos. It distinguishes confirmed infrastructure from components that will be built progressively.
+`marvinjb.dev` is the public presentation layer for three independently implemented AI systems. This repository owns the homepage, project case studies, interactive demo interfaces, client-side response validation, and user-facing error states. It does not contain provider credentials or backend agent implementations.
 
-## Current State
+The backend services remain in separate repositories because they have different contracts, dependencies, safety boundaries, deployment histories, and scaling constraints:
 
-- `marvinjb.dev` is the existing portfolio website.
-- The portfolio source is maintained in GitHub.
-- The portfolio is deployed from GitHub to Hostinger.
-- [`marvinjb.dev/demo/extraction`](https://marvinjb.dev/demo/extraction) is the live responsive React interface for the Extraction Agent.
-- [`https://api.marvinjb.dev`](https://api.marvinjb.dev) is the deployed shared API entry point. Extraction traffic is routed to the containerized `extraction-agent` FastAPI service on the VPS.
+- [Incident Investigation Agent](https://github.com/marvinjbb/incident-investigation-agent)
+- [Research Agent](https://github.com/marvinjbb/research-agent)
+- [Extraction Agent](https://github.com/marvinjbb/extraction-agent)
 
-The Extraction Agent backend is maintained in the separate public `extraction-agent` repository. The demo sends a multipart `file` upload to `POST /extractions/invoice`, then displays the validated invoice in Table or JSON form. Provider credentials, PDF parsing, schema validation, vision routing, and LLM logic remain exclusively in the backend repository.
+## System view
 
-Request failures are mapped into configuration, validation, backend/provider, and network categories so the UI can preserve the selected file and offer retry or reset. The frontend selects its local or production API base URL through `NEXT_PUBLIC_EXTRACTION_API_BASE_URL`; no provider secret enters the browser bundle.
+```mermaid
+flowchart TB
+    B[Browser] --> D[Public DNS / HTTPS]
+    D --> F[marvinjb.dev<br/>Hostinger + Vinext]
 
-The local demo also supports one-shot questions about a successful result:
+    F --> XF[Extraction interface]
+    F --> RF[Research interface]
+    F --> IF[Incident interface]
 
-```text
-Question + validated Invoice JSON
-        ↓
-POST /extractions/invoice/query
-        ↓
-Grounded backend provider request
-        ↓
-Concise answer
+    XF -->|validated HTTPS request| XAPI[Extraction FastAPI service]
+    RF -->|validated HTTPS request| RAPI[Research FastAPI service]
+    IF -->|session-scoped HTTPS request| IAPI[Incident FastAPI service]
+
+    subgraph VPS[Ubuntu VPS behind Nginx]
+        XAPI
+        RAPI
+        IAPI
+    end
+
+    XAPI --> XO[OpenAI Structured Outputs]
+    RAPI --> RO[OpenAI]
+    RAPI --> TS[Tavily]
+    IAPI --> IO[OpenAI]
+    IAPI --> PG[(PostgreSQL controlled incident lab)]
 ```
 
-Each question is independent. The frontend does not resend the PDF, previous questions, prompts, provider settings, or credentials. RAG is intentionally absent because the complete context is already small, structured, validated, and available in memory.
+Nginx is the public API reverse proxy. It routes the service-specific HTTPS paths on `api.marvinjb.dev` to isolated Docker containers. The frontend receives only the structured public responses exposed by those services.
 
-The same upload boundary supports PDF, scanned PDF, JPG/JPEG, and PNG invoices. The frontend sends one multipart `file` and receives the same `Invoice` JSON. Media routing is entirely backend-owned: readable PDFs use embedded text, while scanned PDFs and images use a bounded vision path. The Table, JSON, and Ask This Invoice states therefore do not branch by source format.
+## Frontend responsibility
 
-The Extraction Agent path is deployed through Hostinger, `api.marvinjb.dev`, Nginx, Docker, and FastAPI. Research Agent and Voice Agent services remain target-state components. No PostgreSQL, Redis, vector database, or persistent file storage is claimed or required for the current Extraction Agent.
+The frontend:
 
-## Target Architecture
+- Presents the homepage, case studies, and interactive demos.
+- Validates basic user input before sending it.
+- Reads public API base URLs from environment variables.
+- Applies request timeouts appropriate to each workflow.
+- Sends browser credentials only where the session-scoped Incident demo requires them.
+- Validates important response shapes before rendering them.
+- Displays honest loading, success, partial-failure, and error states.
+- Safely links citations and external project resources.
 
-The existing portfolio remains the public presentation layer. Its React frontend will expose three dedicated demo pages:
+The frontend does not parse documents, call model providers directly, search the web, run diagnostic tools, or execute remediation.
 
-- `marvinjb.dev/demo/extraction`
-- `marvinjb.dev/demo/research`
-- `marvinjb.dev/demo/voice`
+## Demo and backend boundaries
 
-Each page uses the shared HTTPS API entry point, `api.marvinjb.dev`. The Extraction route is live; Research and Voice routes will be added progressively. DNS, with Cloudflare where configured, directs that hostname to one Ubuntu VPS. Nginx terminates/proxies HTTPS traffic and routes each available API path to its isolated Docker service:
+### Extraction
 
-- `/extraction/*` -> Extraction Agent
-- `/research/*` -> Research Agent
-- `/voice/*` -> Voice Agent
+The browser uploads one supported invoice to the Extraction API. The backend owns file validation, PDF text extraction, text-versus-vision routing, OpenAI Structured Outputs, Pydantic validation, and optional invoice Q&A. Uploaded documents and provider credentials are not stored in this frontend.
 
-Each agent will have its own Python/FastAPI backend and remain logically isolated even while sharing the VPS. Agent implementations may use LLMs, external APIs, tools, MCP integrations, or retrieval-augmented generation (RAG) only when the use case justifies them.
+### Research
 
-```text
-Recruiter / User
-       |
-       v
-marvinjb.dev (Hostinger)
-React portfolio and demo pages
-  /demo/extraction  /demo/research  /demo/voice
-       |
-       | HTTPS request
-       v
-api.marvinjb.dev
-       |
-       v
-DNS / Cloudflare
-       |
-       v
-One Ubuntu VPS
-       |
-       v
-Nginx (TLS reverse proxy and path router)
-       |
-       +--------------------+--------------------+
-       |                    |                    |
-       v                    v                    v
-Docker: Extraction   Docker: Research     Docker: Voice
-Agent / FastAPI      Agent / FastAPI      Agent / FastAPI
-       |                    |                    |
-       +--------------------+--------------------+
-                            |
-                            v
-              LLMs / tools / MCP / APIs / RAG
-                    (only where appropriate)
-                            |
-                            v
-        PostgreSQL / Redis / vector DB / file storage
-                    (only where justified)
-                            |
-                            v
-            Logs / metrics / traces / health checks
-                            |
-                            v
-                  JSON or streamed response
-                            |
-                            v
-             React demo renders result or error
-```
+The browser submits one question and `quick` or `deep` depth. The backend owns planning, two-to-five bounded workers, Tavily searches, application-owned evidence identifiers, deterministic aggregation, synthesis, and final citation validation. The frontend displays an estimated progress sequence because the current API returns one completed report rather than live worker events.
 
-## Request and Response Flow
+### Incident Investigation
 
-1. A recruiter opens `marvinjb.dev`, served by Hostinger, and selects a demo.
-2. The React demo page validates and submits user input over HTTPS to the appropriate route on `api.marvinjb.dev`.
-3. DNS/Cloudflare resolves the API hostname to the Ubuntu VPS.
-4. Nginx accepts the request and routes it to the matching Dockerized FastAPI service.
-5. The agent validates the request, runs its workflow, and invokes only the LLMs, tools, APIs, MCP servers, retrieval, and storage required for that workflow.
-6. The service records appropriate telemetry and returns structured JSON or a streamed response through Nginx.
-7. The React demo displays progress, results, or a useful error to the recruiter.
+The browser selects one allowlisted synthetic incident. The backend owns session-scoped incident creation, restricted diagnostics, evidence collection, model investigation, application-owned remediation proposals, approval state, allowlisted execution, recovery verification, and the audit trail. The browser cannot supply SQL, process identifiers, deployment versions, shell commands, or arbitrary infrastructure targets.
 
-## Service and Data Boundaries
+## Environment-based API routing
 
-The three agent backends are independently understandable and deployable services. Shared physical infrastructure does not imply shared application logic or unrestricted data access.
+The three API modules read these public frontend variables:
 
-Persistence is selected from demonstrated requirements:
+- `NEXT_PUBLIC_EXTRACTION_API_BASE_URL`
+- `NEXT_PUBLIC_RESEARCH_API_BASE_URL`
+- `NEXT_PUBLIC_INCIDENT_API_BASE_URL`
 
-- PostgreSQL for durable relational application data.
-- Redis for caching, queues, sessions, or rate limiting.
-- A vector database only for genuine semantic retrieval.
-- Object or file storage only when uploaded or generated files must persist.
+They contain URL routing information only. Because `NEXT_PUBLIC_*` values are embedded into the browser build, they must never contain API keys, passwords, provider tokens, or private endpoints.
 
-Every production backend should expose a health endpoint and produce useful structured logs. Metrics and traces should be added at the level needed to diagnose reliability, volume, latency, and request flow without introducing an oversized observability stack.
+Local defaults are documented in `.env.example`. Production values are supplied by the frontend hosting environment and map to the HTTPS routes exposed through `api.marvinjb.dev`.
 
-## Source Control and Deployment
+## Request flow
 
-The portfolio remains in its existing GitHub repository and continues to deploy to Hostinger. Each agent is expected to live in a separate GitHub repository so it can be developed, tested, documented, containerized, and reviewed independently.
+1. A visitor opens a demo on `marvinjb.dev`.
+2. The frontend validates the immediate input and builds the documented request.
+3. The browser calls the configured HTTPS API boundary.
+4. Nginx routes the request to the correct Dockerized FastAPI service.
+5. That service validates the request and invokes only its approved providers and tools.
+6. The backend validates its result and returns structured JSON.
+7. The frontend validates the response shape and renders the result or a bounded error state.
 
-The target deployment flow for an agent is:
+## Failure boundaries
 
-```text
-Local development -> GitHub -> build/test -> Docker image -> Ubuntu VPS
-                                                       -> health check
-                                                       -> routed by Nginx
-```
+- A missing frontend API URL fails as configuration, before a provider request.
+- Network, timeout, validation, rate-limit, and backend failures remain distinguishable where the API exposes enough information.
+- Each backend can fail independently without importing or sharing application logic with another agent.
+- The Research frontend rejects malformed reports rather than rendering unvalidated citations.
+- The Extraction frontend rejects malformed invoice results.
+- The Incident frontend requires the backend's session and approval lifecycle; it cannot manufacture a successful remediation state.
+- Provider or backend failures do not expose raw prompts, provider responses, or credentials through the interface.
 
-Deployment automation may evolve into CI/CD, but it should be introduced only when its workflow and operational value are clear.
+## Security boundaries
+
+- Provider credentials exist only in backend runtime environments.
+- Public frontend variables hold API base URLs only.
+- Backend CORS policies authorize the public portfolio origin explicitly.
+- External source and repository links use safe new-tab behavior.
+- The Incident demo uses `credentials: include` for its bounded, session-owned workflow.
+- Uploaded invoices should be synthetic or non-sensitive; browser delivery does not make a public demo an appropriate place for confidential documents.
+- Backend authorization, tool allowlists, rate limits, evidence validation, and deployment safeguards are maintained in the backend repositories.
+
+## Why separate repositories
+
+Separate repositories keep each agent understandable and deployable on its own. They prevent frontend changes from silently modifying provider logic, let each backend maintain its own tests and security documentation, and make deployment status explicit. The services share a small portfolio VPS for cost-appropriate hosting, not a shared application codebase.
+
+This is a portfolio-scale architecture: one public portfolio, one API hostname, one VPS, and isolated services. A larger production organization could add independent environments, centralized observability, managed data services, stronger identity, and horizontally scalable coordination when traffic and availability requirements justify them.
