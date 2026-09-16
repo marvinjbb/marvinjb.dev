@@ -161,8 +161,8 @@ export default function Home() {
       </section>
 
       <section className="content-section" id="experience">
-        <p className="overline">03 · EXPERIENCE</p><h2>Systems people can count on.</h2>
-        <p className="section-intro">Production ownership across databases, data pipelines, automation, performance, and operational reliability.</p>
+        <p className="overline">03 · EXPERIENCE</p><h2>Reliable systems, from databases to AI.</h2>
+        <p className="section-intro">Production experience across databases, automation, incident response, and AI systems—built with the same focus on reliability, safety, and real-world operation.</p>
         <div className="card-list experience-list">{experience.map((item) => <article className="info-card experience-card" key={item.company}><div className="card-icon">WORK</div><div><p>{item.dates}</p><h3>{item.company}</h3><strong>{item.role}</strong><span>{item.summary}</span><ul>{item.details.map((detail) => <li key={detail}>{detail}</li>)}</ul></div></article>)}</div>
       </section>
 
@@ -183,8 +183,20 @@ export default function Home() {
       <section className="content-section" id="education">
         <p className="overline">06 · EDUCATION</p><h2>Formal education.</h2>
         <div className="card-list education-list">
-          <article className="info-card"><div className="card-icon">BS</div><div><p>EXPECTED 2026</p><h3>Bachelor of Science in Information Technology</h3><span>Western Governors University</span></div></article>
-          <article className="info-card"><div className="card-icon">AS</div><div><p>2021</p><h3>Associate Degree</h3><span>Montgomery College</span></div></article>
+          <article className="info-card">
+            <div className="education-logo">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/education/western-governors-university.jpg" alt="Western Governors University" />
+            </div>
+            <div><p>EXPECTED 2026</p><h3>Bachelor of Science in Information Technology</h3><span>Western Governors University</span></div>
+          </article>
+          <article className="info-card">
+            <div className="education-logo">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/education/montgomery-college.jpg" alt="Montgomery College" />
+            </div>
+            <div><p>2021</p><h3>Associate Degree</h3><span>Montgomery College</span></div>
+          </article>
         </div>
       </section>
 

@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
@@ -11,8 +12,19 @@ async function render(path = "/") {
 
 test("ships a real downloadable resume PDF", async () => {
   const resume = await readFile(new URL("../public/resume/Marvin-Joseph-Bogere-Resume.pdf", import.meta.url));
+  const builtResume = await readFile(new URL("../dist/client/resume/Marvin-Joseph-Bogere-Resume.pdf", import.meta.url));
   assert.equal(resume.subarray(0, 5).toString("ascii"), "%PDF-");
-  assert.ok(resume.length > 5_000);
+  assert.equal(resume.length, 123_395);
+  assert.equal(createHash("sha256").update(resume).digest("hex"), "e274b396f59f4982e866497f8ee3485c43eef850bcf2e89a86b15c02a551ba0d");
+  assert.deepEqual(builtResume, resume);
+});
+
+test("ships the supplied school logo assets", async () => {
+  for (const path of ["western-governors-university.jpg", "montgomery-college.jpg"]) {
+    const logo = await readFile(new URL(`../public/education/${path}`, import.meta.url));
+    assert.deepEqual([...logo.subarray(0, 3)], [0xff, 0xd8, 0xff]);
+    assert.ok(logo.length > 10_000);
+  }
 });
 
 test("server-renders the Marvin portfolio map", async () => {
@@ -88,6 +100,9 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /50\+ instances, 200\+ databases/);
   assert.match(html, /Emitek/);
   assert.match(html, /JULY 2018–AUG 2019/);
+  assert.match(html, /Reliable systems, from databases to AI\./);
+  assert.match(html, /Production experience across databases, automation, incident response, and AI systems—built with the same focus on reliability, safety, and real-world operation\./);
+  assert.doesNotMatch(html, /Systems people can count on\./);
   assert.match(html, /Microsoft Certified: Azure Database Administrator Associate \(DP-300\)/);
   assert.match(html, /CompTIA Security\+/);
   assert.match(html, /EARNED CERTIFICATIONS/);
@@ -101,8 +116,11 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(studying, /Claude Certified Architect – Foundations/);
   assert.match(html, /Bachelor of Science in Information Technology/);
   assert.match(html, /Western Governors University/);
+  assert.match(html, /src="\/education\/western-governors-university\.jpg" alt="Western Governors University"/);
   assert.match(html, /EXPECTED 2026/);
   assert.match(html, /Montgomery College/);
+  assert.match(html, /src="\/education\/montgomery-college\.jpg" alt="Montgomery College"/);
+  assert.doesNotMatch(html, /class="card-icon">(?:BS|AS)<\/div>/);
   for (const capability of ["AI Systems", "Backend", "Production &amp; Infrastructure", "Data Foundation"]) assert.match(html, new RegExp(capability));
   assert.doesNotMatch(html, /Project links, screenshots, repositories, and verified results will replace these structured placeholders/);
   assert.doesNotMatch(html, /Your flagship project will live here/);
