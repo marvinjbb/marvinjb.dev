@@ -10,16 +10,13 @@ export function SiteHeader() {
         <span>marvinjb.dev</span>
       </a>
       <nav className="topnav" aria-label="Primary navigation">
-        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/#projects">Projects</a>
-        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/#skills">Capabilities</a>
-        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/#experience">Experience</a>
+        <a href="https://github.com/marvinjbb" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
         <a
           href="https://www.linkedin.com/in/marvin-jbb"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
           LinkedIn
         </a>

@@ -2,24 +2,20 @@ import { SiteHeader } from "./SiteHeader";
 
 const capabilities = [
   {
-    title: "AI Systems",
-    description: "Bounded agent workflows with explicit contracts, traceable evidence, and validated model output.",
-    strengths: ["LLM APIs", "Agent workflows", "Structured Outputs", "Tool Calling", "Grounding / RAG", "Evaluation"],
+    title: "AI APIs & Backends",
+    description: "FastAPI services, structured outputs, request validation, provider integrations, typed schemas, and deployment-ready API design.",
   },
   {
-    title: "Backend Engineering",
-    description: "Typed API services that keep provider integrations separate from application behavior.",
-    strengths: ["Python", "FastAPI", "Pydantic", "REST APIs", "asyncio", "pytest"],
+    title: "Agent Workflows",
+    description: "Planning, tool use, orchestration, evidence handling, human approval, bounded actions, and multi-step AI workflows.",
   },
   {
-    title: "Production & Infrastructure",
-    description: "Deploying and operating services with practical safeguards, monitoring, and failure handling.",
-    strengths: ["Docker", "Linux", "Nginx", "CI/CD", "Monitoring", "Azure / VPS", "Reliability"],
+    title: "Reliability & Evaluation",
+    description: "Testing, logging, observability, failure handling, CI/CD, evaluation, rollback thinking, and production-safe system design.",
   },
   {
-    title: "Data Foundation",
-    description: "Production database and pipeline experience that informs reliable AI and backend systems.",
-    strengths: ["SQL Server", "ETL", "Pandas", "Data validation", "Performance engineering", "HA/DR"],
+    title: "Database & Systems Foundations",
+    description: "SQL Server, PostgreSQL, performance troubleshooting, incident response, automation, HA/DR, and operational reliability.",
   },
 ];
 
@@ -127,7 +123,7 @@ export default function Home() {
     <SiteHeader />
 
     <aside className="sidebar" aria-label="Explore">
-      <div className="side-group"><p>EXPLORE</p><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#skills">Capabilities</a><a href="#credentials">Credentials</a><a href="#blog">Articles</a></div>
+      <div className="side-group"><p>EXPLORE</p><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#what-i-build">What I Build</a><a href="#credentials">Credentials</a><a href="#education">Education</a><a href="#articles">Articles</a></div>
       <div className="side-group side-current"><p>CURRENTLY</p><div>Building <strong>Production AI systems</strong></div><div>Studying <strong>Claude Developer &amp; Architect</strong></div></div>
       <a className="side-resume" href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Download Résumé <span>↓</span></a>
     </aside>
@@ -138,44 +134,45 @@ export default function Home() {
           <img src="/marvin-portrait.jpg" alt="Portrait of Marvin" />
           <div>
             <p className="overline">MARVIN · AI ENGINEERING</p>
-            <h1>AI Engineer building production systems, not prototypes.</h1>
-            <p className="intro-role">I&apos;m Marvin — a production database administrator turned AI engineer, building reliable AI systems with Python, FastAPI, LLMs, agent workflows, and real deployment infrastructure.</p>
-            <div className="hero-actions"><a className="primary-button" href="#projects">View Projects</a><a className="secondary-button" href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Download Résumé</a></div>
+            <h1>I build reliable AI systems, shaped by years of production database work.</h1>
+            <p className="intro-role">I started in production database operations, where reliability, incident response, automation, and failure handling mattered every day. Now I bring that same mindset to AI systems built with Python, FastAPI, LLMs, and agent workflows.</p>
+            <div className="hero-actions"><a className="primary-button" href="#projects">View Projects</a><a className="secondary-button" href="https://github.com/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a className="secondary-button" href="/resume/Marvin-Joseph-Bogere-Resume.pdf" download>Download Résumé</a></div>
             <ul className="hero-proof" aria-label="Engineering highlights"><li>Production systems experience</li><li>Python / FastAPI</li><li>Live AI projects</li></ul>
           </div>
         </div>
       </section>
 
       <section className="content-section flagship-section" id="projects">
-        <p className="overline">01 · FLAGSHIP AI PROJECTS</p><h2>Built to work beyond the prompt.</h2>
-        <p className="section-intro">Three live AI systems that demonstrate orchestration, validation, grounding, backend engineering, and production deployment.</p>
+        <p className="overline">01 · PROJECTS</p><h2>AI systems I built to solve real engineering problems.</h2>
+        <p className="section-intro">These projects are public, production-minded versions of the kinds of AI systems I want to build professionally—systems with clear workflows, strong validation, observable behavior, and deliberate failure handling.</p>
         <div className="flagship-list">{projects.map((project, index) => <article className={`flagship-project${index % 2 ? " flagship-project-reverse" : ""}`} key={project.title}><div className="flagship-copy"><div className="project-status"><span aria-hidden="true" />{project.label}</div><h3>{project.title}</h3><p>{project.description}</p><div className="project-outcome"><span>OUTPUT</span><strong>{project.outcome}</strong></div><ul>{project.proof.map((item) => <li key={item}>{item}</li>)}</ul><small>{project.tags}</small><div className="project-actions"><a className="primary-button" href={project.demo}>Try Live Demo</a><a className="secondary-button" href={`${project.demo}${project.previewKind === "incident" ? "#architecture" : "#project"}`}>View Project</a>{project.repository && <a className="text-link" href={project.repository} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}</div></div><div className="project-preview"><div className="preview-bar"><span>SYSTEM PREVIEW</span><i aria-hidden="true" /></div><ProjectPreview project={project} /></div></article>)}</div>
         <article className="voice-next"><div><span>COMING NEXT</span><h3>Voice Agent</h3><p>A real-time AI voice agent designed to listen, reason, use tools, and respond naturally.</p></div><small>PLANNED · PYTHON · STREAMING · SPEECH-TO-TEXT · TOOL CALLING · TEXT-TO-SPEECH</small></article>
       </section>
 
       <section className="content-section engineering-story" id="story">
-        <p className="overline">02 · PRODUCTION ADVANTAGE</p>
-        <h2>Production experience is the foundation.</h2>
-        <p className="section-intro">My approach to AI comes from operating database and data systems where reliability, incident response, automation, performance, deployment, and failure handling mattered every day.</p>
-        <p className="story-path">Production database &amp; data engineering <span>→</span> Python &amp; backend engineering <span>→</span> Production AI systems</p>
+        <p className="overline">02 · FROM DBA TO AI ENGINEER</p>
+        <h2>How I got here.</h2>
+        <p className="section-intro">My approach to AI comes from years of working in production database environments, where reliability, incident response, automation, performance, and failure handling were part of the job. That experience now shapes how I design and build AI systems.</p>
+        <p className="story-path">Production databases <span>→</span> Backend &amp; automation <span>→</span> AI systems</p>
       </section>
 
       <section className="content-section" id="experience">
-        <p className="overline">03 · EXPERIENCE</p><h2>Reliable systems, from databases to AI.</h2>
-        <p className="section-intro">Production experience across databases, automation, incident response, and AI systems—built with the same focus on reliability, safety, and real-world operation.</p>
+        <p className="overline">03 · EXPERIENCE</p><h2>The work that shaped how I build.</h2>
+        <p className="section-intro">Before moving into AI engineering, I spent years supporting production SQL Server environments, troubleshooting incidents, improving performance, automating operational work, and supporting deployments. That experience is why I care so much about reliability, safety, and predictable system behavior in AI applications.</p>
         <div className="card-list experience-list">{experience.map((item) => <article className="info-card experience-card" key={item.company}><div className="card-icon">WORK</div><div><p>{item.dates}</p><h3>{item.company}</h3><strong>{item.role}</strong><span>{item.summary}</span><ul>{item.details.map((detail) => <li key={detail}>{detail}</li>)}</ul></div></article>)}</div>
       </section>
 
-      <section className="content-section" id="skills">
-        <p className="overline">04 · CAPABILITIES</p><h2>AI systems, backed by production discipline.</h2>
-        <p className="section-intro">Four connected strengths for building AI services that work reliably outside a development environment.</p>
-        <div className="capability-grid">{capabilities.map((capability) => <article key={capability.title}><h3>{capability.title}</h3><p>{capability.description}</p><p className="capability-strengths">{capability.strengths.join(" · ")}</p></article>)}</div>
+      <section className="content-section" id="what-i-build">
+        <p className="overline">04 · WHAT I BUILD</p><h2>The systems and skills I bring together.</h2>
+        <p className="section-intro">I work across AI application development, backend engineering, agent workflows, and production reliability. My focus is not just getting a model to respond—it is building the system around it so the result can be tested, validated, observed, and operated.</p>
+        <div className="capability-grid">{capabilities.map((capability) => <article key={capability.title}><h3>{capability.title}</h3><p>{capability.description}</p></article>)}</div>
       </section>
 
       <section className="content-section" id="credentials">
-        <p className="overline">05 · CREDENTIALS</p><h2>Completed and in progress.</h2>
+        <p className="overline">05 · CREDENTIALS</p><h2>Credentials that support the work.</h2>
+        <p className="section-intro">Focused certifications that reinforce my AI, cloud database, and security foundations.</p>
         <div className="credential-grid">
-          <article className="credential-earned"><p className="overline">EARNED CERTIFICATIONS</p><h3>Earned certifications</h3><div className="credential-feature"><a className="credential-badge-link" href="https://www.credly.com/badges/34471933-cede-4253-813c-044842b7fc6a/public_url" target="_blank" rel="noopener noreferrer" aria-label="Verify Claude Certified Associate – Foundations credential on Credly"><img src="/credentials/claude-certified-associate-foundations.png" alt="Official Claude Certified Associate – Foundations badge" /></a><div><span>EARNED</span><h4>Claude Certified Associate – Foundations</h4><a href="https://www.credly.com/badges/34471933-cede-4253-813c-044842b7fc6a/public_url" target="_blank" rel="noopener noreferrer">Verify credential ↗</a></div></div><ul><li>Microsoft Certified: Azure Database Administrator Associate (DP-300)</li><li>CompTIA Security+</li></ul></article>
+          <article className="credential-earned"><p className="overline">EARNED CERTIFICATIONS</p><h3>Earned certifications</h3><div className="credential-feature"><a className="credential-badge-link" href="https://www.credly.com/badges/34471933-cede-4253-813c-044842b7fc6a/public_url" target="_blank" rel="noopener noreferrer" aria-label="Verify Claude Certified Associate – Foundations credential on Credly"><img src="/credentials/claude-certified-associate-foundations.png" alt="Official Claude Certified Associate – Foundations badge" /></a><div><span>EARNED</span><h4>Claude Certified Associate – Foundations</h4><p className="credential-issuer">Anthropic</p><p className="credential-description">Demonstrates practical understanding of Claude workflows, prompting, configuration, tool use, and responsible AI system usage.</p><a href="https://www.credly.com/badges/34471933-cede-4253-813c-044842b7fc6a/public_url" target="_blank" rel="noopener noreferrer">Verify credential ↗</a></div></div><div className="credential-records"><div><h4>Microsoft Certified: Azure Database Administrator Associate (DP-300)</h4><p>Microsoft</p><span>Validates administration of SQL Server and Azure SQL solutions across security, performance, availability, and migration.</span><a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-database-administrator-associate/" target="_blank" rel="noopener noreferrer">View certification ↗</a></div><div><h4>CompTIA Security+</h4><p>CompTIA</p><span>Validates foundational cybersecurity knowledge across threats, architecture, operations, and risk.</span><a href="https://www.comptia.org/en-us/certifications/security/" target="_blank" rel="noopener noreferrer">View certification ↗</a></div></div></article>
           <article><p className="overline">CURRENTLY STUDYING</p><h3>Claude foundations</h3><ul><li>Claude Certified Developer – Foundations</li><li>Claude Certified Architect – Foundations</li></ul></article>
         </div>
       </section>
@@ -188,7 +185,7 @@ export default function Home() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/education/western-governors-university.jpg" alt="Western Governors University" />
             </div>
-            <div><p>EXPECTED 2026</p><h3>Bachelor of Science in Information Technology</h3><span>Western Governors University</span></div>
+            <div><p>2026</p><h3>Bachelor of Science in Information Technology</h3><span>Western Governors University</span></div>
           </article>
           <article className="info-card">
             <div className="education-logo">
@@ -200,9 +197,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="content-section" id="blog"><p className="overline">07 · ARTICLES</p><h2>Articles on what I&apos;m learning and building.</h2><p className="section-intro">Notes on AI engineering, production systems, certifications, and the lessons I pick up while building.</p><div className="card-list">{posts.map((post) => <article className="info-card post post-live" key={post.title}><div className="card-icon article-icon"><MediumMark /></div><div><p>{post.label}</p><h3>{post.title}</h3><span>{post.description}</span><div className="post-published"><small>{post.status}</small><a href={post.href} target="_blank" rel="noopener noreferrer">Read on Medium ↗</a></div></div></article>)}</div></section>
+      <section className="content-section" id="articles"><p className="overline">07 · ARTICLES</p><h2>What I&apos;m learning, testing, and thinking about.</h2><p className="section-intro">I write about the questions I run into while learning and building AI systems—from security and agent design to the way I study new tools and technologies.</p><div className="card-list">{posts.map((post) => <article className="info-card post post-live" key={post.title}><div className="card-icon article-icon"><MediumMark /></div><div><p>{post.label}</p><h3>{post.title}</h3><span>{post.description}</span><div className="post-published"><small>{post.status}</small><a href={post.href} target="_blank" rel="noopener noreferrer">Read on Medium ↗</a></div></div></article>)}</div></section>
 
-      <section className="contact-section" id="connect"><p className="overline">CONNECT</p><h2>Let&apos;s build something useful.</h2><p>Have an AI engineering role, a backend challenge, or a production system worth improving?</p><div className="contact-links"><a href="mailto:jbmarvin21@gmail.com">Email</a><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub</a></div></section>
+      <section className="contact-section" id="connect"><p className="overline">CONNECT</p><h2>Let&apos;s connect.</h2><p>I&apos;m currently focused on AI and Generative AI engineering roles where production experience, backend systems, and reliable AI application design matter.</p><div className="contact-links"><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub</a><a href="mailto:jbmarvin21@gmail.com">Let&apos;s Connect</a></div></section>
       <footer><div><strong>marvinjb.dev</strong><span>AI engineering, backend systems, and production infrastructure.</span></div><div id="linkedin"><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noreferrer">LinkedIn</a><a href="#experience">Experience</a><a href="#connect">Let&apos;s Connect</a></div><span>© 2026 Marvin</span></footer>
     </div>
   </main>;
