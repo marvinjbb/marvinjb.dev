@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+/* eslint-disable @next/next/no-html-link-for-pages -- Vinext production navigation requires native anchors for these homepage hash links. */
 import { SiteHeader } from "../../SiteHeader";
 import { ExtractionDemo } from "./ExtractionDemo";
 
@@ -57,7 +57,7 @@ export default function ExtractionDemoPage() {
       <section className="project-section reliability-section" id="reliability"><header className="project-section-heading"><p className="overline">04 · RELIABILITY</p><h2>What happens when something goes wrong</h2><p>The system checks files before processing them, validates the AI result before showing it, and gives the user a clear error when something fails.</p></header><div className="reliability-list">{reliability.map(([heading, copy]) => <article key={heading}><h3>{heading}</h3><p>{copy}</p></article>)}</div></section>
       <section className="project-section stack-section" id="stack"><p className="overline">05 · TECHNOLOGY STACK</p><div><strong>Frontend</strong><span>React · TypeScript</span></div><div><strong>Backend</strong><span>Python · FastAPI · Pydantic · pypdf</span></div><div><strong>AI &amp; Document Processing</strong><span>OpenAI Structured Outputs · multimodal vision</span></div><div><strong>Deployment</strong><span>Docker · Nginx · Ubuntu VPS · HTTPS · health checks</span></div></section>
       <section className="project-repository" id="repository"><div><p className="overline">INSPECT THE IMPLEMENTATION</p><h2>See how it was built</h2><p>Explore the API flow, validation, tests, and deployment setup behind the Extraction Agent.</p></div><a className="primary-button" href={repositoryUrl} target="_blank" rel="noopener noreferrer">View GitHub Repository</a></section>
-      <footer className="project-footer"><div><strong>marvinjb.dev</strong><span>AI engineering, projects, and field notes.</span></div><div><Link href="/#projects">Selected work</Link><Link href="/#connect">Let&apos;s Connect</Link></div><span>© 2026 Marvin</span></footer>
+      <footer className="project-footer"><div><strong>marvinjb.dev</strong><span>AI engineering, projects, and field notes.</span></div><div><a href="/#projects">Selected work</a><a href="/#connect">Let&apos;s Connect</a></div><span>© 2026 Marvin</span></footer>
     </div>
   </main>;
 }

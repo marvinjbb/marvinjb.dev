@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+/* eslint-disable @next/next/no-html-link-for-pages -- Vinext production navigation requires native anchors for these homepage hash links. */
 
 import { SiteHeader } from "../../SiteHeader";
 import { IncidentDemo } from "./IncidentDemo";
@@ -155,7 +155,7 @@ export default function IncidentInvestigationPage() {
           </div>
         </section>
 
-        <footer className="project-footer"><div><strong>marvinjb.dev</strong><span>AI engineering, projects, and field notes.</span></div><div><Link href="/#projects">Selected work</Link><Link href="/#connect">Let&apos;s Connect</Link></div><span>© 2026 Marvin</span></footer>
+        <footer className="project-footer"><div><strong>marvinjb.dev</strong><span>AI engineering, projects, and field notes.</span></div><div><a href="/#projects">Selected work</a><a href="/#connect">Let&apos;s Connect</a></div><span>© 2026 Marvin</span></footer>
       </div>
     </main>
   );

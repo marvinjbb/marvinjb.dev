@@ -190,6 +190,19 @@ test("renders the portfolio navigation and main sections", async () => {
   assert.doesNotMatch(html, />Writing<\/a>/);
 });
 
+test("demo footers use native anchors for homepage hash navigation", async () => {
+  for (const path of [
+    "../app/demo/research/page.tsx",
+    "../app/demo/extraction/page.tsx",
+    "../app/demo/incident-investigation/page.tsx",
+  ]) {
+    const source = await readFile(new URL(path, import.meta.url), "utf8");
+    assert.doesNotMatch(source, /next\/link|<Link\b/);
+    assert.match(source, /<a href="\/#projects">Selected work<\/a>/);
+    assert.match(source, /<a href="\/#connect">Let&apos;s Connect<\/a>/);
+  }
+});
+
 test("server-renders the extraction demo route", async () => {
   const response = await render("/demo/extraction");
   assert.equal(response.status, 200);
