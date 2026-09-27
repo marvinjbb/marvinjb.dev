@@ -11,11 +11,11 @@ async function render(path = "/") {
 }
 
 test("ships a real downloadable resume PDF", async () => {
-  const resume = await readFile(new URL("../public/resume/Marvin-Joseph-Bogere-Resume.pdf", import.meta.url));
-  const builtResume = await readFile(new URL("../dist/client/resume/Marvin-Joseph-Bogere-Resume.pdf", import.meta.url));
+  const resume = await readFile(new URL("../public/resume/Marvin-Joseph-Resume.pdf", import.meta.url));
+  const builtResume = await readFile(new URL("../dist/client/resume/Marvin-Joseph-Resume.pdf", import.meta.url));
   assert.equal(resume.subarray(0, 5).toString("ascii"), "%PDF-");
-  assert.equal(resume.length, 123_395);
-  assert.equal(createHash("sha256").update(resume).digest("hex"), "e274b396f59f4982e866497f8ee3485c43eef850bcf2e89a86b15c02a551ba0d");
+  assert.equal(resume.length, 97_808);
+  assert.equal(createHash("sha256").update(resume).digest("hex"), "92626f4af6d90fcae6e6c2e2246dbb84858fce1c44931b2b90b16ba63e3b9c4b");
   assert.deepEqual(builtResume, resume);
 });
 
@@ -48,7 +48,7 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /These projects are public, production-minded versions of the kinds of AI systems I want to build professionally/);
   assert.match(html, /href="#projects">View Projects<\/a>/);
   assert.match(html, /href="https:\/\/github\.com\/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub ↗<\/a>/);
-  assert.match(html, /href="\/resume\/Marvin-Joseph-Bogere-Resume\.pdf" download="">Download Résumé<\/a>/);
+  assert.match(html, /href="\/resume\/Marvin-Joseph-Resume\.pdf" download="">Download Résumé<\/a>/);
   assert.match(html, /Production databases.*Backend &amp; automation.*AI systems/);
   assert.match(html, /FROM DBA TO AI ENGINEER/);
   assert.match(html, /How I got here\./);
@@ -78,12 +78,14 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /Extraction Agent/);
   assert.match(html, /href="\/demo\/extraction"/);
   assert.match(html, /Try Live Demo/);
-  assert.match(html, /View Project/);
-  assert.match(html, /GitHub ↗/);
+  assert.match(html, /How It Works/);
+  assert.match(html, /View GitHub/);
   assert.match(html, /https:\/\/github\.com\/marvinjbb\/extraction-agent/);
+  assert.match(html, /turn invoices from PDFs and images into clean, structured data/i);
+  assert.match(html, /Handles text and scanned documents/);
   assert.match(html, /Research Agent/);
-  assert.match(html, /breaks complex questions into focused assignments, researches them in parallel/i);
-  assert.match(html, /Application-owned evidence IDs/);
+  assert.match(html, /take a broad question, break it into smaller research tasks/i);
+  assert.match(html, /Tracks evidence behind every claim/);
   assert.match(html, /TAVILY/);
   assert.match(html, /ASYNCIO/);
   assert.match(html, /href="\/demo\/research"/);
@@ -91,8 +93,7 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /Incident Investigation Agent/);
   assert.match(html, /href="\/demo\/incident-investigation"/);
   assert.match(html, /https:\/\/github\.com\/marvinjbb\/incident-investigation-agent/);
-  assert.match(html, /Progressive diagnostic tool selection/);
-  assert.match(html, /multimodal document system that turns invoices from PDFs and images/i);
+  assert.match(html, /Step-by-step investigation/);
   assert.match(html, /PYPDF/);
   assert.match(html, /Voice Agent/);
   assert.match(html, /COMING NEXT/);
@@ -156,7 +157,7 @@ test("renders the portfolio navigation and main sections", async () => {
   assert.match(html, /Studying <strong>Claude Developer &amp; Architect<\/strong>/);
   assert.doesNotMatch(html, /<nav aria-label="Connect">/);
   assert.match(html, /href="\/#connect">Let(?:&#x27;|')s Connect<\/a>/);
-  assert.match(html, /href="\/resume\/Marvin-Joseph-Bogere-Resume\.pdf" download="">Download Résumé/);
+  assert.match(html, /href="\/resume\/Marvin-Joseph-Resume\.pdf" download="">Download Résumé/);
   assert.match(html, /01 · PROJECTS/);
   assert.match(html, /SYSTEM PREVIEW/);
   assert.match(html, /Open live interface →/);
@@ -177,7 +178,7 @@ test("server-renders the extraction demo route", async () => {
   const html = await response.text();
   assert.match(html, /<title>Extraction Agent — Live Demo \| Marvin<\/title>/i);
   assert.match(html, /Turn unstructured invoices into validated data\./);
-  assert.match(html, /Upload a PDF or image of an invoice\. The AI finds the vendor, dates, totals, and line items/);
+  assert.match(html, /Upload a PDF or image of an invoice\. The AI extracts the vendor, dates, totals, and line items/);
   assert.match(html, /LIVE AI SYSTEM · EXTRACTION AGENT/);
   assert.match(html, /Upload one invoice\. Inspect structured data\./);
   assert.match(html, /Upload invoice/);
@@ -188,10 +189,11 @@ test("server-renders the extraction demo route", async () => {
   assert.match(html, /Extract invoice/);
   assert.match(html, /Table/);
   assert.match(html, /JSON/);
-  assert.match(html, /One interface, two document-reading paths\./);
-  assert.match(html, /Input-aware routing/);
-  assert.match(html, /OpenAI Structured Outputs/);
-  assert.match(html, /Invalid input and output fail clearly\./);
+  assert.match(html, /The AI chooses the right way to read each invoice\./);
+  assert.match(html, /Detect document type/);
+  assert.match(html, /Extract invoice details/);
+  assert.match(html, /What happens when something goes wrong/);
+  assert.match(html, /View GitHub Repository/);
   assert.match(html, /FastAPI · Docker · Nginx/);
   assert.match(html, /5 MiB/);
   assert.doesNotMatch(html, /Ask this invoice/);
@@ -203,19 +205,19 @@ test("server-renders the research demo route", async () => {
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /<title>Research Agent — Live Demo \| Marvin<\/title>/i);
-  assert.match(html, /Grounded research with parallel AI workers\./);
-  assert.match(html, /Ask one question\. The AI divides the work, researches multiple sources in parallel/);
+  assert.match(html, /Turn one question into a clear, cited research report\./);
+  assert.match(html, /Ask one question\. The AI breaks it into smaller research tasks, searches multiple sources at the same time/);
   assert.match(html, /LIVE AI SYSTEM · RESEARCH AGENT/);
-  assert.match(html, /Give the research team one question\./);
+  assert.match(html, /Ask one question\. The system does the research\./);
   assert.match(html, /Research question/);
   assert.match(html, /Start Research/);
-  assert.match(html, /2–5 research workers/);
-  assert.match(html, /Evidence stays traceable from search to report\./);
-  assert.match(html, /Worker 01/);
-  assert.match(html, /Deterministic aggregation/);
-  assert.match(html, /Claim-bound synthesis/);
-  assert.match(html, /Application-owned evidence IDs/);
-  assert.match(html, /Failure is bounded and visible\./);
+  assert.match(html, /Breaks the question into 2–5 research tasks/);
+  assert.match(html, /How the research process works/);
+  assert.match(html, /Search multiple sources/);
+  assert.match(html, /Collect evidence/);
+  assert.match(html, /How the system keeps research reliable/);
+  assert.match(html, /What happens when research fails/);
+  assert.match(html, /View GitHub Repository/);
   assert.match(html, /https:\/\/github\.com\/marvinjbb\/research-agent/);
   assert.doesNotMatch(html, /OPENAI_API_KEY|TAVILY_API_KEY|api\.openai\.com/i);
 });
@@ -231,9 +233,11 @@ test("server-renders the incident investigation demo route", async () => {
   assert.match(html, /Connection Pool Exhaustion/);
   assert.match(html, /Failing Application Deployment/);
   assert.match(html, /Run Incident/);
-  assert.match(html, /Restricted diagnostics/);
-  assert.match(html, /Human approval/);
-  assert.match(html, /Allowlisted remediation/);
+  assert.match(html, /Create incident/);
+  assert.match(html, /WHAT THE AI CAN INSPECT/);
+  assert.match(html, /The AI investigates first\. A human approves any fix\./);
+  assert.match(html, /Human approval before fixes/);
+  assert.match(html, /Production safety and limits/);
   assert.match(html, /href="https:\/\/github\.com\/marvinjbb\/incident-investigation-agent" target="_blank" rel="noopener noreferrer"/);
   assert.doesNotMatch(html, /OPENAI_API_KEY|POSTGRES_PASSWORD|api\.openai\.com/i);
 });

@@ -48,11 +48,17 @@ test("completed investigation moves focus to the plain-first result hierarchy", 
   assert.match(source, /RECOMMENDED ACTION · HUMAN APPROVAL/);
 });
 
-test("documents the restricted architecture and production safety boundary", async () => {
+test("explains the restricted workflow and production safety boundary", async () => {
   const source = await readFile(pagePath, "utf8");
-  for (const value of ["Restricted Diagnostic Tools", "Human decision", "TOCTOU revalidation", "No arbitrary administration", "automatically recovers abandoned incidents after 120 seconds"]) {
+  for (const value of ["WHY I BUILT THIS", "WHAT THE AI CAN INSPECT", "The AI investigates first. A human approves any fix.", "How the AI stays safe", "Production safety and limits"]) {
     assert.match(source, new RegExp(value, "i"));
   }
+  for (const tool of ["Incident details", "Incident timeline", "Application logs", "Database blocking", "Database connection usage", "Application connection pool", "Recent deployments", "Approved runbook"]) {
+    assert.match(source, new RegExp(tool, "i"));
+  }
+  assert.match(source, /intentionally synthetic PostgreSQL and application failures/);
+  assert.match(source, /application behavior, AI investigation, evidence validation, human approval, remediation, and recovery checks are real/);
+  assert.match(source, /It cannot run arbitrary SQL, shell commands, or infrastructure actions/);
   assert.match(source, /https:\/\/github\.com\/marvinjbb\/incident-investigation-agent/);
   assert.match(source, /target="_blank" rel="noopener noreferrer"/);
 });

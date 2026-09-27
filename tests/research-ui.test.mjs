@@ -12,6 +12,8 @@ test("research UI exposes the approved question and depth controls", async () =>
   assert.match(source, /maxLength=\{2_000\}/);
   assert.match(source, /EXAMPLE_RESEARCH_QUESTIONS/);
   assert.match(source, /TRY AN EXAMPLE/);
+  assert.match(source, /Focused search for a concise report/);
+  assert.match(source, /Broader search with more coverage/);
 });
 
 test("progress is explicitly honest about completed-response API behavior", async () => {

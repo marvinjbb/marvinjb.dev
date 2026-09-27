@@ -386,8 +386,8 @@ export function ResearchDemo() {
                 <span>{option === "quick" ? "Quick" : "Deep"}</span>
                 <small>
                   {option === "quick"
-                    ? "Focused plan, usually fewer workers"
-                    : "Broader plan, usually more workers"}
+                    ? "Focused search for a concise report"
+                    : "Broader search with more coverage"}
                 </small>
               </label>
             ))}
