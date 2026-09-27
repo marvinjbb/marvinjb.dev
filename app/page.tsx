@@ -64,17 +64,47 @@ const projects = [
   },
 ];
 
-const experience = [
+type ExperienceSection = {
+  title: string;
+  summary: string;
+  details: string[];
+};
+
+type ExperienceItem = {
+  company: string;
+  role: string;
+  dates: string;
+  summary?: string;
+  details?: string[];
+  sections?: ExperienceSection[];
+};
+
+const experience: ExperienceItem[] = [
   {
     company: "Diplomatic Solutions Corporation",
     role: "Senior Production SQL Server DBA",
     dates: "September 2022–Present",
-    summary: "Support 24x7 mission-critical SQL Server environments across on-premises and Azure infrastructure, including 50+ SQL Server instances, 200+ databases, and databases up to 4 TB.",
-    details: [
-      "Built the SQL Server investigation path for an internal AI-assisted incident platform using restricted Python diagnostics, FastAPI, Pydantic, and bounded LLM tool calling.",
-      "P1/P2 escalation and root-cause analysis across blocking, deadlocks, long-running queries, resource pressure, TempDB, waits, and execution-plan regressions.",
-      "Always On Availability Groups, backup/recovery, failovers, HA/DR, monitoring, and recovery operations.",
-      "PowerShell/T-SQL automation with GitHub, Azure DevOps, CI/CD, and Octopus Deploy.",
+    sections: [
+      {
+        title: "Internal Assignment — Applied AI Engineer, Incident Automation",
+        summary: "Built the SQL Server investigation path for an internal AI-assisted incident platform, translating production incident-response procedures into restricted Python diagnostics, FastAPI components, Pydantic evidence contracts, and bounded LLM tool-calling workflows.",
+        details: [
+          "Developed restricted diagnostic operations for SQL Server blocking, active requests, connection pressure, and database health.",
+          "Designed application-controlled evidence records with verified identifiers and provenance so generated reports reference collected evidence instead of unsupported model claims.",
+          "Integrated database diagnostics into a bounded AI workflow where the model selects approved tools while application code controls execution, permissions, validation, usage limits, and failure handling.",
+          "Added safeguards including strict tool schemas, bounded tool/model usage, human approval, current-state revalidation, and post-action recovery verification.",
+        ],
+      },
+      {
+        title: "Production Database Engineering",
+        summary: "Support 24x7 mission-critical SQL Server environments across on-premises and Azure infrastructure, including 50+ SQL Server instances, 200+ databases, and databases up to 4 TB.",
+        details: [
+          "Serve as a senior database escalation resource during P1/P2 incidents involving database failures, application connectivity, performance degradation, resource pressure, and service availability.",
+          "Perform root-cause analysis for blocking chains, deadlocks, long-running queries, CPU and I/O pressure, TempDB contention, connection exhaustion, wait statistics, and execution-plan regressions.",
+          "Manage Always On Availability Groups, backup and recovery, failovers, HA/DR, monitoring, and recovery operations.",
+          "Automate operational workflows using PowerShell and T-SQL with GitHub, Azure DevOps, CI/CD, and Octopus Deploy.",
+        ],
+      },
     ],
   },
   {
@@ -159,7 +189,7 @@ export default function Home() {
       <section className="content-section" id="experience">
         <p className="overline">03 · EXPERIENCE</p><h2>The work that shaped how I build.</h2>
         <p className="section-intro">Before moving into AI engineering, I spent years working in production database environments—handling incidents, performance problems, automation, deployments, and reliability. That experience now shapes how I build and operate AI systems.</p>
-        <div className="card-list experience-list">{experience.map((item) => <article className="info-card experience-card" key={item.company}><div className="card-icon">WORK</div><div><p>{item.dates}</p><h3>{item.company}</h3><strong>{item.role}</strong><span>{item.summary}</span><ul>{item.details.map((detail) => <li key={detail}>{detail}</li>)}</ul></div></article>)}</div>
+        <div className="card-list experience-list">{experience.map((item) => <article className="info-card experience-card" key={item.company}><div className="card-icon">WORK</div><div><p>{item.dates}</p><h3>{item.company}</h3><strong>{item.role}</strong>{item.sections ? <div className="experience-subsections">{item.sections.map((section) => <section className="experience-subsection" key={section.title}><h4>{section.title}</h4><span>{section.summary}</span><ul>{section.details.map((detail) => <li key={detail}>{detail}</li>)}</ul></section>)}</div> : <><span>{item.summary}</span><ul>{item.details?.map((detail) => <li key={detail}>{detail}</li>)}</ul></>}</div></article>)}</div>
       </section>
 
       <section className="content-section" id="what-i-build">

@@ -104,10 +104,19 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /Diplomatic Solutions Corporation/);
   assert.match(html, /Senior Production SQL Server DBA/);
   assert.match(html, /September 2022–Present/);
+  assert.match(html, /Internal Assignment — Applied AI Engineer, Incident Automation/);
+  assert.match(html, /Built the SQL Server investigation path for an internal AI-assisted incident platform/);
+  assert.match(html, /Developed restricted diagnostic operations for SQL Server blocking, active requests, connection pressure, and database health\./);
+  assert.match(html, /Designed application-controlled evidence records with verified identifiers and provenance/);
+  assert.match(html, /Production Database Engineering/);
   assert.match(html, /50\+ SQL Server instances, 200\+ databases, and databases up to 4 TB/);
-  assert.match(html, /P1\/P2 escalation and root-cause analysis across blocking, deadlocks, long-running queries, resource pressure, TempDB, waits, and execution-plan regressions\./);
-  assert.match(html, /Always On Availability Groups, backup\/recovery, failovers, HA\/DR, monitoring, and recovery operations\./);
-  assert.match(html, /PowerShell\/T-SQL automation with GitHub, Azure DevOps, CI\/CD, and Octopus Deploy\./);
+  assert.match(html, /Serve as a senior database escalation resource during P1\/P2 incidents/);
+  assert.match(html, /Manage Always On Availability Groups, backup and recovery, failovers, HA\/DR, monitoring, and recovery operations\./);
+  assert.match(html, /Automate operational workflows using PowerShell and T-SQL with GitHub, Azure DevOps, CI\/CD, and Octopus Deploy\./);
+  assert.match(
+    html,
+    /Senior Production SQL Server DBA[\s\S]*Internal Assignment — Applied AI Engineer, Incident Automation[\s\S]*Production Database Engineering/,
+  );
   assert.match(html, /Emitek/);
   assert.match(html, /ETL Engineer \/ SQL Server DBA/);
   assert.match(html, /July 2021–August 2022/);
