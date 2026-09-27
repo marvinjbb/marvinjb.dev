@@ -2,20 +2,20 @@ import { SiteHeader } from "./SiteHeader";
 
 const capabilities = [
   {
-    title: "AI APIs & Backends",
-    description: "FastAPI services, structured outputs, request validation, provider integrations, typed schemas, and deployment-ready API design.",
+    title: "AI Applications & Backends",
+    description: "FastAPI services, structured outputs, request validation, provider integrations, typed schemas, and production-ready API design.",
   },
   {
     title: "Agent Workflows",
-    description: "Planning, tool use, orchestration, evidence handling, human approval, bounded actions, and multi-step AI workflows.",
+    description: "Planning, tool use, orchestration, evidence handling, human approval, and controlled multi-step AI workflows.",
   },
   {
     title: "Reliability & Evaluation",
-    description: "Testing, logging, observability, failure handling, CI/CD, evaluation, rollback thinking, and production-safe system design.",
+    description: "Testing, logging, observability, failure handling, CI/CD, evaluation, rollback thinking, and production-safe design.",
   },
   {
-    title: "Database & Systems Foundations",
-    description: "SQL Server, PostgreSQL, performance troubleshooting, incident response, automation, HA/DR, and operational reliability.",
+    title: "Databases & Production Systems",
+    description: "SQL Server, PostgreSQL, performance troubleshooting, incident response, automation, HA/DR, and production reliability.",
   },
 ];
 
@@ -67,25 +67,25 @@ const projects = [
 const experience = [
   {
     company: "Diplomatic Solutions Corporation",
-    role: "Senior SQL Server DBA",
-    dates: "SEPT 2019–PRESENT",
-    summary: "Production ownership across on-prem and Azure SQL Server environments: 50+ instances, 200+ databases, and multi-terabyte, high-concurrency workloads.",
+    role: "Senior Production SQL Server DBA",
+    dates: "September 2022–Present",
+    summary: "Support 24x7 mission-critical SQL Server environments across on-premises and Azure infrastructure, including 50+ SQL Server instances, 200+ databases, and databases up to 4 TB.",
     details: [
-      "HA/DR, Always On Availability Groups, failovers, backup and recovery, and P1/P2 incident response",
-      "Performance engineering across blocking, deadlocks, Query Store, execution plans, waits, I/O, and TempDB",
-      "Automation with PowerShell, T-SQL, and Python; Azure migrations and CI/CD database deployment workflows",
-      "Monitoring, runbooks, operational standards, and production reliability",
+      "Built the SQL Server investigation path for an internal AI-assisted incident platform using restricted Python diagnostics, FastAPI, Pydantic, and bounded LLM tool calling.",
+      "P1/P2 escalation and root-cause analysis across blocking, deadlocks, long-running queries, resource pressure, TempDB, waits, and execution-plan regressions.",
+      "Always On Availability Groups, backup/recovery, failovers, HA/DR, monitoring, and recovery operations.",
+      "PowerShell/T-SQL automation with GitHub, Azure DevOps, CI/CD, and Octopus Deploy.",
     ],
   },
   {
     company: "Emitek",
     role: "ETL Engineer / SQL Server DBA",
-    dates: "JULY 2018–AUG 2019",
-    summary: "Built and supported data pipelines across SQL Server, APIs, XML, and flat-file sources.",
+    dates: "July 2021–August 2022",
+    summary: "Built and supported Python and SSIS ETL pipelines integrating SQL Server, structured files, XML, APIs, and other business data sources.",
     details: [
-      "Python data workflows using Pandas and NumPy",
-      "Incremental loads, CDC, automation, monitoring, and data validation",
-      "SQL query and database performance tuning",
+      "Python and Pandas data-processing workflows.",
+      "Query tuning, indexing, execution-plan analysis, and database optimization.",
+      "Python, SQL Server Agent, and T-SQL scheduling/monitoring, including troubleshooting pipeline failures, API issues, and data inconsistencies.",
     ],
   },
 ];
@@ -150,21 +150,21 @@ export default function Home() {
       </section>
 
       <section className="content-section engineering-story" id="story">
-        <p className="overline">02 · FROM DBA TO AI ENGINEER</p>
-        <h2>How I got here.</h2>
-        <p className="section-intro">My approach to AI comes from years of working in production database environments, where reliability, incident response, automation, performance, and failure handling were part of the job. That experience now shapes how I design and build AI systems.</p>
-        <p className="story-path">Production databases <span>→</span> Backend &amp; automation <span>→</span> AI systems</p>
+        <p className="overline">02 · PRODUCTION ENGINEERING → APPLIED AI</p>
+        <h2>From production databases to AI systems</h2>
+        <p className="section-intro">I started in production database engineering, where reliability, incident response, automation, performance, and safe change management were part of the job. That experience now shapes how I build AI systems: with clear boundaries, observable behavior, validation, and production reliability in mind.</p>
+        <p className="story-path">Production DBA <span>→</span> Backend &amp; Automation <span>→</span> Applied AI Engineering</p>
       </section>
 
       <section className="content-section" id="experience">
         <p className="overline">03 · EXPERIENCE</p><h2>The work that shaped how I build.</h2>
-        <p className="section-intro">Before moving into AI engineering, I spent years supporting production SQL Server environments, troubleshooting incidents, improving performance, automating operational work, and supporting deployments. That experience is why I care so much about reliability, safety, and predictable system behavior in AI applications.</p>
+        <p className="section-intro">Before moving into AI engineering, I spent years working in production database environments—handling incidents, performance problems, automation, deployments, and reliability. That experience now shapes how I build and operate AI systems.</p>
         <div className="card-list experience-list">{experience.map((item) => <article className="info-card experience-card" key={item.company}><div className="card-icon">WORK</div><div><p>{item.dates}</p><h3>{item.company}</h3><strong>{item.role}</strong><span>{item.summary}</span><ul>{item.details.map((detail) => <li key={detail}>{detail}</li>)}</ul></div></article>)}</div>
       </section>
 
       <section className="content-section" id="what-i-build">
-        <p className="overline">04 · WHAT I BUILD</p><h2>The systems and skills I bring together.</h2>
-        <p className="section-intro">I work across AI application development, backend engineering, agent workflows, and production reliability. My focus is not just getting a model to respond—it is building the system around it so the result can be tested, validated, observed, and operated.</p>
+        <p className="overline">04 · WHAT I BUILD</p><h2>What I build and how I think about it.</h2>
+        <p className="section-intro">I build AI applications, backend services, agent workflows, and reliable production systems. My focus is not just getting a model to respond—it is building the surrounding system so the result can be tested, validated, monitored, and safely operated.</p>
         <div className="capability-grid">{capabilities.map((capability) => <article key={capability.title}><h3>{capability.title}</h3><p>{capability.description}</p></article>)}</div>
       </section>
 
