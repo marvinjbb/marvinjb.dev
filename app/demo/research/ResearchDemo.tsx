@@ -38,21 +38,29 @@ function CitationLinks({
   sourceNumbers: Map<string, number>;
   onCitationNavigate: (sourceId: string) => void;
 }) {
+  const uniqueCitations = Array.from(
+    new Map(citations.map((citation) => [citation.source_id, citation])).values(),
+  );
   return (
     <span className="citation-links" aria-label="Citations">
-      {citations.map((citation) => (
+      <span className="citation-label">Sources:</span>
+      {uniqueCitations.map((citation) => {
+        const sourceNumber = sourceNumbers.get(citation.source_id) ?? "?";
+        return (
         <a
           key={`${citation.evidence_id}-${citation.source_id}`}
           href={`#source-detail-${citation.source_id}`}
-          title={`View source ${sourceNumbers.get(citation.source_id) ?? ""}`}
+          aria-label={`View source ${sourceNumber} in research details`}
+          title={`View source ${sourceNumber}`}
           onClick={(event) => {
             event.preventDefault();
             onCitationNavigate(citation.source_id);
           }}
         >
-          [{sourceNumbers.get(citation.source_id) ?? "?"}]
+          Source {sourceNumber}
         </a>
-      ))}
+        );
+      })}
     </span>
   );
 }
@@ -135,28 +143,32 @@ function ResearchReport({ report }: { report: FinalResearchReport }) {
       <div className="report-question">
         <span>ORIGINAL QUESTION</span>
         <h3>{report.original_question}</h3>
-        <p><strong>Objective:</strong> {report.objective}</p>
-        <p><strong>Strategy:</strong> {report.strategy}</p>
         <div className="report-stats" aria-label="Report totals">
-          <span><strong>{report.evidence_claims.length}</strong> grounded claims</span>
+          <span><strong>{report.evidence_claims.length}</strong> evidence-backed claims</span>
           <span><strong>{report.sources.length}</strong> sources</span>
         </div>
       </div>
 
-      <section className="report-section report-summary">
-        <p className="overline">01 · EXECUTIVE SUMMARY</p>
-        <ClaimList claims={report.executive_summary} sourceNumbers={sourceNumbers} onCitationNavigate={navigateToCitation} />
+      <section className="report-section report-answer">
+        <p className="overline">01 · ANSWER</p>
+        <p className="report-section-intro">A concise answer grounded in the completed research.</p>
+        <div className="answer-copy">
+          {report.executive_summary.slice(0, 3).map((claim) => (
+            <article key={`${claim.claim_ids.join("-")}-${claim.statement}`}>
+              <p>{claim.statement}</p>
+              <CitationLinks citations={claim.citations} sourceNumbers={sourceNumbers} onCitationNavigate={navigateToCitation} />
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="report-section">
-        <p className="overline">02 · KEY FINDINGS</p>
-        <ClaimList claims={report.key_findings} sourceNumbers={sourceNumbers} onCitationNavigate={navigateToCitation} />
-      </section>
-
-      {report.conflicts.length > 0 && (
-        <section className="report-section">
-          <p className="overline">03 · CONFLICTING EVIDENCE</p>
+        <p className="overline">02 · WHAT THE RESEARCH FOUND</p>
+        <p className="report-section-intro">The main conclusions supported by the research.</p>
+        <ClaimList claims={report.important_claims} sourceNumbers={sourceNumbers} onCitationNavigate={navigateToCitation} />
+        {report.conflicts.length > 0 && (
           <div className="conflict-list">
+            <h3 className="report-subheading">Conflicting evidence</h3>
             {report.conflicts.map((conflict) => (
               <article key={conflict.summary}>
                 <h3>{conflict.summary}</h3>
@@ -164,12 +176,19 @@ function ResearchReport({ report }: { report: FinalResearchReport }) {
               </article>
             ))}
           </div>
-        </section>
-      )}
+        )}
+      </section>
+
+      <section className="report-section">
+        <p className="overline">03 · KEY FINDINGS</p>
+        <p className="report-section-intro">The most important findings across the research sources.</p>
+        <ClaimList claims={report.key_findings} sourceNumbers={sourceNumbers} onCitationNavigate={navigateToCitation} />
+      </section>
 
       {report.recommendations.length > 0 && (
         <section className="report-section">
-          <p className="overline">04 · DECISION GUIDANCE</p>
+          <p className="overline">04 · PRACTICAL TAKEAWAY</p>
+          <p className="report-section-intro">What these findings mean in practice.</p>
           <div className="recommendation-list">
             {report.recommendations.map((recommendation) => (
               <article key={recommendation.guidance}>
@@ -186,24 +205,34 @@ function ResearchReport({ report }: { report: FinalResearchReport }) {
         </section>
       )}
 
-      {report.uncertainties.length > 0 && (
-        <section className="report-section">
-          <p className="overline">05 · UNCERTAINTIES + LIMITATIONS</p>
-          <ul className="uncertainty-list">
-            {report.uncertainties.map((uncertainty) => (
-              <li key={`${uncertainty.worker_ids.join("-")}-${uncertainty.statement}`}>
-                <span>{uncertainty.worker_ids.join(", ")}</span>
-                <p>{uncertainty.statement}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <section className="report-section research-confidence">
+        <p className="overline">05 · RESEARCH CONFIDENCE</p>
+        <p className="report-section-intro">How confident should I be in this research?</p>
+        {report.uncertainties.length > 0 ? (
+          <>
+            <div className="confidence-summary">
+              <strong>{report.uncertainties.length} research limitation{report.uncertainties.length === 1 ? "" : "s"} identified</strong>
+              <p>{report.uncertainties[0].statement}</p>
+            </div>
+            <details className="detailed-limitations">
+              <summary>View detailed limitations</summary>
+              <ul className="uncertainty-list">
+                {report.uncertainties.map((uncertainty) => (
+                  <li key={uncertainty.statement}><p>{uncertainty.statement}</p></li>
+                ))}
+              </ul>
+            </details>
+          </>
+        ) : (
+          <p className="confidence-empty">The completed report did not identify specific research limitations.</p>
+        )}
+      </section>
 
       <section className="report-section source-catalog top-sources">
-        <p className="overline">06 · TOP SOURCES</p>
+        <p className="overline">06 · SOURCES USED IN THIS REPORT</p>
+        <p className="report-section-intro">The most important sources supporting this report.</p>
         <div>
-          {topSources.map(({ source, index }) => {
+          {topSources.map(({ source, index, count }) => {
             const url = safeSourceUrl(source.url);
             return (
               <article id={`source-${source.source_id}`} key={source.source_id}>
@@ -211,8 +240,8 @@ function ResearchReport({ report }: { report: FinalResearchReport }) {
                 <div>
                   <h3>{source.title}</h3>
                   <p>
-                    {source.publisher ?? "Web source"} · Referenced by {source.provenance.length}
-                    {source.provenance.length === 1 ? " worker" : " workers"}
+                    {source.publisher ?? "Web source"}
+                    {count > 0 ? ` · Cited ${count} ${count === 1 ? "time" : "times"} in this report` : ""}
                   </p>
                   {url ? (
                     <a href={url} target="_blank" rel="noopener noreferrer">
@@ -237,7 +266,15 @@ function ResearchReport({ report }: { report: FinalResearchReport }) {
         </summary>
         <div className="advanced-research-content">
           <section className="report-section">
-            <p className="overline">DETAILED IMPORTANT EVIDENCE</p>
+            <p className="overline">RESEARCH PLAN</p>
+            <div className="research-plan-details">
+              <article><h3>Objective</h3><p>{report.objective}</p></article>
+              <article><h3>Strategy</h3><p>{report.strategy}</p></article>
+            </div>
+          </section>
+
+          <section className="report-section">
+            <p className="overline">CLAIM-TO-SOURCE MAPPING</p>
             <ClaimList claims={report.important_claims} sourceNumbers={sourceNumbers} onCitationNavigate={navigateToCitation} />
           </section>
 
@@ -266,6 +303,20 @@ function ResearchReport({ report }: { report: FinalResearchReport }) {
               ))}
             </div>
           </section>
+
+          {report.uncertainties.length > 0 && (
+            <section className="report-section">
+              <p className="overline">DETAILED LIMITATIONS · WORKER PROVENANCE</p>
+              <ul className="uncertainty-list technical-limitations">
+                {report.uncertainties.map((uncertainty) => (
+                  <li key={`${uncertainty.worker_ids.join("-")}-${uncertainty.statement}`}>
+                    <span>{uncertainty.worker_ids.join(", ")}</span>
+                    <p>{uncertainty.statement}</p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           {report.failed_workers.length > 0 && (
             <section className="report-section partial-failures" role="note">

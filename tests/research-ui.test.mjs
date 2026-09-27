@@ -23,14 +23,24 @@ test("progress is explicitly honest about completed-response API behavior", asyn
   assert.match(source, /Final report ready/);
 });
 
-test("primary report keeps the concise decision sections visible", async () => {
+test("primary report follows a human-first answer hierarchy", async () => {
   const source = await readFile(componentPath, "utf8");
-  for (const label of ["Research complete.", "ORIGINAL QUESTION", "EXECUTIVE SUMMARY", "KEY FINDINGS", "CONFLICTING EVIDENCE", "DECISION GUIDANCE", "UNCERTAINTIES + LIMITATIONS", "TOP SOURCES"]) {
+  for (const label of ["Research complete.", "ORIGINAL QUESTION", "01 · ANSWER", "02 · WHAT THE RESEARCH FOUND", "03 · KEY FINDINGS", "04 · PRACTICAL TAKEAWAY", "05 · RESEARCH CONFIDENCE", "06 · SOURCES USED IN THIS REPORT"]) {
     assert.match(source, new RegExp(label.replaceAll("+", "\\+")));
   }
   assert.match(source, /report\.conflicts\.length > 0/);
   assert.match(source, /report\.evidence_claims\.length/);
   assert.match(source, /report\.sources\.length/);
+  assert.match(source, /report\.executive_summary\.slice\(0, 3\)/);
+  assert.match(source, /The main conclusions supported by the research\./);
+  assert.match(source, /What these findings mean in practice\./);
+  assert.match(source, /How confident should I be in this research\?/);
+  assert.match(source, /View detailed limitations/);
+  const primaryReport = source.slice(
+    source.indexOf('<div className="report-question">'),
+    source.indexOf('<details\n        className="advanced-research-details"'),
+  );
+  assert.doesNotMatch(primaryReport, /worker_ids|worker_id/);
 });
 
 test("advanced research details are collapsed initially and can be expanded", async () => {
@@ -40,9 +50,11 @@ test("advanced research details are collapsed initially and can be expanded", as
   assert.match(source, /open=\{detailsOpen\}/);
   assert.match(source, /onToggle=.*setDetailsOpen/);
   assert.match(source, /View research details/);
-  for (const label of ["GROUNDED EVIDENCE CATALOG · ALL CLAIMS", "COMPLETE SOURCES + CITATIONS", "PARTIAL WORKER FAILURES", "Worker provenance"]) {
+  for (const label of ["RESEARCH PLAN", "CLAIM-TO-SOURCE MAPPING", "GROUNDED EVIDENCE CATALOG · ALL CLAIMS", "DETAILED LIMITATIONS · WORKER PROVENANCE", "COMPLETE SOURCES + CITATIONS", "PARTIAL WORKER FAILURES", "Worker provenance"]) {
     assert.ok(source.includes(label));
   }
+  assert.match(source, /<h3>Objective<\/h3><p>\{report\.objective\}<\/p>/);
+  assert.match(source, /<h3>Strategy<\/h3><p>\{report\.strategy\}<\/p>/);
 });
 
 test("top sources stay concise while all safe source links remain available", async () => {
@@ -55,6 +67,10 @@ test("top sources stay concise while all safe source links remain available", as
   assert.match(source, /window\.history\.replaceState/);
   assert.match(source, /safeSourceUrl/);
   assert.match(source, /noopener noreferrer/);
+  assert.match(source, /Sources:/);
+  assert.match(source, /Source \{sourceNumber\}/);
+  assert.match(source, /View source \$\{sourceNumber\} in research details/);
+  assert.match(source, /Cited \$\{count\} \$\{count === 1 \? "time" : "times"\} in this report/);
 });
 
 test("completed research moves accessible focus to the report", async () => {
