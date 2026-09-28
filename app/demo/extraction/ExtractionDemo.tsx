@@ -294,6 +294,8 @@ export function ExtractionDemo() {
               <button
                 type="button"
                 role="tab"
+                id="table-result-tab"
+                aria-controls="table-result-panel"
                 aria-selected={view === "table"}
                 onClick={() => setView("table")}
               >
@@ -302,6 +304,8 @@ export function ExtractionDemo() {
               <button
                 type="button"
                 role="tab"
+                id="json-result-tab"
+                aria-controls="json-result-panel"
                 aria-selected={view === "json"}
                 onClick={() => setView("json")}
               >
@@ -311,7 +315,12 @@ export function ExtractionDemo() {
           </div>
 
           {view === "table" ? (
-            <div role="tabpanel" className="table-view">
+            <div
+              role="tabpanel"
+              id="table-result-panel"
+              aria-labelledby="table-result-tab"
+              className="table-view"
+            >
               <dl className="invoice-fields">
                 <div><dt>Vendor</dt><dd>{displayValue(result.vendor)}</dd></div>
                 <div><dt>Invoice number</dt><dd>{displayValue(result.invoice_number)}</dd></div>
@@ -328,19 +337,25 @@ export function ExtractionDemo() {
                     <thead><tr><th>Description</th><th>Quantity</th><th>Unit price</th><th>Amount</th></tr></thead>
                     <tbody>{result.line_items.length > 0 ? result.line_items.map((item) => (
                       <tr key={item.description}>
-                        <td>{item.description}</td><td>{displayValue(item.quantity)}</td>
-                        <td>{displayMoney(item.unit_price, result.currency)}</td>
-                        <td>{displayMoney(item.amount, result.currency)}</td>
+                        <td data-label="Description">{item.description}</td>
+                        <td data-label="Quantity">{displayValue(item.quantity)}</td>
+                        <td data-label="Unit price">{displayMoney(item.unit_price, result.currency)}</td>
+                        <td data-label="Line total">{displayMoney(item.amount, result.currency)}</td>
                       </tr>
                     )) : (
-                      <tr><td colSpan={4}>No line items were extracted.</td></tr>
+                      <tr><td className="line-items-empty" colSpan={4}>No line items were extracted.</td></tr>
                     )}</tbody>
                   </table>
                 </div>
               </div>
             </div>
           ) : (
-            <pre role="tabpanel" className="json-view">
+            <pre
+              role="tabpanel"
+              id="json-result-panel"
+              aria-labelledby="json-result-tab"
+              className="json-view"
+            >
               <code>{JSON.stringify(result, null, 2)}</code>
             </pre>
           )}

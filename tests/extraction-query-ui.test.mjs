@@ -6,6 +6,7 @@ const componentPath = new URL(
   "../app/demo/extraction/ExtractionDemo.tsx",
   import.meta.url,
 );
+const stylesPath = new URL("../app/globals.css", import.meta.url);
 
 test("query UI remains scoped to successful extraction state", async () => {
   const source = await readFile(componentPath, "utf8");
@@ -39,4 +40,31 @@ test("completed extraction moves accessible focus to the human-readable result",
   assert.match(source, /resultsRef\.current\?\.scrollIntoView/);
   assert.match(source, /aria-labelledby="results-title" tabIndex=\{-1\}/);
   assert.match(source, /aria-selected=\{view === "table"\}/);
+});
+
+test("completed extraction uses labeled mobile line-item cards without duplicating result data", async () => {
+  const [source, styles] = await Promise.all([
+    readFile(componentPath, "utf8"),
+    readFile(stylesPath, "utf8"),
+  ]);
+
+  for (const label of ["Description", "Quantity", "Unit price", "Line total"]) {
+    assert.match(source, new RegExp(`data-label="${label}"`));
+  }
+  assert.match(styles, /@media\(max-width:700px\).*?\.line-items table\{min-width:0/s);
+  assert.match(styles, /\.line-items td::before\{content:attr\(data-label\)/);
+  assert.match(styles, /\.line-items thead\{position:absolute/);
+});
+
+test("mobile JSON remains exact while wrapping within the result panel", async () => {
+  const [source, styles] = await Promise.all([
+    readFile(componentPath, "utf8"),
+    readFile(stylesPath, "utf8"),
+  ]);
+
+  assert.match(source, /JSON\.stringify\(result, null, 2\)/);
+  assert.match(styles, /\.json-view\{padding:20px 17px;overflow-x:hidden;white-space:pre-wrap;overflow-wrap:anywhere/);
+  assert.match(source, /aria-controls="table-result-panel"/);
+  assert.match(source, /aria-controls="json-result-panel"/);
+  assert.match(styles, /\.view-tabs button:focus-visible\{[^}]*outline:2px solid var\(--accent\)/);
 });
