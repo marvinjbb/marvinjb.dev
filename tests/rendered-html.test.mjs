@@ -261,15 +261,23 @@ test("server-renders the incident investigation demo route", async () => {
   assert.match(html, /<title>Incident Investigation Agent — Live Demo \| Marvin<\/title>/i);
   assert.match(html, /Investigate failure\. Prove the cause\. Approve the fix\./);
   assert.match(html, /Trigger a safe demo failure, let the AI investigate what happened/);
+  assert.match(html, /href="#live-demo"[^>]*>Start Live Demo ↓<\/a>/);
+  assert.match(html, /href="#how-it-works"[^>]*>How It Works<\/a>/);
+  const sectionOrder = ["live-demo", "diagnostics", "how-it-works", "why", "safety", "architecture", "production", "stack"]
+    .map((id) => html.indexOf(`id="${id}"`));
+  assert.ok(sectionOrder.every((position) => position >= 0));
+  assert.deepEqual(sectionOrder, [...sectionOrder].sort((a, b) => a - b));
   assert.match(html, /Blocked PostgreSQL Query/);
   assert.match(html, /Connection Pool Exhaustion/);
   assert.match(html, /Failing Application Deployment/);
   assert.match(html, /Run Incident/);
   assert.match(html, /Create incident/);
   assert.match(html, /WHAT THE AI CAN INSPECT/);
-  assert.match(html, /The AI investigates first\. A human approves any fix\./);
+  assert.match(html, /What happens after you click Run Incident/);
+  assert.match(html, /Production architecture/);
   assert.match(html, /Human approval before fixes/);
   assert.match(html, /Production safety and limits/);
+  assert.match(html, /View GitHub Repository/);
   assert.match(html, /href="https:\/\/github\.com\/marvinjbb\/incident-investigation-agent" target="_blank" rel="noopener noreferrer"/);
   assert.doesNotMatch(html, /OPENAI_API_KEY|POSTGRES_PASSWORD|api\.openai\.com/i);
 });

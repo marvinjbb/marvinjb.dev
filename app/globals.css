@@ -399,11 +399,14 @@
 .incident-audit li:nth-child(odd){border-right:1px solid var(--line)}.incident-audit li:nth-child(even){padding-left:18px}
 .incident-audit time{color:var(--muted);font:600 10px var(--font-geist-mono)}
 .incident-reset{margin:22px 28px 28px}
-.incident-workflow-proof{grid-template-columns:repeat(5,1fr)}
+.incident-workflow-proof{width:100%;margin-top:36px;grid-template-columns:repeat(5,1fr)}
 .incident-workflow-proof>div{min-height:142px}
 .incident-rationale-copy{display:grid;gap:16px}.incident-rationale-copy p{margin:0;color:var(--muted);font-size:14px;line-height:1.65}
 .incident-capabilities{margin-top:38px;padding:26px;border:1px solid var(--ink);background:rgba(248,248,246,.94)}
-.incident-capabilities>div{display:grid;grid-template-columns:minmax(220px,.65fr) minmax(0,1.35fr);gap:28px;align-items:end}.incident-capabilities h3{margin:8px 0 0;font-size:clamp(1.65rem,2.8vw,2.4rem);line-height:1.05;letter-spacing:-.04em}.incident-capabilities>div>p:last-child{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.incident-case-study #live-demo,.incident-case-study #how-it-works{scroll-margin-top:132px}
+.incident-case-study #diagnostics .incident-capabilities{margin-top:0}
+.incident-capabilities>div{display:grid;grid-template-columns:minmax(220px,.65fr) minmax(0,1.35fr);gap:28px;align-items:end}.incident-capabilities h2{margin:8px 0 0;font-size:clamp(1.65rem,2.8vw,2.4rem);line-height:1.05;letter-spacing:-.04em}.incident-capabilities>div>p:last-child{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.incident-capabilities>div>.overline{grid-column:1/-1}
 .incident-capabilities ul{display:grid;grid-template-columns:repeat(4,1fr);margin:22px 0 0;padding:0;list-style:none;border-top:1px solid var(--line);border-left:1px solid var(--line)}.incident-capabilities li{min-height:66px;padding:14px;display:flex;align-items:center;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:white;font-size:12px;font-weight:700;line-height:1.35}.incident-capabilities>p{margin:18px 0 0;max-width:880px;color:var(--muted);font-size:12px;line-height:1.6}
 .incident-system-map{display:flex;align-items:stretch;margin-top:42px;padding:20px;border:1px solid var(--ink);background:var(--soft)}
 .incident-system-map>i{align-self:center;padding:0 8px;color:var(--accent);font:700 12px var(--font-geist-mono)}
@@ -419,11 +422,13 @@
   .incident-scenarios{grid-template-columns:1fr}.incident-scenario{min-height:0}.incident-scenario h3{margin-top:20px}.incident-scenario button{width:fit-content;margin-top:20px}
   .evidence-grid{grid-template-columns:1fr 1fr}.incident-safety-grid{grid-template-columns:1fr 1fr}
   .incident-system-map{flex-direction:column}.incident-system-map>i{height:22px;padding:0;font-size:0}.incident-system-map>i::after{content:"↓";font-size:12px}.incident-system-map .system-node,.incident-tool-node{width:100%;min-width:0;flex:none}.incident-tool-node>div{grid-template-columns:repeat(5,1fr)}.incident-tool-node strong:last-child{grid-column:auto}
+  .incident-system-map .system-node{grid-template-columns:36px minmax(0,1fr);align-items:start}.incident-system-map .system-node strong{margin-top:0}.incident-system-map .system-node p{grid-column:2}
 }
 
 @media(max-width:700px){
   .incident-workflow-proof{grid-template-columns:1fr}.incident-workflow-proof>div{min-height:0;padding:16px 14px}.incident-workflow-proof small{margin-top:2px}
-  .incident-capabilities{padding:20px 16px}.incident-capabilities>div{grid-template-columns:1fr;gap:14px}.incident-capabilities ul{grid-template-columns:1fr}.incident-capabilities li{min-height:0}.incident-capabilities h3{font-size:1.65rem}
+  .incident-case-study #live-demo,.incident-case-study #how-it-works{scroll-margin-top:112px}
+  .incident-capabilities{padding:20px 16px}.incident-capabilities>div{grid-template-columns:1fr;gap:14px}.incident-capabilities ul{grid-template-columns:1fr}.incident-capabilities li{min-height:0}.incident-capabilities h2{font-size:1.65rem}
   .incident-demo{margin-top:30px}.incident-scenario{padding:20px}.incident-scenario button{width:100%}
   .workspace-header{align-items:flex-start;flex-direction:column;padding:20px}.workflow-state{width:100%;min-width:0}
   .incident-metadata{grid-template-columns:1fr 1fr}.incident-metadata>div:nth-child(2){border-right:0}.incident-metadata>div:nth-child(-n+2){border-bottom:1px solid var(--line)}

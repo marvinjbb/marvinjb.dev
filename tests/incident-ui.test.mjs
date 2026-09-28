@@ -50,7 +50,7 @@ test("completed investigation moves focus to the plain-first result hierarchy", 
 
 test("explains the restricted workflow and production safety boundary", async () => {
   const source = await readFile(pagePath, "utf8");
-  for (const value of ["WHY I BUILT THIS", "WHAT THE AI CAN INSPECT", "The AI investigates first. A human approves any fix.", "How the AI stays safe", "Production safety and limits"]) {
+  for (const value of ["WHY I BUILT THIS", "WHAT THE AI CAN INSPECT", "What happens after you click Run Incident", "How the AI stays safe", "Production architecture", "Production safety and limits", "View GitHub Repository"]) {
     assert.match(source, new RegExp(value, "i"));
   }
   for (const tool of ["Incident details", "Incident timeline", "Application logs", "Database blocking", "Database connection usage", "Application connection pool", "Recent deployments", "Approved runbook"]) {
@@ -61,6 +61,19 @@ test("explains the restricted workflow and production safety boundary", async ()
   assert.match(source, /It cannot run arbitrary SQL, shell commands, or infrastructure actions/);
   assert.match(source, /https:\/\/github\.com\/marvinjbb\/incident-investigation-agent/);
   assert.match(source, /target="_blank" rel="noopener noreferrer"/);
+});
+
+test("places the controlled scenarios before the explanation and keeps native hero anchors", async () => {
+  const source = await readFile(pagePath, "utf8");
+  assert.match(source, /href="#live-demo">Start Live Demo ↓<\/a>/);
+  assert.match(source, /href="#how-it-works">How It Works<\/a>/);
+  assert.doesNotMatch(source, /next\/link/);
+  const order = ["live-demo", "diagnostics", "how-it-works", "why", "safety", "architecture", "production", "stack"]
+    .map((id) => source.indexOf(`id="${id}"`));
+  assert.ok(order.every((position) => position >= 0));
+  assert.deepEqual(order, [...order].sort((a, b) => a - b));
+  assert.ok(source.indexOf("<IncidentDemo />") < source.indexOf("id=\"diagnostics\""));
+  assert.match(source, /href=\{repositoryUrl\} target="_blank" rel="noopener noreferrer">View GitHub Repository<\/a>/);
 });
 
 test("includes explicit mobile layout rules for the incident workspace", async () => {
