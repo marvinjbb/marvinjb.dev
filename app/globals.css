@@ -436,3 +436,7 @@
   .incident-tool-node>div{grid-template-columns:1fr 1fr}.incident-tool-node strong:last-child{grid-column:1/-1}
   .incident-safety-grid{grid-template-columns:1fr}
 }
+
+.top-sources article>div{min-width:0}
+.top-sources h3,.top-sources p{overflow-wrap:anywhere}
+.top-sources .source-presentation-type{margin:0 0 10px;color:var(--muted);font:9px/1.4 var(--font-geist-mono);letter-spacing:.04em;text-transform:uppercase}

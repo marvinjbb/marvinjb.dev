@@ -13,8 +13,9 @@ import {
 } from "./researchApi";
 import {
   excludeDisplayedClaims,
-  fullReportCitationCounts,
+  rankTopSources,
   sourceDisplayLabel,
+  sourcePresentationLabel,
 } from "./researchPresentation";
 
 const PROGRESS_STAGES = [
@@ -114,13 +115,7 @@ function ResearchReport({ report }: { report: FinalResearchReport }) {
     () => excludeDisplayedClaims(report.key_findings, [...answerClaims, ...themeClaims]),
     [answerClaims, report.key_findings, themeClaims],
   );
-  const topSources = useMemo(() => {
-    const citationCounts = fullReportCitationCounts(report);
-    return report.sources
-      .map((source, index) => ({ source, index, count: citationCounts.get(source.source_id) ?? 0 }))
-      .sort((left, right) => right.count - left.count || left.index - right.index)
-      .slice(0, 5);
-  }, [report]);
+  const topSources = useMemo(() => rankTopSources(report), [report]);
   useEffect(() => {
     reportRef.current?.focus({ preventScroll: true });
     reportRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -238,7 +233,7 @@ function ResearchReport({ report }: { report: FinalResearchReport }) {
         <p className="overline">06 · SOURCES USED IN THIS REPORT</p>
         <p className="report-section-intro">The most important sources supporting this report.</p>
         <div>
-          {topSources.map(({ source, index, count }) => {
+          {topSources.map(({ source, index, count, category }) => {
             const url = safeSourceUrl(source.url);
             return (
               <article id={`source-${source.source_id}`} key={source.source_id}>
@@ -249,6 +244,9 @@ function ResearchReport({ report }: { report: FinalResearchReport }) {
                     {sourceDisplayLabel(source)}
                     {count > 0 ? ` · Referenced ${count} ${count === 1 ? "time" : "times"} across the full report` : ""}
                   </p>
+                  {sourcePresentationLabel(category) && (
+                    <p className="source-presentation-type">{sourcePresentationLabel(category)}</p>
+                  )}
                   {url ? (
                     <a href={url} target="_blank" rel="noopener noreferrer">
                       Visit source ↗

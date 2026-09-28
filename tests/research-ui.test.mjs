@@ -3,9 +3,12 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import {
+  classifySourceForPresentation,
   excludeDisplayedClaims,
   fullReportCitationCounts,
+  rankTopSources,
   sourceDisplayLabel,
+  sourcePresentationLabel,
 } from "../app/demo/research/researchPresentation.ts";
 
 const componentPath = new URL("../app/demo/research/ResearchDemo.tsx", import.meta.url);
@@ -72,7 +75,7 @@ test("advanced research details are collapsed initially and can be expanded", as
 
 test("top sources stay concise while all safe source links remain available", async () => {
   const source = await readFile(componentPath, "utf8");
-  assert.match(source, /\.slice\(0, 5\)/);
+  assert.match(source, /rankTopSources\(report\)/);
   assert.match(source, /href=\{`#source-detail-/);
   assert.match(source, /setDetailsOpen\(true\)/);
   assert.doesNotMatch(source, /topSourceIds\.has/);
@@ -85,6 +88,7 @@ test("top sources stay concise while all safe source links remain available", as
   assert.match(source, /View source \$\{sourceNumber\} in research details/);
   assert.match(source, /Referenced \$\{count\} \$\{count === 1 \? "time" : "times"\} across the full report/);
   assert.match(source, /sourceDisplayLabel\(source\)/);
+  assert.match(source, /sourcePresentationLabel\(category\)/);
 });
 
 test("normal report suppresses only exact normalized claim duplicates", () => {
@@ -120,6 +124,113 @@ test("source counts include citation references across the full report", () => {
     recommendations: [{ guidance: "Guidance", rationale: "Rationale", citations: [citation] }],
   };
   assert.equal(fullReportCitationCounts(report).get("source-1"), 6);
+});
+
+function source(id, url, title = id) {
+  return {
+    source_id: id,
+    title,
+    url,
+    publisher: null,
+    snippets: ["Exact snippet"],
+    validated_excerpts: [],
+    provenance: [{ worker_id: "worker-1", worker_source_id: id }],
+  };
+}
+
+function reportWithSources(sources, counts = {}) {
+  const executive_summary = Object.entries(counts).flatMap(([sourceId, count]) =>
+    Array.from({ length: count }, (_, index) => ({
+      statement: `Claim ${sourceId}-${index}`,
+      claim_ids: [`claim-${sourceId}-${index}`],
+      citations: [{ source_id: sourceId, evidence_id: `evidence-${sourceId}`, evidence: "Exact snippet" }],
+    })),
+  );
+  return { sources, executive_summary, key_findings: [], important_claims: [], conflicts: [], recommendations: [] };
+}
+
+test("cited official source ranks before similarly cited promotional source", () => {
+  const report = reportWithSources([
+    source("vendor", "https://example.com/solutions/agents", "Vendor solutions"),
+    source("official", "https://agency.gov/research/agents", "Agency research"),
+  ], { vendor: 2, official: 2 });
+  assert.deepEqual(rankTopSources(report).map((item) => item.source.source_id), ["official", "vendor"]);
+  assert.equal(classifySourceForPresentation(report.sources[0]), "promotional");
+  assert.equal(sourcePresentationLabel("promotional"), "Promotional source");
+  assert.equal(classifySourceForPresentation(report.sources[1]), "official");
+});
+
+test("cited promotional source stays above an uncited official source", () => {
+  const report = reportWithSources([
+    source("official", "https://agency.gov/research/agents"),
+    source("vendor", "https://example.com/pricing/agents"),
+  ], { vendor: 8 });
+  assert.deepEqual(rankTopSources(report).map((item) => item.source.source_id), ["vendor", "official"]);
+});
+
+test("top sources prefer at most two per hostname when other cited hosts exist", () => {
+  const sources = [
+    source("same-1", "https://www.reuters.com/one"),
+    source("same-2", "https://reuters.com/two"),
+    source("same-3", "https://reuters.com/three"),
+    source("other-1", "https://apnews.com/one"),
+    source("other-2", "https://agency.gov/two"),
+  ];
+  const ranked = rankTopSources(reportWithSources(sources, {
+    "same-1": 4, "same-2": 4, "same-3": 4, "other-1": 4, "other-2": 4,
+  }));
+  const ids = ranked.map((item) => item.source.source_id);
+  assert.equal(ids.length, 5);
+  assert.ok(ids.indexOf("same-3") > ids.indexOf("other-1"));
+  assert.ok(ids.indexOf("same-3") > ids.indexOf("other-2"));
+});
+
+test("same-host sources fill the top five when alternatives are insufficient", () => {
+  const sources = Array.from({ length: 5 }, (_, index) =>
+    source(`same-${index + 1}`, `https://example.com/article-${index + 1}`),
+  );
+  const ranked = rankTopSources(reportWithSources(sources, {
+    "same-1": 1, "same-2": 1, "same-3": 1, "same-4": 1, "same-5": 1,
+  }));
+  assert.deepEqual(ranked.map((item) => item.source.source_id), sources.map((item) => item.source_id));
+});
+
+test("unknown sources receive no authority label and lookalike domains stay unknown", () => {
+  for (const url of [
+    "https://example.org/analysis",
+    "https://university.edu/article",
+    "https://agency.gov.example.com/report",
+    "https://example.com/blog/technical-analysis",
+  ]) {
+    const category = classifySourceForPresentation(source("unknown", url));
+    assert.equal(category, "unknown");
+    assert.equal(sourcePresentationLabel(category), null);
+  }
+  assert.equal(classifySourceForPresentation(source("sponsored", "https://reuters.com/sponsored/agents")), "promotional");
+});
+
+test("presentation ranking does not alter the complete backend source catalog", async () => {
+  const sources = [
+    source("promotional", "https://example.com/solutions/agents"),
+    source("official", "https://agency.gov/report"),
+  ];
+  const report = reportWithSources(sources, { promotional: 1, official: 1 });
+  const original = structuredClone(report);
+  rankTopSources(report);
+  assert.deepEqual(report, original);
+  assert.deepEqual(report.sources.map((item) => item.source_id), ["promotional", "official"]);
+  const component = await readFile(componentPath, "utf8");
+  assert.match(component, /report\.sources\.map\(\(source, index\) => \{/);
+});
+
+test("ranked cards retain the original report-wide source indices", () => {
+  const report = reportWithSources([
+    source("first", "https://example.com/solutions/agents"),
+    source("second", "https://agency.gov/report"),
+  ], { first: 1, second: 1 });
+  assert.deepEqual(rankTopSources(report).map(({ source: item, index }) => [item.source_id, index + 1]), [
+    ["second", 2], ["first", 1],
+  ]);
 });
 
 test("completed research moves accessible focus to the report", async () => {
