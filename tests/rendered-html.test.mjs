@@ -212,10 +212,17 @@ test("server-renders the extraction demo route", async () => {
   assert.match(html, /Turn unstructured invoices into validated data\./);
   assert.match(html, /Upload a PDF or image of an invoice\. The AI extracts the vendor, dates, totals, and line items/);
   assert.match(html, /LIVE AI SYSTEM · EXTRACTION AGENT/);
-  assert.match(html, /Upload one invoice\. Inspect structured data\./);
+  assert.match(html, /href="#live-demo"[^>]*>Start Live Demo ↓<\/a>/);
+  assert.match(html, /href="#how-it-works"[^>]*>How It Works<\/a>/);
+  const sectionOrder = ["live-demo", "how-it-works", "engineering", "reliability", "stack", "repository"]
+    .map((id) => html.indexOf(`id="${id}"`));
+  assert.ok(sectionOrder.every((position) => position >= 0));
+  assert.deepEqual(sectionOrder, [...sectionOrder].sort((a, b) => a - b));
+  assert.match(html, /Upload an invoice and see what the AI extracts/);
   assert.match(html, /Upload invoice/);
-  assert.match(html, /Inspect Table \/ JSON/);
+  assert.match(html, /Review Table or JSON/);
   assert.match(html, /Ask questions/);
+  for (const proof of ["PDF &amp; image input", "Validated structured data", "Invoice Q&amp;A", "Production deployed"]) assert.match(html, new RegExp(proof));
   assert.match(html, /Drag and drop your invoice here\./);
   assert.match(html, /Browse files/);
   assert.match(html, /Extract invoice/);
@@ -225,6 +232,8 @@ test("server-renders the extraction demo route", async () => {
   assert.match(html, /Detect document type/);
   assert.match(html, /Extract invoice details/);
   assert.match(html, /What happens when something goes wrong/);
+  assert.match(html, /05 · TECHNOLOGY STACK/);
+  assert.match(html, /See how it was built/);
   assert.match(html, /View GitHub Repository/);
   assert.match(html, /FastAPI · Docker · Nginx/);
   assert.match(html, /5 MiB/);

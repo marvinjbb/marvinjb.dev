@@ -36,19 +36,19 @@ export default function ExtractionDemoPage() {
     <SiteHeader />
     <div className="project-page">
       <section className="project-hero" id="overview">
-        <div className="project-hero-copy"><p className="overline">LIVE AI SYSTEM · EXTRACTION AGENT</p><h1>Turn unstructured invoices into validated data.</h1><p className="lead">Upload a PDF or image of an invoice. The AI extracts the vendor, dates, totals, and line items, validates the result, and lets you ask questions about the document.</p><div className="project-hero-actions"><a className="primary-button" href="#upload">Try the live demo</a><a className="secondary-button" href={repositoryUrl} target="_blank" rel="noopener noreferrer">View backend repository ↗</a></div></div>
+        <div className="project-hero-copy"><p className="overline">LIVE AI SYSTEM · EXTRACTION AGENT</p><h1>Turn unstructured invoices into validated data.</h1><p className="lead">Upload a PDF or image of an invoice. The AI extracts the vendor, dates, totals, and line items, validates the result, and lets you ask questions about the document.</p><div className="project-hero-actions"><a className="primary-button" href="#live-demo">Start Live Demo ↓</a><a className="secondary-button" href="#how-it-works">How It Works</a></div></div>
         <div className="project-live-mark" aria-label="Live system"><span aria-hidden="true" /><strong>LIVE</strong><small>PUBLIC DEMO</small></div>
       </section>
-      <div className="project-proof" aria-label="Extraction Agent system properties">{proof.map(([label, value], index) => <div key={label}><span>0{index + 1}</span><small>{label}</small><strong>{value}</strong></div>)}</div>
-      <nav className="project-nav" aria-label="Extraction Agent project navigation"><a href="#upload">Demo</a><a href="#project">How it works</a><a href="#engineering">Engineering</a><a href="#reliability">Reliability</a><a href={repositoryUrl} target="_blank" rel="noopener noreferrer">Repository ↗</a></nav>
+      <nav className="project-nav" aria-label="Extraction Agent project navigation"><a href="#live-demo">Demo</a><a href="#how-it-works">How it works</a><a href="#engineering">Engineering</a><a href="#reliability">Reliability</a><a href={repositoryUrl} target="_blank" rel="noopener noreferrer">Repository ↗</a></nav>
 
-      <section className="project-section project-demo-section" id="upload">
-        <header className="project-section-heading"><p className="overline">01 · LIVE DEMO</p><h2>Upload one invoice. Inspect structured data.</h2><p>Use a PDF, scanned PDF, JPG, or PNG up to 5 MiB. The frontend does not store your file.</p></header>
-        <ol className="demo-steps" aria-label="Extraction demo steps"><li><span>01</span>Upload invoice</li><li><span>02</span>Extract data</li><li><span>03</span>Inspect Table / JSON</li><li><span>04</span>Ask questions</li></ol>
+      <section className="project-section project-demo-section" id="live-demo">
+        <header className="project-section-heading"><p className="overline">01 · LIVE DEMO</p><h2>Upload an invoice and see what the AI extracts</h2><p>Upload a PDF, scanned PDF, JPG, or PNG. The system reads the document, extracts the invoice fields, validates the result, and lets you inspect the structured data or ask questions about the invoice.</p></header>
+        <ol className="demo-steps" aria-label="Extraction demo steps"><li><span>01</span>Upload invoice</li><li><span>02</span>Extract data</li><li><span>03</span>Review Table or JSON</li><li><span>04</span>Ask questions</li></ol>
         <ExtractionDemo />
+        <div className="project-proof extraction-demo-proof" aria-label="Extraction Agent system properties">{proof.map(([label, value], index) => <div key={label}><span>0{index + 1}</span><small>{label}</small><strong>{value}</strong></div>)}</div>
       </section>
 
-      <section className="project-section" id="project">
+      <section className="project-section" id="how-it-works">
         <header className="project-section-heading"><p className="overline">02 · HOW IT WORKS</p><h2>The AI chooses the right way to read each invoice.</h2><p>Text-based PDFs are read directly. Scanned PDFs and images are processed visually. Both paths produce the same validated invoice data.</p></header>
         <div className="extraction-system-map" aria-label="Extraction Agent architecture"><div className="system-node"><span>INPUT</span><strong>PDF or image</strong></div><i aria-hidden="true">→</i><div className="system-node"><span>DETECT</span><strong>Detect document type</strong></div><i aria-hidden="true">→</i><div className="system-node"><span>READ</span><strong>Read text or image</strong></div><i aria-hidden="true">→</i><div className="system-node"><span>EXTRACT</span><strong>Extract invoice details</strong></div><i aria-hidden="true">→</i><div className="system-node"><span>VALIDATE</span><strong>Validate the result</strong></div><i aria-hidden="true">→</i><div className="system-node system-node-output"><span>OUTPUT</span><strong>Invoice data + Q&amp;A</strong></div></div>
       </section>
