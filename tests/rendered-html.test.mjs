@@ -36,7 +36,7 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.match(html, /I build reliable AI systems, shaped by years of production database work\./);
   assert.match(html, /I started in production database operations, where reliability, incident response, automation, and failure handling mattered every day\. Now I bring that same mindset to AI systems built with Python, FastAPI, LLMs, and agent workflows\./);
   assert.doesNotMatch(html, /AI Engineer building production systems, not prototypes\./);
-  for (const [anchor, item] of [["projects", "Projects"], ["experience", "Experience"], ["what-i-build", "What I Build"], ["credentials", "Credentials"], ["education", "Education"], ["articles", "Articles"]]) assert.match(html, new RegExp(`href="#${anchor}">${item}</a>`));
+  for (const [anchor, item] of [["projects", "Projects"], ["marvodyn", "MARVODYN"], ["experience", "Experience"], ["what-i-build", "What I Build"], ["credentials", "Credentials"], ["education", "Education"], ["articles", "Articles"]]) assert.match(html, new RegExp(`href="#${anchor}">${item}</a>`));
   const sidebar = html.match(/<aside class="sidebar"[\s\S]*?<\/aside>/)?.[0] ?? "";
   assert.ok(sidebar);
   for (const icon of ["↗", "▣", "⌘", "✓", "¶"]) assert.doesNotMatch(sidebar, new RegExp(icon));
@@ -56,7 +56,7 @@ test("server-renders the Marvin portfolio map", async () => {
   assert.doesNotMatch(html, /PRODUCTION ADVANTAGE|Production Advantage/);
   assert.doesNotMatch(html, /Featured AI Work/);
   assert.doesNotMatch(html, /Projects I(?:&#x27;|')ve built and deployed\./);
-  assert.match(html, /07 · ARTICLES/);
+  assert.match(html, /08 · ARTICLES/);
   assert.match(html, /What I(?:&#x27;|')m learning, testing, and thinking about\./);
   assert.match(html, /I write about the questions I run into while learning and building AI systems—from security and agent design to the way I study new tools and technologies\./);
   assert.match(html, /CLAUDE · CERTIFICATION/);
@@ -159,8 +159,8 @@ test("server-renders the Marvin portfolio map", async () => {
 
 test("renders the portfolio navigation and main sections", async () => {
   const html = await (await render()).text();
-  for (const anchor of ["map", "projects", "what-i-build", "experience", "credentials", "education", "articles", "connect"]) assert.match(html, new RegExp(`id=["']${anchor}["']`));
-  for (const label of ["Projects", "What I Build", "Experience", "Credentials", "Education", "Articles", "LinkedIn"]) assert.match(html, new RegExp(label));
+  for (const anchor of ["map", "projects", "marvodyn", "what-i-build", "experience", "credentials", "education", "articles", "connect"]) assert.match(html, new RegExp(`id=["']${anchor}["']`));
+  for (const label of ["Projects", "MARVODYN", "What I Build", "Experience", "Credentials", "Education", "Articles", "LinkedIn"]) assert.match(html, new RegExp(label));
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/marvin-jbb/);
   const topnav = html.match(/<nav class="topnav"[\s\S]*?<\/nav>/)?.[0] ?? "";
   assert.ok(topnav);

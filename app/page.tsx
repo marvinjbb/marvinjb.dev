@@ -153,7 +153,7 @@ export default function Home() {
     <SiteHeader />
 
     <aside className="sidebar" aria-label="Explore">
-      <div className="side-group"><p>EXPLORE</p><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#what-i-build">What I Build</a><a href="#credentials">Credentials</a><a href="#education">Education</a><a href="#articles">Articles</a></div>
+      <div className="side-group"><p>EXPLORE</p><a href="#projects">Projects</a><a href="#marvodyn">MARVODYN</a><a href="#experience">Experience</a><a href="#what-i-build">What I Build</a><a href="#credentials">Credentials</a><a href="#education">Education</a><a href="#articles">Articles</a></div>
       <div className="side-group side-current"><p>CURRENTLY</p><div>Building <strong>Production AI systems</strong></div><div>Studying <strong>Claude Developer &amp; Architect</strong></div></div>
       <a className="side-resume" href="/resume/Marvin-Joseph-Resume.pdf" download>Download Résumé <span>↓</span></a>
     </aside>
@@ -176,30 +176,56 @@ export default function Home() {
         <p className="overline">01 · PROJECTS</p><h2>AI systems I built to solve real engineering problems.</h2>
         <p className="section-intro">These projects are public, production-minded versions of the kinds of AI systems I want to build professionally—systems with clear workflows, strong validation, observable behavior, and deliberate failure handling.</p>
         <div className="flagship-list">{projects.map((project, index) => <article className={`flagship-project${index % 2 ? " flagship-project-reverse" : ""}`} key={project.title}><div className="flagship-copy"><div className="project-status"><span aria-hidden="true" />{project.label}</div><h3>{project.title}</h3><p>{project.description}</p><div className="project-outcome"><span>OUTPUT</span><strong>{project.outcome}</strong></div><ul>{project.proof.map((item) => <li key={item}>{item}</li>)}</ul><small>{project.tags}</small><div className="project-actions"><a className="primary-button" href={project.demo}>Try Live Demo</a><a className="secondary-button" href={`${project.demo}${project.previewKind === "incident" ? "#architecture" : "#project"}`}>{project.previewKind === "incident" ? "View Project" : "How It Works"}</a>{project.repository && <a className="text-link" href={project.repository} target="_blank" rel="noopener noreferrer">{project.previewKind === "incident" ? "GitHub ↗" : "View GitHub"}</a>}</div></div><div className="project-preview"><div className="preview-bar"><span>SYSTEM PREVIEW</span><i aria-hidden="true" /></div><ProjectPreview project={project} /></div></article>)}</div>
+        <section className="marvodyn-feature" id="marvodyn" aria-labelledby="marvodyn-title">
+          <div className="marvodyn-feature-copy">
+            <p className="overline">02 · FOUNDER-BUILT PRODUCT</p>
+            {/* eslint-disable-next-line @next/next/no-img-element -- supplied transparent brand asset */}
+            <img className="marvodyn-wordmark" src="/marvodyn/marvodyn-horizontal.png" alt="MARVODYN" width="2172" height="724" loading="lazy" decoding="async" />
+            <h2 id="marvodyn-title">Financial guidance built around the immigrant experience.</h2>
+            <p>I founded MARVODYN to make the U.S. financial system easier to understand and navigate for immigrants. The live product brings together beginner education, financial-product research, and comparison content across banking, credit, taxes, saving, investing, loans, and international money.</p>
+            <strong className="marvodyn-role">Founder &amp; Product Engineer</strong>
+            <ul className="marvodyn-proof">
+              <li>Beginner financial guides</li>
+              <li>Financial-product comparisons</li>
+              <li>Qualified guidance for changing requirements</li>
+            </ul>
+            <div className="marvodyn-actions">
+              <a className="primary-button" href="https://marvodyn.com" target="_blank" rel="noopener noreferrer">Visit Live Product ↗</a>
+              <a className="secondary-button" href="/products/marvodyn">View Product Case Study →</a>
+            </div>
+          </div>
+          <div className="marvodyn-product-preview" aria-label="Overview of MARVODYN's public financial guidance areas">
+            <div className="marvodyn-preview-header"><span>LIVE PUBLIC PRODUCT</span><strong>START HERE</strong></div>
+            <div className="marvodyn-topic-grid">
+              {['Credit', 'Banking', 'Taxes', 'Saving', 'Investing', 'Loans', 'International Money'].map((topic, index) => <span key={topic}><b>{String(index + 1).padStart(2, '0')}</b>{topic}</span>)}
+            </div>
+            <div className="marvodyn-product-journey"><strong>Learn</strong><i aria-hidden="true">→</i><strong>Compare</strong><i aria-hidden="true">→</i><strong>Make a more informed decision</strong></div>
+          </div>
+        </section>
         <article className="voice-next"><div><span>COMING NEXT</span><h3>Voice Agent</h3><p>A real-time AI voice agent designed to listen, reason, use tools, and respond naturally.</p></div><small>PLANNED · PYTHON · STREAMING · SPEECH-TO-TEXT · TOOL CALLING · TEXT-TO-SPEECH</small></article>
       </section>
 
       <section className="content-section engineering-story" id="story">
-        <p className="overline">02 · PRODUCTION ENGINEERING → APPLIED AI</p>
+        <p className="overline">03 · PRODUCTION ENGINEERING → APPLIED AI</p>
         <h2>From production databases to AI systems</h2>
         <p className="section-intro">I started in production database engineering, where reliability, incident response, automation, performance, and safe change management were part of the job. That experience now shapes how I build AI systems: with clear boundaries, observable behavior, validation, and production reliability in mind.</p>
         <p className="story-path">Production DBA <span>→</span> Backend &amp; Automation <span>→</span> Applied AI Engineering</p>
       </section>
 
       <section className="content-section" id="experience">
-        <p className="overline">03 · EXPERIENCE</p><h2>The work that shaped how I build.</h2>
+        <p className="overline">04 · EXPERIENCE</p><h2>The work that shaped how I build.</h2>
         <p className="section-intro">Before moving into AI engineering, I spent years working in production database environments—handling incidents, performance problems, automation, deployments, and reliability. That experience now shapes how I build and operate AI systems.</p>
         <div className="card-list experience-list">{experience.map((item) => <article className="info-card experience-card" key={item.company}><div className="card-icon">WORK</div><div><p>{item.dates}</p><h3>{item.company}</h3><strong>{item.role}</strong>{item.sections ? <div className="experience-subsections">{item.sections.map((section) => <section className="experience-subsection" key={section.title}><h4>{section.title}</h4><span>{section.summary}</span><ul>{section.details.map((detail) => <li key={detail}>{detail}</li>)}</ul></section>)}</div> : <><span>{item.summary}</span><ul>{item.details?.map((detail) => <li key={detail}>{detail}</li>)}</ul></>}</div></article>)}</div>
       </section>
 
       <section className="content-section" id="what-i-build">
-        <p className="overline">04 · WHAT I BUILD</p><h2>What I build and how I think about it.</h2>
+        <p className="overline">05 · WHAT I BUILD</p><h2>What I build and how I think about it.</h2>
         <p className="section-intro">I build AI applications, backend services, agent workflows, and reliable production systems. My focus is not just getting a model to respond—it is building the surrounding system so the result can be tested, validated, monitored, and safely operated.</p>
         <div className="capability-grid">{capabilities.map((capability) => <article key={capability.title}><h3>{capability.title}</h3><p>{capability.description}</p></article>)}</div>
       </section>
 
       <section className="content-section" id="credentials">
-        <p className="overline">05 · CREDENTIALS</p><h2>Credentials that support the work.</h2>
+        <p className="overline">06 · CREDENTIALS</p><h2>Credentials that support the work.</h2>
         <p className="section-intro">Focused certifications that reinforce my AI, cloud database, and security foundations.</p>
         <div className="credential-grid">
           <article className="credential-earned"><p className="overline">EARNED CERTIFICATIONS</p><h3>Earned certifications</h3><div className="credential-feature"><a className="credential-badge-link" href="https://www.credly.com/badges/34471933-cede-4253-813c-044842b7fc6a/public_url" target="_blank" rel="noopener noreferrer" aria-label="Verify Claude Certified Associate – Foundations credential on Credly"><img src="/credentials/claude-certified-associate-foundations.png" alt="Official Claude Certified Associate – Foundations badge" /></a><div><span>EARNED</span><h4>Claude Certified Associate – Foundations</h4><p className="credential-issuer">Anthropic</p><p className="credential-description">Demonstrates practical understanding of Claude workflows, prompting, configuration, tool use, and responsible AI system usage.</p><a href="https://www.credly.com/badges/34471933-cede-4253-813c-044842b7fc6a/public_url" target="_blank" rel="noopener noreferrer">Verify credential ↗</a></div></div><div className="credential-records"><div><h4>Microsoft Certified: Azure Database Administrator Associate (DP-300)</h4><p>Microsoft</p><span>Validates administration of SQL Server and Azure SQL solutions across security, performance, availability, and migration.</span><a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-database-administrator-associate/" target="_blank" rel="noopener noreferrer">View certification ↗</a></div><div><h4>CompTIA Security+</h4><p>CompTIA</p><span>Validates foundational cybersecurity knowledge across threats, architecture, operations, and risk.</span><a href="https://www.comptia.org/en-us/certifications/security/" target="_blank" rel="noopener noreferrer">View certification ↗</a></div></div></article>
@@ -208,7 +234,7 @@ export default function Home() {
       </section>
 
       <section className="content-section" id="education">
-        <p className="overline">06 · EDUCATION</p><h2>Formal education.</h2>
+        <p className="overline">07 · EDUCATION</p><h2>Formal education.</h2>
         <div className="card-list education-list">
           <article className="info-card">
             <div className="education-logo">
@@ -227,7 +253,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="content-section" id="articles"><p className="overline">07 · ARTICLES</p><h2>What I&apos;m learning, testing, and thinking about.</h2><p className="section-intro">I write about the questions I run into while learning and building AI systems—from security and agent design to the way I study new tools and technologies.</p><div className="card-list">{posts.map((post) => <article className="info-card post post-live" key={post.title}><div className="card-icon article-icon"><MediumMark /></div><div><p>{post.label}</p><h3>{post.title}</h3><span>{post.description}</span><div className="post-published"><small>{post.status}</small><a href={post.href} target="_blank" rel="noopener noreferrer">Read on Medium ↗</a></div></div></article>)}</div></section>
+      <section className="content-section" id="articles"><p className="overline">08 · ARTICLES</p><h2>What I&apos;m learning, testing, and thinking about.</h2><p className="section-intro">I write about the questions I run into while learning and building AI systems—from security and agent design to the way I study new tools and technologies.</p><div className="card-list">{posts.map((post) => <article className="info-card post post-live" key={post.title}><div className="card-icon article-icon"><MediumMark /></div><div><p>{post.label}</p><h3>{post.title}</h3><span>{post.description}</span><div className="post-published"><small>{post.status}</small><a href={post.href} target="_blank" rel="noopener noreferrer">Read on Medium ↗</a></div></div></article>)}</div></section>
 
       <section className="contact-section" id="connect"><p className="overline">CONNECT</p><h2>Let&apos;s connect.</h2><p>I&apos;m currently focused on AI and Generative AI engineering roles where production experience, backend systems, and reliable AI application design matter.</p><div className="contact-links"><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/marvinjbb" target="_blank" rel="noopener noreferrer">GitHub</a><a href="mailto:jbmarvin21@gmail.com">Let&apos;s Connect</a></div></section>
       <footer><div><strong>marvinjb.dev</strong><span>AI engineering, backend systems, and production infrastructure.</span></div><div id="linkedin"><a href="https://www.linkedin.com/in/marvin-jbb" target="_blank" rel="noreferrer">LinkedIn</a><a href="#experience">Experience</a><a href="#connect">Let&apos;s Connect</a></div><span>© 2026 Marvin</span></footer>
