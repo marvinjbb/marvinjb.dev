@@ -6,12 +6,16 @@ This repository is a public portfolio frontend. It contains no OpenAI, Tavily, d
 
 Provider integrations, tool permissions, rate limits, secret management, and backend deployment controls are maintained in the separate agent repositories.
 
+The frontend performs browser-side input checks and validates important successful response shapes before rendering them. Those guards reduce accidental misuse and unsafe presentation, but they are not a substitute for backend validation or authorization.
+
 ## Demo data
 
 - Use synthetic or non-sensitive invoices in the Extraction demo.
 - Do not submit confidential business, personal, financial, or regulated documents.
 - Research questions are sent to the Research backend and its configured providers.
 - Incident scenarios operate only on the controlled synthetic lab exposed by the Incident backend.
+
+The demo interfaces can request actions only through their documented API contracts. The backends remain authoritative for file limits, research grounding, incident ownership, tool allowlists, approval enforcement, time-of-check revalidation, rate limits, and any state-changing operation. Frontend controls must never be treated as the security boundary for those guarantees.
 
 ## Repository hygiene
 

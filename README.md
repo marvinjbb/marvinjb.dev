@@ -1,10 +1,12 @@
 # Marvin Joseph B. — AI Engineering Portfolio
 
-Production SQL Server DBA transitioning into AI and generative AI engineering, building reliable AI systems with Python, FastAPI, LLMs, agentic workflows, structured outputs, evaluation, Docker, and production infrastructure.
+Production database engineer transitioning into applied AI engineering, building production-deployed AI systems with Python, FastAPI, LLMs, agent workflows, structured outputs, evaluation, Docker, and real deployment infrastructure.
 
 ## Portfolio
 
 [Visit marvinjb.dev](https://marvinjb.dev)
+
+[GitHub profile](https://github.com/marvinjbb)
 
 The portfolio is the presentation layer for three independently implemented AI systems. Each demo has its own frontend experience here and communicates over HTTPS with a separate backend service.
 
@@ -12,21 +14,21 @@ The portfolio is the presentation layer for three independently implemented AI s
 
 ### Incident Investigation Agent
 
-Investigates genuine controlled application and PostgreSQL incidents through restricted diagnostic tools. It produces an evidence-backed diagnosis, creates an application-owned remediation proposal, requires explicit human approval, executes only an allowlisted demo action, and verifies recovery with an audit trail.
+The demo puts the product first: choose one of three controlled incidents, follow the investigation and evidence, then decide whether to approve the bounded remediation. The backend creates the synthetic failure, restricts diagnostic access, validates evidence, enforces approval, executes only the allowlisted action, and verifies recovery.
 
 - [Live demo](https://marvinjb.dev/demo/incident-investigation)
 - [Backend repository](https://github.com/marvinjbb/incident-investigation-agent)
 
 ### Research Agent
 
-Plans one research request into two to five focused assignments, runs bounded workers concurrently, searches with Tavily, preserves application-owned evidence, aggregates deterministically, and synthesizes a report with validated citations, conflicts, and uncertainties.
+Turns one question into a cited report through bounded planning, two to five concurrent research assignments, Tavily search, application-owned evidence, deterministic aggregation, and validated synthesis. The result experience leads with the answer and practical findings, while evidence, complete sources, citations, and worker provenance remain available in Research Details.
 
 - [Live demo](https://marvinjb.dev/demo/research)
 - [Backend repository](https://github.com/marvinjbb/research-agent)
 
 ### Extraction Agent
 
-Routes invoices through text-first PDF extraction or a bounded vision path, requests OpenAI Structured Outputs, and validates the result against an application-owned Pydantic `Invoice` contract before the frontend renders structured fields and optional document Q&A.
+Lets a visitor upload a PDF or image before reading the deeper case study. The backend selects text or vision processing, requests OpenAI Structured Outputs, and validates an application-owned Pydantic `Invoice`; the frontend presents Table and JSON views, warnings, responsive line items, and bounded invoice Q&A.
 
 - [Live demo](https://marvinjb.dev/demo/extraction)
 - [Backend repository](https://github.com/marvinjbb/extraction-agent)
@@ -37,27 +39,26 @@ The public demo uses the deployed Extraction service. This repository does not c
 
 ```mermaid
 flowchart TB
-    U[Recruiter / user] --> F[marvinjb.dev<br/>React + TypeScript + Vinext]
-    F --> X[Extraction demo]
-    F --> R[Research demo]
-    F --> I[Incident demo]
-
-    X -->|HTTPS| XA[Extraction API<br/>FastAPI]
-    R -->|HTTPS| RA[Research API<br/>FastAPI]
-    I -->|HTTPS| IA[Incident API<br/>FastAPI]
-
-    XA --> O1[OpenAI Structured Outputs]
-    RA --> O2[OpenAI]
-    RA --> T[Tavily Search]
-    IA --> O3[OpenAI]
-    IA --> P[(PostgreSQL controlled lab)]
-
-    N[Nginx on Ubuntu VPS] -. routes API traffic .-> XA
-    N -. routes API traffic .-> RA
-    N -. routes API traffic .-> IA
+    B[Browser] --> F[marvinjb.dev<br/>React + TypeScript<br/>Vinext / Vite]
+    F --> IUI[Incident UI]
+    F --> RUI[Research UI]
+    F --> EUI[Extraction UI]
+    IUI --> H[HTTPS]
+    RUI --> H
+    EUI --> H
+    H --> A[api.marvinjb.dev]
+    A --> N[Nginx]
+    N --> IA[Incident FastAPI]
+    N --> RA[Research FastAPI]
+    N --> EA[Extraction FastAPI]
+    IA --> IP[(PostgreSQL)]
+    IA --> IO[OpenAI]
+    RA --> RT[Tavily]
+    RA --> RO[OpenAI]
+    EA --> EO[OpenAI Structured Outputs]
 ```
 
-The browser contains no provider credentials or agent logic. It validates user input, calls the configured public API boundaries, validates response shapes, and presents progress, results, and failures. See [Architecture](docs/ARCHITECTURE.md) for the service and security boundaries.
+The browser contains no provider credentials or backend agent logic. It owns presentation, demo interaction, browser-side validation, request/response guards, progress and error states, responsive behavior, navigation, and result rendering. The separate backend repositories own orchestration, provider calls, core AI logic, backend schemas, persistence where needed, safety controls, credentials, and backend deployment. See [Architecture](docs/ARCHITECTURE.md) for the service and security boundaries.
 
 ## Technology
 
@@ -78,7 +79,7 @@ The browser contains no provider credentials or agent logic. It validates user i
 
 - Docker, Nginx, Ubuntu VPS, HTTPS
 - Hostinger frontend hosting
-- Cloudflare-backed build/runtime tooling and public DNS where configured
+- Vinext/Vite with Cloudflare-compatible local build tooling
 - GitHub Actions for frontend validation
 
 Backend implementation details live in the three backend repositories rather than this frontend repository.
@@ -112,6 +113,8 @@ npm run build
 ```
 
 `npm test` performs a production build before running the Node test suite. The test suite exercises API response guards, demo behavior, rendered routes, public links, and key content invariants.
+
+The current suite contains **58 offline tests**. Manual responsive QA uses `1440`, `1280`, `1024`, `768`, `430`, and `375` pixel widths as its primary matrix; this is a project verification set, not a claim of universal device or browser compatibility.
 
 ## Deployment
 

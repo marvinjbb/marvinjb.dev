@@ -325,3 +325,95 @@ Do not adopt a monorepo by default.
 **Tradeoffs:** Production availability now affects the first impression of the portfolio, and the project copy and links must stay synchronized with the deployed behavior.
 
 **When we should reconsider it:** Reconsider the prominence or CTA structure when additional live agents are ready, a dedicated case-study route is introduced, or the public deployment location changes.
+
+---
+
+## ADR-018 — Keep current demos in the portfolio and lead with the product
+
+**Decision ID:** ADR-018
+
+**Status:** ACCEPTED
+
+**Classification:** CUSTOM
+
+**Extends:** ADR-003 with the current demo set and product-first page order
+
+**Context:** The portfolio now presents three deployed AI systems: Incident Investigation, Research, and Extraction. Earlier route planning named Voice as the third demo, while the implemented portfolio instead added the Incident system. Long case-study introductions also delayed the interactive proof visitors came to evaluate.
+
+**Decision:** Keep the three current demo interfaces at:
+
+- `marvinjb.dev/demo/incident-investigation`
+- `marvinjb.dev/demo/research`
+- `marvinjb.dev/demo/extraction`
+
+Present each live product before its deeper engineering explanation. Incident places the scenario chooser near the top, Extraction places the uploader near the top, and Research presents the plain-language answer and findings before expandable technical provenance. Voice remains planned rather than represented as an implemented demo.
+
+**Why:** Recruiters and engineers can verify the working product quickly, then inspect architecture, reliability, and tradeoffs with better context. The pattern is “use the product first; read the case study second.”
+
+**Tradeoffs:** Interactive states receive more visual priority, so each page must keep configuration, errors, and loading states honest. The frontend must also avoid presenting backend safety and grounding controls as browser-enforced guarantees.
+
+**When we should reconsider it:** Reconsider if a demo cannot safely expose its primary action early, requires onboarding before use, or a future user study shows that another order improves comprehension without hiding the product.
+
+---
+
+## ADR-019 — Use native anchors for affected Vinext navigation paths
+
+**Decision ID:** ADR-019
+
+**Status:** ACCEPTED
+
+**Classification:** CUSTOM
+
+**Context:** Demo footer navigation implemented with framework `next/link` triggered production prefetch/navigation runtime errors under the current Vinext beta compatibility layer. The destination paths are ordinary homepage links and hash anchors that do not require client-side framework routing.
+
+**Decision:** Use native `<a>` elements for the affected demo footer and shared homepage/hash navigation paths. Keep safe external-link attributes where a link opens a new tab.
+
+**Why:** Native navigation avoids the failing Vinext prefetch path and preserves expected browser behavior for these simple destinations.
+
+**Tradeoffs:** These links perform normal browser navigation rather than framework-managed transitions. The workaround must remain narrowly scoped and documented so it is not mistaken for a general React or Next.js recommendation.
+
+**When we should reconsider it:** Re-test framework links after a deliberate Vinext upgrade or when the runtime documents a compatible prefetch/navigation implementation. Do not infer that an upgrade has occurred merely because the workaround exists.
+
+---
+
+## ADR-020 — Run the three implemented backends on the shared portfolio VPS
+
+**Decision ID:** ADR-020
+
+**Status:** ACCEPTED
+
+**Classification:** CUSTOM
+
+**Updates:** ADR-005 with the current deployed service roster; the one-VPS decision remains accepted
+
+**Context:** The deployed service set changed from the original Extraction/Research/Voice plan. Voice remains planned; the Incident Investigation Agent became the third implemented backend.
+
+**Decision:** At portfolio scale, run the independently deployed Extraction, Research, and Incident FastAPI services in isolated Docker containers on one Ubuntu VPS behind Nginx and `api.marvinjb.dev`.
+
+**Why:** The arrangement matches the implemented portfolio, keeps costs proportionate, and preserves clear repository, container, configuration, and API boundaries without claiming horizontal scaling.
+
+**Tradeoffs:** The services share host resources and a host-level failure domain. Their deployment and rollback procedures remain independent, but host capacity and shared proxy configuration still require care.
+
+**When we should reconsider it:** Reconsider when measured resource use, availability requirements, security isolation, team ownership, or protocol needs justify separate hosts or managed services. A future Voice Agent must be evaluated against those requirements before joining the shared VPS.
+
+---
+
+## ADR-021 — Configure each deployed API boundary independently
+
+**Decision ID:** ADR-021
+
+**Status:** ACCEPTED
+
+**Classification:** CUSTOM
+
+**Refines:** ADR-004 with independent frontend configuration for each service boundary
+
+**Context:** The shared `api.marvinjb.dev` hostname remains useful, but the three implemented services do not share one frontend base path contract. Each has an independently deployed backend and a dedicated public base URL supplied by the hosting environment.
+
+**Decision:** Keep `api.marvinjb.dev` as the shared public API hostname behind Nginx, while configuring the browser boundaries independently through `NEXT_PUBLIC_EXTRACTION_API_BASE_URL`, `NEXT_PUBLIC_RESEARCH_API_BASE_URL`, and `NEXT_PUBLIC_INCIDENT_API_BASE_URL`. Application code appends only the endpoint paths defined by its corresponding client module.
+
+**Why:** Independent public base URLs preserve the real backend contracts without hard-coding deployment-specific routing into presentation components or forcing all services into one path shape.
+
+**Tradeoffs:** Frontend and Nginx configuration must agree for each service, and a misconfigured variable can break one demo while the others continue working. These public values are part of the browser bundle and cannot hold secrets.
+
+**When we should reconsider it:** Reconsider if a same-origin gateway or generated client contract provides a concrete simplification without coupling backend release lifecycles.

@@ -14,28 +14,26 @@ The backend services remain in separate repositories because they have different
 
 ```mermaid
 flowchart TB
-    B[Browser] --> D[Public DNS / HTTPS]
-    D --> F[marvinjb.dev<br/>Hostinger + Vinext]
+    B[Browser] --> F[marvinjb.dev<br/>React + TypeScript<br/>Vinext / Vite]
+    F --> IF[Incident UI]
+    F --> RF[Research UI]
+    F --> XF[Extraction UI]
 
-    F --> XF[Extraction interface]
-    F --> RF[Research interface]
-    F --> IF[Incident interface]
+    IF --> H[HTTPS]
+    RF --> H
+    XF --> H
+    H --> A[api.marvinjb.dev]
+    A --> N[Nginx]
 
-    XF -->|validated HTTPS request| XAPI[Extraction FastAPI service]
-    RF -->|validated HTTPS request| RAPI[Research FastAPI service]
-    IF -->|session-scoped HTTPS request| IAPI[Incident FastAPI service]
+    N --> IAPI[Incident FastAPI service]
+    N --> RAPI[Research FastAPI service]
+    N --> XAPI[Extraction FastAPI service]
 
-    subgraph VPS[Ubuntu VPS behind Nginx]
-        XAPI
-        RAPI
-        IAPI
-    end
-
-    XAPI --> XO[OpenAI Structured Outputs]
-    RAPI --> RO[OpenAI]
-    RAPI --> TS[Tavily]
+    IAPI --> PG[(PostgreSQL controlled lab)]
     IAPI --> IO[OpenAI]
-    IAPI --> PG[(PostgreSQL controlled incident lab)]
+    RAPI --> TS[Tavily]
+    RAPI --> RO[OpenAI]
+    XAPI --> XO[OpenAI Structured Outputs]
 ```
 
 Nginx is the public API reverse proxy. It routes the service-specific HTTPS paths on `api.marvinjb.dev` to isolated Docker containers. The frontend receives only the structured public responses exposed by those services.
@@ -55,6 +53,40 @@ The frontend:
 
 The frontend does not parse documents, call model providers directly, search the web, run diagnostic tools, or execute remediation.
 
+## Current demo experiences
+
+The portfolio uses a demo-first product pattern: let visitors use the system before asking them to read the deeper case study. The principle is **use the product first; read the case study second**.
+
+### Incident Investigation
+
+The page flows from hero and project navigation directly into the controlled scenario chooser, followed by diagnostic capabilities, the investigation process, rationale, safety controls, architecture, production limits, stack, and backend repository CTA. Its hero actions target `#live-demo` and `#how-it-works`.
+
+The allowlisted scenarios are Blocked PostgreSQL Query, Connection Pool Exhaustion, and Failing Application Deployment. The frontend owns scenario selection, progress and tool-activity presentation, the evidence-backed report UI, the explicit approval interaction, and recovery-state presentation. The backend owns incident creation, the diagnostic registry, evidence validation, AI investigation, proposal creation, approval enforcement, time-of-check revalidation, deterministic remediation, recovery verification, and audit state.
+
+### Research
+
+The completed report is deliberately organized for a general visitor before exposing technical provenance:
+
+1. Answer
+2. What the Research Found
+3. Key Findings
+4. Practical Takeaway, when present
+5. Research Confidence
+6. Sources Used in This Report
+7. Research Details
+
+Research Details contains the plan, claim-to-source mapping, application-owned evidence, detailed limitations, partial-worker failures, complete source catalog, citations, and worker provenance. Citation links open the relevant complete-source record.
+
+The frontend preserves backend source identities, counts report-wide citations, applies a small allowlisted presentation classification (`official`, `independent`, `promotional`, or unlabeled/unknown), limits the highlighted set to five, and prefers hostname diversity where alternatives exist. This is presentation logic—not an authority score, trust score, factual-quality score, or modification of the backend report. The backend remains responsible for planning, bounded workers, Tavily search, evidence IDs, claims, deterministic aggregation, synthesis validation, and the `FinalResearchReport` contract.
+
+### Extraction
+
+The page flows from hero and navigation directly into the uploader, followed by How It Works, Engineering Decisions, Reliability, Technology Stack, and the backend repository CTA. Its hero actions target `#live-demo` and `#how-it-works`.
+
+Successful results expose Table and JSON tabs, extraction warnings, and invoice Q&A. Desktop and tablet layouts retain a semantic four-column line-item table. On small screens, CSS presents those same cells as labeled rows for Description, Quantity, Unit price, and Line total. The JSON tab always renders the complete `JSON.stringify(result, null, 2)` value; small screens wrap it visually without truncating or changing its content. These are frontend presentation changes, not backend transformations.
+
+The live flow has also been exercised end to end with a controlled synthetic invoice through upload, structured extraction, Table/JSON presentation, and invoice Q&A. That smoke test demonstrates integration, not extraction accuracy; detailed backend verification belongs in the [Extraction Agent repository](https://github.com/marvinjbb/extraction-agent).
+
 ## Demo and backend boundaries
 
 ### Extraction
@@ -68,6 +100,12 @@ The browser submits one question and `quick` or `deep` depth. The backend owns p
 ### Incident Investigation
 
 The browser selects one allowlisted synthetic incident. The backend owns session-scoped incident creation, restricted diagnostics, evidence collection, model investigation, application-owned remediation proposals, approval state, allowlisted execution, recovery verification, and the audit trail. The browser cannot supply SQL, process identifiers, deployment versions, shell commands, or arbitrary infrastructure targets.
+
+## Accessibility and responsive verification
+
+The current UI uses semantic headings, native links and buttons, visible focus treatments, labeled controls, accessible Table/JSON tabs, `aria-controls`/`aria-labelledby` relationships, and responsive result layouts. Successful Extraction, Research, and Incident results receive programmatic focus so keyboard and assistive-technology users reach new content. These are implemented accessibility practices, not a WCAG certification.
+
+Manual responsive QA uses `1440`, `1280`, `1024`, `768`, `430`, and `375` pixel widths. Tests also cover key mobile transformations and horizontal containment. This matrix does not imply universal browser or device compatibility.
 
 ## Environment-based API routing
 

@@ -22,6 +22,8 @@ Status labels: `COMPLETE`, `IN PROGRESS`, `PLANNED`.
 
 The live demo accepts supported invoice PDFs and images, uses backend-owned text-first or vision routing, renders validated structured results, and supports bounded invoice questions. The deployed backend and its GitHub repository are released independently; this frontend does not claim that the newest backend revision is deployed.
 
+The uploader is the first major experience after project navigation. Results provide Table and JSON views, warnings, invoice Q&A, and mobile line-item cards without changing the backend response.
+
 - [Live demo](https://marvinjb.dev/demo/extraction)
 - [Backend repository](https://github.com/marvinjbb/extraction-agent)
 
@@ -31,6 +33,8 @@ The live demo accepts supported invoice PDFs and images, uses backend-owned text
 
 The live demo submits one question and depth to a bounded research workflow. The backend plans two to five assignments, runs workers concurrently, grounds findings in application-owned evidence, aggregates deterministically, and validates final citations.
 
+The result hierarchy now leads with the answer, findings, practical guidance, confidence, and selected sources. The complete evidence/source catalog and worker provenance remain available under Research Details.
+
 - [Live demo](https://marvinjb.dev/demo/research)
 - [Backend repository](https://github.com/marvinjbb/research-agent)
 
@@ -39,6 +43,8 @@ The live demo submits one question and depth to a bounded research workflow. The
 **Status:** `COMPLETE`
 
 The flagship live demo creates only controlled synthetic incidents. The backend collects evidence through restricted diagnostics, produces an evidence-backed investigation, requires explicit human approval, executes only allowlisted demo remediation, and verifies recovery.
+
+The page is demo-first: the three scenario choices appear before the explanatory case study, while the frontend presents evidence, approval, remediation, and recovery state without claiming ownership of backend enforcement.
 
 - [Live demo](https://marvinjb.dev/demo/incident-investigation)
 - [Backend repository](https://github.com/marvinjbb/incident-investigation-agent)
